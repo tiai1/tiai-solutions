@@ -34,12 +34,14 @@ export default function ChartReveal({ charts, activeChart, onChartChange }: Char
   const renderMockChart = (chart: ChartData) => {
     if (chart.type === 'bar') {
       const maxValue = Math.max(...chart.data.map(item => item.actual));
+      const minValue = Math.min(...chart.data.map(item => item.actual));
+      const range = maxValue - minValue;
       
       return (
-        <div className="relative h-80 bg-muted/30 rounded-lg p-6">
-          <div className="relative h-full">
+        <div className="relative h-80 bg-muted/30 rounded-lg p-8">
+          <div className="relative h-64">
             {/* Month Labels at bottom */}
-            <div className="absolute bottom-0 left-0 right-0 flex justify-between px-8">
+            <div className="absolute -bottom-6 left-0 right-0 flex justify-between">
               {chart.data.map((item, index) => (
                 <span key={index} className="text-xs text-muted-foreground font-medium">
                   {item.month}
@@ -47,39 +49,54 @@ export default function ChartReveal({ charts, activeChart, onChartChange }: Char
               ))}
             </div>
             
-            {/* Trend Line */}
-            <div className="absolute inset-0 pb-8">
-              <svg 
-                className="w-full h-full" 
-                viewBox="0 0 400 300"
-                preserveAspectRatio="xMidYMid meet"
-              >
-                <motion.polyline 
-                  fill="none" 
-                  stroke="hsl(var(--primary))" 
-                  strokeWidth="4"
-                  points={chart.data.map((item, i) => 
-                    `${50 + i * 60},${250 - (item.actual / maxValue) * 180}`
-                  ).join(' ')}
-                  initial={{ pathLength: 0 }}
-                  animate={{ pathLength: 1 }}
-                  transition={{ duration: 2, delay: 0.5, ease: "easeInOut" }}
-                />
-                {/* Trend Line Points */}
-                {chart.data.map((item, i) => (
+            {/* Trend Line Chart */}
+            <svg 
+              className="w-full h-full" 
+              viewBox="0 0 600 240"
+            >
+              {/* Grid lines for reference */}
+              <defs>
+                <pattern id="grid" width="100" height="40" patternUnits="userSpaceOnUse">
+                  <path d="M 100 0 L 0 0 0 40" fill="none" stroke="hsl(var(--muted-foreground))" strokeWidth="0.5" opacity="0.1"/>
+                </pattern>
+              </defs>
+              <rect width="100%" height="100%" fill="url(#grid)" />
+              
+              {/* Main trend line */}
+              <motion.polyline 
+                fill="none" 
+                stroke="hsl(var(--primary))" 
+                strokeWidth="3"
+                points={chart.data.map((item, i) => {
+                  const x = 60 + (i * (600 - 120) / (chart.data.length - 1));
+                  const y = 200 - ((item.actual - minValue) / range) * 160;
+                  return `${x},${y}`;
+                }).join(' ')}
+                initial={{ pathLength: 0 }}
+                animate={{ pathLength: 1 }}
+                transition={{ duration: 2, ease: "easeInOut" }}
+              />
+              
+              {/* Data points */}
+              {chart.data.map((item, i) => {
+                const x = 60 + (i * (600 - 120) / (chart.data.length - 1));
+                const y = 200 - ((item.actual - minValue) / range) * 160;
+                return (
                   <motion.circle 
                     key={i}
-                    cx={50 + i * 60} 
-                    cy={250 - (item.actual / maxValue) * 180} 
-                    r="6" 
+                    cx={x} 
+                    cy={y} 
+                    r="5" 
                     fill="hsl(var(--primary))"
+                    stroke="white"
+                    strokeWidth="2"
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
-                    transition={{ duration: 0.4, delay: i * 0.2 + 1 }}
+                    transition={{ duration: 0.3, delay: i * 0.1 + 0.5 }}
                   />
-                ))}
-              </svg>
-            </div>
+                );
+              })}
+            </svg>
           </div>
         </div>
       );
