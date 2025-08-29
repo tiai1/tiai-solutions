@@ -240,9 +240,10 @@ export async function fetchCharts() {
   try {
     const response = await fetch('/data/charts.json');
     if (!response.ok) {
-      throw new Error('Failed to fetch charts data');
+      throw new Error(`Failed to fetch charts data: ${response.status} ${response.statusText}`);
     }
-    return await response.json();
+    const data = await response.json();
+    return data;
   } catch (error) {
     console.error('Error fetching charts:', error);
     return null;

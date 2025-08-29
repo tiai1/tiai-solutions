@@ -59,8 +59,8 @@ export default function BeforeAfter() {
         });
       },
       { 
-        threshold: 0.3, // Trigger when 30% of section is visible
-        rootMargin: '0px 0px -20% 0px' // Add some margin to trigger earlier
+        threshold: 0.2, // Trigger when 20% of section is visible
+        rootMargin: '0px 0px -10% 0px' // Add some margin to trigger earlier
       }
     );
 
@@ -71,7 +71,7 @@ export default function BeforeAfter() {
       if (animationTimeoutRef.current) clearTimeout(animationTimeoutRef.current);
       if (intervalRef.current) clearInterval(intervalRef.current);
     };
-  }, [hasStartedAnimation]);
+  }, []); // Remove hasStartedAnimation dependency to allow re-triggering
 
   useEffect(() => {
     document.addEventListener('mousemove', handleMouseMove);
