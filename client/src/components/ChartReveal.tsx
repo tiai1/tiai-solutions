@@ -33,85 +33,49 @@ export default function ChartReveal({ charts, activeChart, onChartChange }: Char
 
   const renderMockChart = (chart: ChartData) => {
     if (chart.type === 'bar') {
-      const maxValue = Math.max(...chart.data.map(item => Math.max(item.actual, item.plan)));
-      const chartHeight = 240; // Fixed height for consistent scaling
+      const maxValue = Math.max(...chart.data.map(item => item.actual));
       
       return (
         <div className="relative h-80 bg-muted/30 rounded-lg p-6">
-          {/* Legend - moved to top */}
-          <div className="flex justify-end mb-4 space-x-4">
-            <div className="flex items-center">
-              <div className="w-4 h-3 bg-primary mr-2 rounded" />
-              <span className="text-sm">Actual</span>
-            </div>
-            <div className="flex items-center">
-              <div className="w-4 h-3 bg-primary/40 mr-2 rounded" />
-              <span className="text-sm">Plan</span>
-            </div>
-            <div className="flex items-center">
-              <div className="w-4 h-1 mr-2 rounded border-2 border-dashed border-accent bg-transparent" />
-              <span className="text-sm">Trend</span>
-            </div>
-          </div>
-          
-          <div className="relative h-64">
-            {/* Chart Grid */}
-            <div className="absolute inset-0 flex justify-between items-end pb-6">
+          <div className="relative h-full">
+            {/* Month Labels at bottom */}
+            <div className="absolute bottom-0 left-0 right-0 flex justify-between px-8">
               {chart.data.map((item, index) => (
-                <div key={index} className="flex flex-col items-center w-16">
-                  {/* Bar Group */}
-                  <div className="flex items-end space-x-1 mb-3">
-                    {/* Actual Bar */}
-                    <motion.div 
-                      className="bg-primary w-6 rounded-t" 
-                      initial={{ height: 0 }}
-                      animate={{ height: `${(item.actual / maxValue) * 200}px` }}
-                      transition={{ duration: 0.8, delay: index * 0.1 }}
-                    />
-                    {/* Plan Bar */}
-                    <motion.div 
-                      className="bg-primary/40 w-6 rounded-t" 
-                      initial={{ height: 0 }}
-                      animate={{ height: `${(item.plan / maxValue) * 200}px` }}
-                      transition={{ duration: 0.8, delay: index * 0.1 + 0.1 }}
-                    />
-                  </div>
-                  {/* Month Label */}
-                  <span className="text-xs text-muted-foreground font-medium">{item.month}</span>
-                </div>
+                <span key={index} className="text-xs text-muted-foreground font-medium">
+                  {item.month}
+                </span>
               ))}
             </div>
             
-            {/* Trend Line Overlay */}
-            <div className="absolute inset-0 pb-6">
+            {/* Trend Line */}
+            <div className="absolute inset-0 pb-8">
               <svg 
-                className="w-full h-full pointer-events-none" 
-                viewBox="0 0 100 100"
-                preserveAspectRatio="none"
+                className="w-full h-full" 
+                viewBox="0 0 400 300"
+                preserveAspectRatio="xMidYMid meet"
               >
                 <motion.polyline 
                   fill="none" 
-                  stroke="hsl(var(--accent))" 
-                  strokeWidth="0.8"
-                  strokeDasharray="2,2"
+                  stroke="hsl(var(--primary))" 
+                  strokeWidth="4"
                   points={chart.data.map((item, i) => 
-                    `${8 + (i * 84 / (chart.data.length - 1))},${100 - (item.actual / maxValue) * 80}`
+                    `${50 + i * 60},${250 - (item.actual / maxValue) * 180}`
                   ).join(' ')}
-                  initial={{ pathLength: 0, opacity: 0 }}
-                  animate={{ pathLength: 1, opacity: 1 }}
-                  transition={{ duration: 1.5, delay: 0.8, ease: "easeInOut" }}
+                  initial={{ pathLength: 0 }}
+                  animate={{ pathLength: 1 }}
+                  transition={{ duration: 2, delay: 0.5, ease: "easeInOut" }}
                 />
                 {/* Trend Line Points */}
                 {chart.data.map((item, i) => (
                   <motion.circle 
                     key={i}
-                    cx={8 + (i * 84 / (chart.data.length - 1))} 
-                    cy={100 - (item.actual / maxValue) * 80} 
-                    r="1" 
-                    fill="hsl(var(--accent))"
-                    initial={{ scale: 0, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    transition={{ duration: 0.3, delay: i * 0.1 + 1.2 }}
+                    cx={50 + i * 60} 
+                    cy={250 - (item.actual / maxValue) * 180} 
+                    r="6" 
+                    fill="hsl(var(--primary))"
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ duration: 0.4, delay: i * 0.2 + 1 }}
                   />
                 ))}
               </svg>
