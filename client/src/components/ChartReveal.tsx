@@ -1,6 +1,7 @@
 import { useRef, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useIntersectionObserver } from '@/lib/viewport';
+import { cn } from '@/lib/utils';
 
 interface ChartData {
   name: string;

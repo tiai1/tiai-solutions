@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { AlertTriangle, CheckCircle, FileText, BarChart3 } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 export default function BeforeAfter() {
   const [sliderPosition, setSliderPosition] = useState(50);

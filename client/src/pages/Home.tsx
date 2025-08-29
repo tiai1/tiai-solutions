@@ -142,7 +142,7 @@ export default function Home() {
           </div>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {services.capabilities.map((capability, index) => (
+            {services.capabilities.map((capability: any, index: number) => (
               <ServiceCard
                 key={index}
                 title={capability.title}
@@ -205,7 +205,7 @@ export default function Home() {
           </div>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-            {testimonials.map((testimonial, index) => (
+            {testimonials.map((testimonial: any, index: number) => (
               <TestimonialCard
                 key={index}
                 name={testimonial.name}

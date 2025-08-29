@@ -33,8 +33,15 @@ export class MemStorage implements IStorage {
   async createContact(insertContact: InsertContact): Promise<Contact> {
     const id = randomUUID();
     const contact: Contact = {
-      ...insertContact,
       id,
+      name: insertContact.name,
+      email: insertContact.email,
+      company: insertContact.company || null,
+      role: insertContact.role || null,
+      message: insertContact.message,
+      timeframe: insertContact.timeframe || null,
+      budget: insertContact.budget || null,
+      honeypot: insertContact.honeypot || null,
       created_at: new Date(),
     };
     this.contacts.set(id, contact);
@@ -53,8 +60,9 @@ export class MemStorage implements IStorage {
   async createLead(insertLead: InsertLead): Promise<Lead> {
     const id = randomUUID();
     const lead: Lead = {
-      ...insertLead,
       id,
+      source: insertLead.source,
+      payload: insertLead.payload ?? null,
       created_at: new Date(),
     };
     this.leads.set(id, lead);
@@ -73,8 +81,10 @@ export class MemStorage implements IStorage {
   async createDownload(insertDownload: InsertDownload): Promise<Download> {
     const id = randomUUID();
     const download: Download = {
-      ...insertDownload,
       id,
+      template_name: insertDownload.template_name,
+      email: insertDownload.email,
+      company: insertDownload.company || null,
       created_at: new Date(),
     };
     this.downloads.set(id, download);

@@ -1,3 +1,4 @@
+import React from 'react';
 import { BarChart3, Bot, Brain, Calculator, FileText, Database, Zap } from 'lucide-react';
 
 export const services = {
@@ -23,7 +24,7 @@ export const services = {
           description: 'Automated monthly and quarterly reports'
         }
       ],
-      icon: <BarChart3 className="h-8 w-8" />,
+      icon: React.createElement(BarChart3, { className: "h-8 w-8" }),
       color: 'primary',
       ctaText: 'Get Started',
       isPopular: false,
@@ -49,7 +50,7 @@ export const services = {
           description: 'Workflow automation across systems'
         }
       ],
-      icon: <Bot className="h-8 w-8" />,
+      icon: React.createElement(Bot, { className: "h-8 w-8" }),
       color: 'primary',
       ctaText: 'Start Automation',
       isPopular: true,
@@ -75,7 +76,7 @@ export const services = {
           description: 'ML-powered insights and predictions'
         }
       ],
-      icon: <Brain className="h-8 w-8" />,
+      icon: React.createElement(Brain, { className: "h-8 w-8" }),
       color: 'accent',
       ctaText: 'Explore Systems',
       isPopular: false,
@@ -91,7 +92,7 @@ export const services = {
         { title: 'Forecast vs actual analysis', description: 'Compare predictions to results' },
         { title: 'Exception reporting', description: 'Automated alerts for variances' }
       ],
-      icon: <BarChart3 className="h-6 w-6" />,
+      icon: React.createElement(BarChart3, { className: "h-6 w-6" }),
       color: 'primary'
     },
     {
@@ -102,7 +103,7 @@ export const services = {
         { title: 'PowerPoint automation', description: 'Auto-generated presentations' },
         { title: 'Email distribution', description: 'Automated report delivery' }
       ],
-      icon: <FileText className="h-6 w-6" />,
+      icon: React.createElement(FileText, { className: "h-6 w-6" }),
       color: 'accent'
     },
     {
@@ -113,7 +114,7 @@ export const services = {
         { title: 'Cost center tracking', description: 'Department-level cost monitoring' },
         { title: 'Price optimization', description: 'Data-driven pricing strategies' }
       ],
-      icon: <Calculator className="h-6 w-6" />,
+      icon: React.createElement(Calculator, { className: "h-6 w-6" }),
       color: 'purple'
     },
     {
@@ -124,7 +125,7 @@ export const services = {
         { title: 'Milestone monitoring', description: 'Project progress tracking' },
         { title: 'ROI calculations', description: 'Return on investment analysis' }
       ],
-      icon: <Zap className="h-6 w-6" />,
+      icon: React.createElement(Zap, { className: "h-6 w-6" }),
       color: 'success'
     }
   ]

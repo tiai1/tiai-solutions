@@ -1,4 +1,5 @@
-import { Industry, Calculator, Coins, BarChart3, TrendingUp, Clock } from 'lucide-react';
+import React from 'react';
+import { Factory, Calculator, Coins, BarChart3, TrendingUp, Clock } from 'lucide-react';
 
 export interface CaseStudy {
   id: string;
@@ -51,7 +52,7 @@ export const caseStudies: CaseStudy[] = [
       }
     ],
     technologies: ['VBA', 'Power Query', 'PowerPoint API', 'Excel Automation'],
-    icon: <Industry className="h-8 w-8" />,
+    icon: React.createElement(Factory, { className: "h-8 w-8" }),
     color: 'primary',
     timeline: '6 weeks',
     clientQuote: {
@@ -86,7 +87,7 @@ export const caseStudies: CaseStudy[] = [
       }
     ],
     technologies: ['Excel VBA', 'Monte Carlo', 'Optimization', 'Scenario Analysis'],
-    icon: <Calculator className="h-8 w-8" />,
+    icon: React.createElement(Calculator, { className: "h-8 w-8" }),
     color: 'accent',
     timeline: '8 weeks',
     clientQuote: {
@@ -121,7 +122,7 @@ export const caseStudies: CaseStudy[] = [
       }
     ],
     technologies: ['Power BI', 'DAX', 'SQL', 'Azure Data Factory'],
-    icon: <Coins className="h-8 w-8" />,
+    icon: React.createElement(Coins, { className: "h-8 w-8" }),
     color: 'success',
     timeline: '12 weeks',
     clientQuote: {
