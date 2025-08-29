@@ -66,7 +66,7 @@ export default function ServiceCard({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay }}
       className={cn(
-        'service-tier bg-card p-8 rounded-xl shadow-lg relative',
+        'service-tier bg-card p-8 rounded-xl shadow-lg relative flex flex-col h-full',
         isPopular && `border-2 ${colors.border}`
       )}
       data-testid={`service-card-${title.toLowerCase().replace(/\s+/g, '-')}`}
@@ -93,7 +93,7 @@ export default function ServiceCard({
         </p>
       </div>
       
-      <ul className="space-y-4 mb-8">
+      <ul className="space-y-4 mb-8 flex-grow">
         {features.map((feature, index) => (
           <motion.li
             key={index}

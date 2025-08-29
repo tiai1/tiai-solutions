@@ -74,33 +74,68 @@ export default function ChartReveal({ charts, activeChart, onChartChange }: Char
     }
 
     if (chart.type === 'waterfall') {
+      // Calculate cumulative values for waterfall
+      let cumulativeValue = 0;
+      const waterfallData = chart.data.map((item, index) => {
+        const isStart = index === 0;
+        const isEnd = index === chart.data.length - 1;
+        
+        if (isStart) {
+          cumulativeValue = item.value;
+          return { ...item, startValue: 0, endValue: item.value, cumulativeValue };
+        } else if (isEnd) {
+          return { ...item, startValue: 0, endValue: item.value, cumulativeValue: item.value };
+        } else {
+          const startValue = cumulativeValue;
+          cumulativeValue += item.value;
+          return { ...item, startValue, endValue: cumulativeValue, cumulativeValue };
+        }
+      });
+      
+      const maxValue = Math.max(...waterfallData.map(item => Math.max(item.endValue, item.startValue || 0)));
+      
       return (
-        <div className="relative h-80 bg-muted/30 rounded-lg flex items-end justify-around p-4">
-          <div className="flex items-end space-x-4 h-full">
-            {chart.data.map((item, index) => {
+        <div className="relative h-80 bg-muted/30 rounded-lg p-4">
+          <div className="flex items-end justify-around h-full space-x-2">
+            {waterfallData.map((item, index) => {
               const isPositive = item.value > 0;
               const isStart = index === 0;
               const isEnd = index === chart.data.length - 1;
+              const baseHeight = isStart || isEnd ? 0 : (item.startValue / maxValue) * 240;
+              const barHeight = isStart || isEnd ? (item.value / maxValue) * 240 : (Math.abs(item.value) / maxValue) * 240;
               
               return (
                 <motion.div 
                   key={index}
-                  className="flex flex-col items-center justify-end h-full"
+                  className="flex flex-col items-center justify-end h-full relative"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: index * 0.15 }}
                 >
+                  {/* Base for floating bars (middle elements) */}
+                  {!isStart && !isEnd && (
+                    <div 
+                      className="w-16 bg-transparent border-l-2 border-dashed border-muted-foreground/30"
+                      style={{ height: `${baseHeight}px` }}
+                    />
+                  )}
+                  
+                  {/* Main bar */}
                   <motion.div 
                     className={cn(
-                      'w-16 mb-2 rounded',
+                      'w-16 mb-2 rounded relative',
                       isStart || isEnd ? 'bg-primary' : 
                       isPositive ? 'bg-green-500' : 'bg-red-500'
                     )}
                     initial={{ height: 0 }}
-                    animate={{ height: `${Math.abs(item.value) * 6}px` }}
+                    animate={{ height: `${barHeight}px` }}
                     transition={{ duration: 0.8, delay: index * 0.15 + 0.3 }}
                   />
-                  <span className="text-xs text-muted-foreground">{item.label}</span>
+                  
+                  {/* Label */}
+                  <span className="text-xs text-muted-foreground text-center">{item.label}</span>
+                  
+                  {/* Value */}
                   <span className={cn(
                     'text-xs font-bold',
                     isStart || isEnd ? 'text-primary' : 
