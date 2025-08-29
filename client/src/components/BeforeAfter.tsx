@@ -173,35 +173,6 @@ export default function BeforeAfter() {
         </div>
       </div>
       
-      {/* Control Buttons */}
-      <div className="flex justify-center items-center space-x-4 mt-6">
-        <button
-          onClick={toggleAutoPlay}
-          className="flex items-center space-x-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
-          data-testid="auto-play-toggle"
-        >
-          {isAutoPlaying ? (
-            <>
-              <Pause className="h-4 w-4" />
-              <span>Pause</span>
-            </>
-          ) : (
-            <>
-              <Play className="h-4 w-4" />
-              <span>Play</span>
-            </>
-          )}
-        </button>
-        
-        <button
-          onClick={resetSlider}
-          className="flex items-center space-x-2 px-4 py-2 bg-muted text-muted-foreground rounded-lg hover:bg-muted/80 transition-colors"
-          data-testid="reset-slider"
-        >
-          <RotateCcw className="h-4 w-4" />
-          <span>Reset</span>
-        </button>
-      </div>
     </div>
   );
 }
