@@ -42,7 +42,7 @@ export default function BeforeAfter() {
           if (entry.isIntersecting && !hasStartedAnimation && !isDragging.current) {
             setHasStartedAnimation(true);
             
-            // Wait 2.5 seconds showing "Before" state to let user understand the chaos
+            // Wait 1 second showing "Before" state, then start sliding immediately
             animationTimeoutRef.current = setTimeout(() => {
               // Animate from 0% to 100% over 4.5 seconds for better comprehension
               let progress = 0;
@@ -54,13 +54,13 @@ export default function BeforeAfter() {
                   if (intervalRef.current) clearInterval(intervalRef.current);
                 }
               }, 22.5);
-            }, 2500);
+            }, 1000);
           }
         });
       },
       { 
-        threshold: 0.2, // Trigger when 20% of section is visible
-        rootMargin: '0px 0px -10% 0px' // Add some margin to trigger earlier
+        threshold: 0.01, // Trigger as soon as section starts appearing
+        rootMargin: '50px 0px -50px 0px' // Start earlier when approaching
       }
     );
 
