@@ -42,19 +42,19 @@ export default function BeforeAfter() {
           if (entry.isIntersecting && !hasStartedAnimation && !isDragging.current) {
             setHasStartedAnimation(true);
             
-            // Wait 1.5 seconds showing "Before" state, then start animation
+            // Wait 2.5 seconds showing "Before" state to let user understand the chaos
             animationTimeoutRef.current = setTimeout(() => {
-              // Animate from 0% to 100% over 3.5 seconds
+              // Animate from 0% to 100% over 4.5 seconds for better comprehension
               let progress = 0;
               intervalRef.current = setInterval(() => {
-                progress += 1; // Increment by 1% every ~35ms (3.5 seconds total)
+                progress += 0.5; // Increment by 0.5% every ~22.5ms (4.5 seconds total)
                 setSliderPosition(progress);
                 
                 if (progress >= 100) {
                   if (intervalRef.current) clearInterval(intervalRef.current);
                 }
-              }, 35);
-            }, 1500);
+              }, 22.5);
+            }, 2500);
           }
         });
       },
@@ -87,19 +87,19 @@ export default function BeforeAfter() {
     <div ref={sectionRef} className="max-w-4xl mx-auto">
       <div 
         ref={containerRef}
-        className="relative h-96 rounded-xl overflow-hidden cursor-ew-resize"
+        className="relative h-64 md:h-96 rounded-xl overflow-hidden cursor-ew-resize"
         data-testid="before-after-container"
       >
         {/* Before State */}
         <div className="absolute inset-0 bg-card border-2 border-red-500/20">
-          <div className="p-8 h-full flex flex-col">
+          <div className="p-4 md:p-8 h-full flex flex-col">
             <div className="flex items-center mb-4">
               <AlertTriangle className="text-red-500 mr-3 h-6 w-6" />
-              <h3 className="font-display font-bold text-xl" data-testid="before-title">
+              <h3 className="font-display font-bold text-lg md:text-xl" data-testid="before-title">
                 Before: Spreadsheet Chaos
               </h3>
             </div>
-            <div className="grid grid-cols-3 gap-2 flex-1">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-2 flex-1">
               {[
                 { name: 'Q1_Sales_FINAL_v3.xlsx', status: 'Modified 2 weeks ago' },
                 { name: 'Margins_Report_Copy.xlsx', status: 'Modified 1 month ago' },
@@ -111,14 +111,14 @@ export default function BeforeAfter() {
                 <div 
                   key={index}
                   className={cn(
-                    'p-3 rounded text-sm',
+                    'p-2 md:p-3 rounded text-xs md:text-sm',
                     file.error 
                       ? 'bg-red-500/20 border-2 border-red-500/50' 
                       : 'bg-red-500/10'
                   )}
                   data-testid={`before-file-${index}`}
                 >
-                  <div className="font-mono text-xs">{file.name}</div>
+                  <div className="font-mono text-xs break-all">{file.name}</div>
                   <div className="text-muted-foreground text-xs">{file.status}</div>
                 </div>
               ))}
@@ -134,14 +134,14 @@ export default function BeforeAfter() {
           }}
           data-testid="after-state"
         >
-          <div className="p-8 h-full flex flex-col">
+          <div className="p-4 md:p-8 h-full flex flex-col">
             <div className="flex items-center mb-4">
               <BarChart3 className="text-primary mr-3 h-6 w-6" />
-              <h3 className="font-display font-bold text-xl" data-testid="after-title">
+              <h3 className="font-display font-bold text-lg md:text-xl" data-testid="after-title">
                 After: Automated Dashboard
               </h3>
             </div>
-            <div className="grid grid-cols-2 gap-4 flex-1">
+            <div className="grid grid-cols-2 gap-2 md:gap-4 flex-1">
               <div className="bg-primary/10 p-4 rounded-lg" data-testid="kpi-revenue">
                 <div className="text-2xl font-bold text-primary mb-2">$2.4M</div>
                 <div className="text-sm text-muted-foreground">Revenue (YTD)</div>

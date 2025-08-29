@@ -23,7 +23,7 @@ const Chart: React.FC<ChartProps> = ({
       // Initialize chart
       chartInstance.current = echarts.init(chartRef.current);
       
-      // Enhanced options with animations
+      // Enhanced options with animations and mobile optimization
       const animatedOptions = {
         ...options,
         animation: true,
@@ -32,6 +32,33 @@ const Chart: React.FC<ChartProps> = ({
         animationDelay: (idx: number) => idx * 100,
         animationDurationUpdate: 1000,
         animationEasingUpdate: 'cubicInOut',
+        // Mobile-friendly configurations
+        grid: {
+          ...options.grid,
+          left: window.innerWidth < 768 ? '10%' : '3%',
+          right: window.innerWidth < 768 ? '10%' : '4%',
+          bottom: window.innerWidth < 768 ? '15%' : '3%',
+          top: window.innerWidth < 768 ? '15%' : '60',
+          containLabel: true,
+        },
+        // Enhanced tooltip for mobile
+        tooltip: {
+          ...options.tooltip,
+          trigger: 'axis',
+          backgroundColor: 'rgba(50, 50, 50, 0.95)',
+          borderWidth: 0,
+          textStyle: {
+            color: '#fff',
+            fontSize: window.innerWidth < 768 ? 12 : 14,
+          },
+          position: function(pt: number[]) {
+            // Better positioning for mobile
+            if (window.innerWidth < 768) {
+              return [pt[0], '10%'];
+            }
+            return null;
+          },
+        },
         series: options.series?.map((series: any) => ({
           ...series,
           animation: true,

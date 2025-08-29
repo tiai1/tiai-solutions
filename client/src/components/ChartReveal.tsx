@@ -66,8 +66,8 @@ export default function ChartReveal({ activeChart = 0, onChartChange }: ChartRev
 
   if (charts.length === 0) {
     return (
-      <div className="bg-card rounded-xl p-8 shadow-lg">
-        <div className="h-80 bg-muted/30 rounded-lg flex items-center justify-center">
+      <div className="bg-card rounded-xl p-4 md:p-8 shadow-lg">
+        <div className="h-60 md:h-80 bg-muted/30 rounded-lg flex items-center justify-center">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
         </div>
       </div>
@@ -77,28 +77,28 @@ export default function ChartReveal({ activeChart = 0, onChartChange }: ChartRev
   return (
     <motion.div
       ref={chartRef}
-      className="bg-card rounded-xl p-8 shadow-lg"
+      className="bg-card rounded-xl p-4 md:p-8 shadow-lg"
       initial={{ opacity: 0, y: 50 }}
       animate={hasIntersected ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
       transition={{ duration: 0.8 }}
       data-testid="chart-reveal-container"
     >
       {/* Chart Tabs */}
-      <div className="flex justify-center mb-8">
-        <div className="bg-muted rounded-lg p-1 inline-flex flex-wrap">
+      <div className="flex justify-center mb-6 md:mb-8">
+        <div className="bg-muted rounded-lg p-1 inline-flex flex-wrap gap-1 md:gap-0">
           {charts.map((chart, index) => (
             <motion.button
               key={index}
               onClick={() => handleChartChange(index)}
               className={cn(
-                'px-4 py-2 rounded-md transition-all duration-200 text-sm relative',
+                'px-2 md:px-4 py-2 rounded-md transition-all duration-200 text-xs md:text-sm relative min-w-0 flex-shrink',
                 currentChart === index
                   ? 'bg-primary text-primary-foreground shadow-sm'
                   : 'hover:bg-background'
               )}
               data-testid={`chart-tab-${index}`}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
               transition={{ duration: 0.2 }}
             >
               {currentChart === index && (
@@ -108,7 +108,7 @@ export default function ChartReveal({ activeChart = 0, onChartChange }: ChartRev
                   transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                 />
               )}
-              <span className="relative z-10">{chart.name}</span>
+              <span className="relative z-10 whitespace-nowrap">{chart.name}</span>
             </motion.button>
           ))}
         </div>
@@ -134,10 +134,10 @@ export default function ChartReveal({ activeChart = 0, onChartChange }: ChartRev
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1, duration: 0.4 }}
             >
-              <h3 className="font-display font-semibold text-xl" data-testid="chart-title">
+              <h3 className="font-display font-semibold text-lg md:text-xl" data-testid="chart-title">
                 {charts[currentChart].name}
               </h3>
-              <p className="text-muted-foreground">
+              <p className="text-muted-foreground text-sm md:text-base">
                 Interactive visualization with automated data refresh
               </p>
             </motion.div>
@@ -149,13 +149,13 @@ export default function ChartReveal({ activeChart = 0, onChartChange }: ChartRev
             >
               <Chart 
                 options={charts[currentChart].options}
-                height="400px"
-                className="rounded-lg border"
+                height="300px"
+                className="rounded-lg border md:h-[400px]"
               />
             </motion.div>
           </motion.div>
         ) : (
-          <div className="h-80 bg-muted/30 rounded-lg flex items-center justify-center">
+          <div className="h-60 md:h-80 bg-muted/30 rounded-lg flex items-center justify-center">
             <motion.div
               animate={{ rotate: 360 }}
               transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
