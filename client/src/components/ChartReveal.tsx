@@ -49,54 +49,56 @@ export default function ChartReveal({ charts, activeChart, onChartChange }: Char
               ))}
             </div>
             
-            {/* Trend Line Chart */}
-            <svg 
-              className="w-full h-full" 
-              viewBox="0 0 600 240"
-            >
-              {/* Grid lines for reference */}
-              <defs>
-                <pattern id="grid" width="100" height="40" patternUnits="userSpaceOnUse">
-                  <path d="M 100 0 L 0 0 0 40" fill="none" stroke="hsl(var(--muted-foreground))" strokeWidth="0.5" opacity="0.1"/>
-                </pattern>
-              </defs>
-              <rect width="100%" height="100%" fill="url(#grid)" />
-              
-              {/* Main trend line */}
-              <motion.polyline 
-                fill="none" 
-                stroke="hsl(var(--primary))" 
-                strokeWidth="3"
-                points={chart.data.map((item, i) => {
-                  const x = 60 + (i * (600 - 120) / (chart.data.length - 1));
-                  const y = 200 - ((item.actual - minValue) / range) * 160;
-                  return `${x},${y}`;
-                }).join(' ')}
-                initial={{ pathLength: 0 }}
-                animate={{ pathLength: 1 }}
-                transition={{ duration: 2, ease: "easeInOut" }}
-              />
-              
-              {/* Data points */}
-              {chart.data.map((item, i) => {
-                const x = 60 + (i * (600 - 120) / (chart.data.length - 1));
-                const y = 200 - ((item.actual - minValue) / range) * 160;
-                return (
-                  <motion.circle 
-                    key={i}
-                    cx={x} 
-                    cy={y} 
-                    r="5" 
-                    fill="hsl(var(--primary))"
-                    stroke="white"
-                    strokeWidth="2"
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    transition={{ duration: 0.3, delay: i * 0.1 + 0.5 }}
-                  />
-                );
-              })}
-            </svg>
+            {/* Simple Chart using Canvas-like approach */}
+            <div className="relative w-full h-full border border-border/20 rounded">
+              {/* Chart background */}
+              <div className="absolute inset-0">
+                {/* Trend line using absolute positioned elements */}
+                {chart.data.map((item, i) => {
+                  if (i === chart.data.length - 1) return null;
+                  
+                  const x1 = (i / (chart.data.length - 1)) * 100;
+                  const y1 = 100 - ((item.actual - minValue) / range) * 80;
+                  const x2 = ((i + 1) / (chart.data.length - 1)) * 100;
+                  const y2 = 100 - ((chart.data[i + 1].actual - minValue) / range) * 80;
+                  
+                  const length = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+                  const angle = Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI;
+                  
+                  return (
+                    <div
+                      key={i}
+                      className="absolute bg-primary"
+                      style={{
+                        left: `${x1}%`,
+                        top: `${y1}%`,
+                        width: `${length}%`,
+                        height: '3px',
+                        transformOrigin: '0 50%',
+                        transform: `rotate(${angle}deg)`,
+                      }}
+                    />
+                  );
+                })}
+                
+                {/* Data points */}
+                {chart.data.map((item, i) => {
+                  const x = (i / (chart.data.length - 1)) * 100;
+                  const y = 100 - ((item.actual - minValue) / range) * 80;
+                  
+                  return (
+                    <div
+                      key={i}
+                      className="absolute w-3 h-3 bg-primary border-2 border-white rounded-full -translate-x-1/2 -translate-y-1/2"
+                      style={{
+                        left: `${x}%`,
+                        top: `${y}%`,
+                      }}
+                    />
+                  );
+                })}
+              </div>
+            </div>
           </div>
         </div>
       );
