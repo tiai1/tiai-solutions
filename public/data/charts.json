@@ -86,10 +86,7 @@
           "type": "bar",
           "data": [100, 15, -8, 12, -3, 6, 122],
           "itemStyle": {
-            "color": function(params) {
-              if (params.dataIndex === 0 || params.dataIndex === 6) return "#3b82f6";
-              return params.value >= 0 ? "#10b981" : "#ef4444";
-            }
+            "color": "#3b82f6"
           }
         }
       ]

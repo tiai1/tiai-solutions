@@ -27,11 +27,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
       rateLimitStore.set(windowKey, current);
       
       // Clean up old entries
-      for (const [key, value] of rateLimitStore.entries()) {
+      Array.from(rateLimitStore.entries()).forEach(([key, value]) => {
         if (value.resetTime < now) {
           rateLimitStore.delete(key);
         }
-      }
+      });
       
       next();
     };
@@ -133,6 +133,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       
       res.status(500).json({ error: 'Failed to track download' });
+    }
+  });
+
+  // Serve JSON data files
+  app.get('/data/:filename', async (req, res) => {
+    try {
+      const filename = req.params.filename;
+      if (!filename.endsWith('.json')) {
+        return res.status(400).json({ error: 'Only JSON files are allowed' });
+      }
+      
+      const fs = await import('fs/promises');
+      const path = await import('path');
+      
+      const filePath = path.resolve(import.meta.dirname, "..", "public", "data", filename);
+      const data = await fs.readFile(filePath, 'utf-8');
+      const jsonData = JSON.parse(data);
+      
+      res.json(jsonData);
+    } catch (error) {
+      console.error('Error serving data file:', error);
+      res.status(404).json({ error: 'File not found' });
     }
   });
 
