@@ -101,29 +101,30 @@ export default function ChartReveal({ charts, activeChart, onChartChange }: Char
               const isPositive = item.value > 0;
               const isStart = index === 0;
               const isEnd = index === chart.data.length - 1;
+              
+              // For Plan and Actual: bars sit on the horizontal axis
+              // For middle elements: bars float at their cumulative position
               const baseHeight = isStart || isEnd ? 0 : (item.startValue / maxValue) * 240;
-              const barHeight = isStart || isEnd ? (item.value / maxValue) * 240 : (Math.abs(item.value) / maxValue) * 240;
+              const barHeight = (Math.abs(item.value) / maxValue) * 240;
               
               return (
                 <motion.div 
                   key={index}
-                  className="flex flex-col items-center justify-end h-full relative"
+                  className="flex flex-col items-center h-full relative"
+                  style={{ justifyContent: 'flex-end' }}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: index * 0.15 }}
                 >
-                  {/* Base for floating bars (middle elements) */}
+                  {/* Spacer for floating bars (pushes middle bars up) */}
                   {!isStart && !isEnd && (
-                    <div 
-                      className="w-16 bg-transparent border-l-2 border-dashed border-muted-foreground/30"
-                      style={{ height: `${baseHeight}px` }}
-                    />
+                    <div style={{ height: `${240 - baseHeight - barHeight}px` }} />
                   )}
                   
                   {/* Main bar */}
                   <motion.div 
                     className={cn(
-                      'w-16 mb-2 rounded relative',
+                      'w-16 rounded relative',
                       isStart || isEnd ? 'bg-primary' : 
                       isPositive ? 'bg-green-500' : 'bg-red-500'
                     )}
@@ -132,17 +133,17 @@ export default function ChartReveal({ charts, activeChart, onChartChange }: Char
                     transition={{ duration: 0.8, delay: index * 0.15 + 0.3 }}
                   />
                   
-                  {/* Label */}
-                  <span className="text-xs text-muted-foreground text-center">{item.label}</span>
-                  
-                  {/* Value */}
-                  <span className={cn(
-                    'text-xs font-bold',
-                    isStart || isEnd ? 'text-primary' : 
-                    isPositive ? 'text-green-500' : 'text-red-500'
-                  )}>
-                    {isStart || isEnd ? `${item.value}%` : `${isPositive ? '+' : ''}${item.value}%`}
-                  </span>
+                  {/* Label and Value container */}
+                  <div className="mt-2 text-center">
+                    <span className="block text-xs text-muted-foreground">{item.label}</span>
+                    <span className={cn(
+                      'block text-xs font-bold',
+                      isStart || isEnd ? 'text-primary' : 
+                      isPositive ? 'text-green-500' : 'text-red-500'
+                    )}>
+                      {isStart || isEnd ? `${item.value}%` : `${isPositive ? '+' : ''}${item.value}%`}
+                    </span>
+                  </div>
                 </motion.div>
               );
             })}

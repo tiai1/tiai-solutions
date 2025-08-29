@@ -44,7 +44,7 @@ export default function BeforeAfter() {
     if (isAutoPlaying && !isDragging.current) {
       autoPlayInterval.current = setInterval(() => {
         setSliderPosition(prev => {
-          const speed = 0.8; // Adjust speed here
+          const speed = 1.2; // Adjust speed here
           let newPosition = prev + speed;
           
           // Stop at 100%
