@@ -9,10 +9,12 @@ import ChartReveal from '@/components/ChartReveal';
 import ServiceCard from '@/components/ServiceCard';
 import TestimonialCard from '@/components/TestimonialCard';
 import { trackPageView, trackButtonClick } from '@/lib/analytics';
+import ScheduleCallModal from '@/components/ScheduleCallModal';
 import { services } from '@/data/services';
 import { testimonials } from '@/data/testimonials';
 
 export default function Home() {
+  const [isScheduleModalOpen, setIsScheduleModalOpen] = useState(false);
 
   useEffect(() => {
     trackPageView('home');
@@ -236,7 +238,10 @@ export default function Home() {
                 variant="outline" 
                 size="lg"
                 className="border-border text-foreground px-8 py-4 text-lg font-semibold hover:bg-muted transition-all"
-                onClick={() => trackButtonClick('schedule-demo', 'final-cta')}
+                onClick={() => {
+                  trackButtonClick('schedule-demo', 'final-cta');
+                  setIsScheduleModalOpen(true);
+                }}
                 data-testid="button-schedule-demo"
               >
                 Schedule a Demo
@@ -245,6 +250,13 @@ export default function Home() {
           </motion.div>
         </div>
       </Section>
+      
+      {/* Schedule Call Modal */}
+      <ScheduleCallModal 
+        open={isScheduleModalOpen}
+        onOpenChange={setIsScheduleModalOpen}
+        source="home"
+      />
     </div>
   );
 }

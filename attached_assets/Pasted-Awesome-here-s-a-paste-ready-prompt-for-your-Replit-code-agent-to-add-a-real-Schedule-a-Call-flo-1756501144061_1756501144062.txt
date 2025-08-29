@@ -1,0 +1,213 @@
+Awesome — here’s a paste-ready prompt for your Replit code agent to add a real “Schedule a Call” flow (Teams-style), wire it to a database table calls, fix links, and keep everything responsive. No team photos. Big, concrete workload.
+
+Prompt for Replit (implement scheduling + DB + fixes)
+
+Context
+
+Project: TIAI Solutions portfolio (React + Vite + TS, Tailwind, shadcn/ui, Framer Motion, GSAP).
+
+Hosting: GitHub Pages (static).
+
+Constraint: No own server right now. Use Supabase (serverless Postgres + Row Level Security) from the client.
+
+CTA location to wire: the “Schedule a Call” button (e.g., on Contact page CTA card).
+
+1) Add Supabase (client-only) and env
+
+Install: @supabase/supabase-js
+
+Add .env entries (Vite):
+
+VITE_SUPABASE_URL=<provided>
+
+VITE_SUPABASE_ANON_KEY=<provided>
+
+Create src/lib/supabase.ts:
+
+Export a singleton Supabase client using those env vars.
+
+2) Database schema (create in Supabase → SQL editor)
+
+Create table + constraints + types, then enable RLS and allow insert only (no public read).
+
+-- Table
+create table public.calls (
+  id uuid primary key default gen_random_uuid(),
+  full_name text not null,
+  email text not null check (position('@' in email) > 1),
+  company text,
+  notes text,
+  timezone text not null,
+  start_at timestamptz not null,
+  end_at   timestamptz not null,
+  source text default 'website',  -- e.g., home/contact
+  status text not null default 'requested', -- requested | confirmed | cancelled
+  created_at timestamptz not null default now()
+);
+
+-- Prevent double booking exact slot
+create unique index calls_unique_slot on public.calls(start_at, end_at);
+
+-- Basic overlap guard (optional; still enforce in app)
+create index calls_time_idx on public.calls(start_at, end_at);
+
+-- RLS: only allow inserts from anon, block selects/updates/deletes
+alter table public.calls enable row level security;
+
+create policy calls_insert_public
+on public.calls for insert
+to anon
+with check (true);
+
+revoke all on public.calls from anon, authenticated;
+
+
+(We’ll read nothing from the client for privacy. Admin views can come later with a service role via Supabase Dashboard.)
+
+3) Types
+
+In src/types.ts add:
+
+export type CallRequest = {
+  full_name: string;
+  email: string;
+  company?: string;
+  notes?: string;
+  timezone: string;
+  start_at: string; // ISO
+  end_at: string;   // ISO
+  source?: string;  // 'website' | 'home' | 'contact'
+};
+
+4) API layer
+
+In src/lib/api.ts, add:
+
+import { supabase } from './supabase';
+import type { CallRequest } from '../types';
+
+export async function createCall(req: CallRequest) {
+  const { data, error } = await supabase.from('calls').insert(req).select('id').single();
+  if (error) throw error;
+  return data.id as string;
+}
+
+5) UI: Schedule Call modal + route
+
+Add src/components/ScheduleCallModal.tsx:
+
+Use shadcn Dialog + Form + Calendar (date picker) + time picker (list of 30-min slots).
+
+Auto-detect timezone with Intl.DateTimeFormat().resolvedOptions().timeZone.
+
+Fields: Full name*, Email*, Company, Notes, Date*, Time*, Duration (default 30m), Timezone (pre-filled, editable).
+
+On submit: compose start_at / end_at as ISO (UTC) and call createCall.
+
+Show shadcn toast success/error.
+
+After success: show “Add to calendar” button that generates an ICS file client-side and triggers download (no server).
+
+File name: TIAI-Call.ics.
+
+ICS fields: DTSTART/DTEND (UTC), SUMMARY “Intro Call — TIAI Solutions”, DESCRIPTION (include notes), LOCATION “Online”.
+
+Also render a fallback mailto: link with pre-filled subject/body in case insert fails.
+
+Create a lightweight page alternative src/pages/Schedule.tsx reusing the same form, so the “Schedule a Call” button can either open the modal or link to /schedule. Make both work; modal on Contact, route elsewhere.
+
+6) Wire the CTA buttons (all pages)
+
+“Schedule a Call” opens ScheduleCallModal (on Contact) and links to /schedule on other pages.
+
+“View FAQ” → link to /services#faq (ensure that anchor works).
+
+“Get Started / Start Automation / Explore Systems” on Services → link to Contact or /schedule.
+
+Tools “Get Template” → real files in /public/assets/templates/** (create sample files and update links).
+
+Case Studies “Start Your Project” → Contact; “Explore Our Tools” → Tools.
+
+7) Charts (Home → “Data That Drives Decisions”)
+
+Implement src/components/Chart.tsx:
+
+Lazy import ECharts on mount; init, setOption, resize, dispose.
+
+Props: option, height, onReady?.
+
+Options come from /public/data/charts.json. Tabs switch option without re-mounting.
+
+Remove the broken placeholder bars. Ensure mobile height is reasonable (e.g., h-[260px] on sm, h-[360px] on md+).
+
+8) Tools search/filter
+
+Implement client-side filter:
+
+Text search over title/tags.
+
+Category dropdown (“All, Excel, Power BI, VBA”).
+
+Ensure all “Get Template” buttons download or open a real asset.
+
+9) Accessibility & mobile polish
+
+Fix low-contrast sections (timeline text, dark cards). Use Tailwind to bump contrast (text-slate-200/300) and larger leading on mobile.
+
+Stack 3/4-column grids vertically on sm (grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 etc.).
+
+Hide the right-side dot rail entirely on sm (hidden sm:flex) or make it actually scroll to anchors.
+
+Respect prefers-reduced-motion for GSAP/Framer.
+
+10) Schema.org & metadata
+
+Add JSON-LD in index.html:
+
+Organization (TIAI Solutions), WebSite, and ContactPoint.
+
+Update meta title/description per page.
+
+11) Analytics hooks
+
+In src/lib/analytics.ts, fire events on:
+
+schedule_modal_open, schedule_submit_success, schedule_submit_error
+
+template_download, chart_tab_change, cta_click
+
+12) Tests & deploy checklist
+
+Validate form client-side (basic email, required fields).
+
+Make sure every link works and all buttons have href or onClick.
+
+Build: npm run build (ensure dist has index.html).
+
+Keep SPA 404 fallback (GH Actions already copies index.html → 404.html).
+
+Lighthouse ≥90 on mobile & desktop.
+
+Deliverables
+
+New files:
+
+src/lib/supabase.ts
+
+src/components/ScheduleCallModal.tsx
+
+src/pages/Schedule.tsx
+
+public/assets/templates/* (sample template files)
+
+public/data/faqs.json (optional), updates to charts.json, services.json, tools.json, caseStudies.json
+
+Updated files:
+
+src/lib/api.ts, src/types.ts, src/components/Navbar.tsx, src/pages/* (to wire links/buttons), src/components/Chart.tsx
+
+index.html for JSON-LD
+
+Notes: include the exact env names to set for Supabase in Replit/Build.
+
+Do not add team photos. Everything must be mobile-friendly and production-ready.

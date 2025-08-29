@@ -1,13 +1,16 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Mail, Phone, MapPin, Clock, ArrowRight } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Section from '@/components/Section';
 import ContactForm from '@/components/ContactForm';
+import ScheduleCallModal from '@/components/ScheduleCallModal';
 import { trackPageView, trackButtonClick } from '@/lib/analytics';
 
 export default function Contact() {
+  const [isScheduleModalOpen, setIsScheduleModalOpen] = useState(false);
+
   useEffect(() => {
     trackPageView('contact');
   }, []);
@@ -234,7 +237,10 @@ export default function Contact() {
               <Button
                 size="lg"
                 className="bg-primary text-primary-foreground hover:bg-primary/90"
-                onClick={() => trackButtonClick('schedule-call', 'contact')}
+                onClick={() => {
+                  trackButtonClick('schedule-call', 'contact');
+                  setIsScheduleModalOpen(true);
+                }}
                 data-testid="button-schedule-call"
               >
                 Schedule a Call
@@ -244,6 +250,13 @@ export default function Contact() {
           </motion.div>
         </div>
       </Section>
+      
+      {/* Schedule Call Modal */}
+      <ScheduleCallModal 
+        open={isScheduleModalOpen}
+        onOpenChange={setIsScheduleModalOpen}
+        source="contact"
+      />
     </div>
   );
 }

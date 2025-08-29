@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Check, ArrowRight, HelpCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -6,9 +6,12 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import Section from '@/components/Section';
 import ServiceCard from '@/components/ServiceCard';
 import { trackPageView, trackButtonClick } from '@/lib/analytics';
+import ScheduleCallModal from '@/components/ScheduleCallModal';
 import { services, faqItems } from '@/data/services';
 
 export default function Services() {
+  const [isScheduleModalOpen, setIsScheduleModalOpen] = useState(false);
+  
   useEffect(() => {
     trackPageView('services');
   }, []);
@@ -196,7 +199,10 @@ export default function Services() {
               <Button 
                 size="lg"
                 className="bg-primary text-primary-foreground hover:bg-primary/90"
-                onClick={() => trackButtonClick('get-recommendation', 'services-cta')}
+                onClick={() => {
+                  trackButtonClick('get-recommendation', 'services-cta');
+                  setIsScheduleModalOpen(true);
+                }}
                 data-testid="button-get-recommendation"
               >
                 Get a Custom Recommendation
@@ -214,6 +220,13 @@ export default function Services() {
           </motion.div>
         </div>
       </Section>
+      
+      {/* Schedule Call Modal */}
+      <ScheduleCallModal 
+        open={isScheduleModalOpen}
+        onOpenChange={setIsScheduleModalOpen}
+        source="services"
+      />
     </div>
   );
 }

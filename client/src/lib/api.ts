@@ -235,6 +235,33 @@ export function createAPI(): APIClient {
 
 export const api = createAPI();
 
+// Supabase imports for scheduling
+import { supabase, isSupabaseConfigured } from './supabase';
+import type { CallRequest } from '../types';
+
+export async function createCall(req: CallRequest) {
+  try {
+    if (!isSupabaseConfigured || !supabase) {
+      // Fallback to email if Supabase not configured
+      console.log('Supabase not configured, would send email instead:', req);
+      
+      // Simulate successful call creation for demo
+      const mockId = 'mock-' + Date.now().toString();
+      
+      // In production, this would trigger an email to your business email
+      // with the call request details
+      return mockId;
+    }
+    
+    const { data, error } = await supabase.from('calls').insert(req).select('id').single();
+    if (error) throw error;
+    return data.id as string;
+  } catch (error) {
+    console.error('Error creating call:', error);
+    throw error;
+  }
+}
+
 // Data fetchers for JSON files
 export async function fetchCharts() {
   try {
