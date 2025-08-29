@@ -38,11 +38,16 @@ export default function Navbar() {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link href="/" data-testid="logo-link">
-            <img 
-              src={logoImage} 
-              alt="TIAI Solutions" 
-              className="h-8 sm:h-10 w-auto transition-all duration-200 hover:opacity-80 hover:scale-105"
-            />
+            <div className="flex items-center space-x-3">
+              <img 
+                src={logoImage} 
+                alt="TIAI Solutions" 
+                className="h-8 sm:h-10 w-auto transition-all duration-200 hover:opacity-80"
+              />
+              <div className="font-display font-bold text-xl gradient-text">
+                TIAI Solutions
+              </div>
+            </div>
           </Link>
           
           {/* Desktop Navigation */}
