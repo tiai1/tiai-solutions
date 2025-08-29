@@ -8,13 +8,13 @@ export const salesTrend = [
 ];
 
 export const marginBridge = [
-  { label: 'Start', value: 20 },
-  { label: 'Price', value: 6 },
-  { label: 'Volume', value: -2 },
-  { label: 'Mix', value: 3 },
-  { label: 'Discounts', value: -4 },
-  { label: 'FX', value: 2 },
-  { label: 'End', value: 25 },
+  { label: 'Plan', value: 100 },
+  { label: 'Q1 Variance', value: 15 },
+  { label: 'Q2 Variance', value: -8 },
+  { label: 'Q3 Variance', value: 12 },
+  { label: 'Q4 Variance', value: -3 },
+  { label: 'YTD Adjustments', value: 6 },
+  { label: 'Actual', value: 122 },
 ];
 
 export const forecastVsActual = [

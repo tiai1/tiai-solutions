@@ -38,9 +38,25 @@ export default function ChartReveal({ charts, activeChart, onChartChange }: Char
       
       return (
         <div className="relative h-80 bg-muted/30 rounded-lg p-6">
-          <div className="relative h-full flex items-end">
+          {/* Legend - moved to top */}
+          <div className="flex justify-end mb-4 space-x-4">
+            <div className="flex items-center">
+              <div className="w-4 h-3 bg-primary mr-2 rounded" />
+              <span className="text-sm">Actual</span>
+            </div>
+            <div className="flex items-center">
+              <div className="w-4 h-3 bg-primary/40 mr-2 rounded" />
+              <span className="text-sm">Plan</span>
+            </div>
+            <div className="flex items-center">
+              <div className="w-4 h-1 mr-2 rounded border-2 border-dashed border-accent bg-transparent" />
+              <span className="text-sm">Trend</span>
+            </div>
+          </div>
+          
+          <div className="relative h-64">
             {/* Chart Grid */}
-            <div className="absolute inset-0 flex justify-between items-end pb-8">
+            <div className="absolute inset-0 flex justify-between items-end pb-6">
               {chart.data.map((item, index) => (
                 <div key={index} className="flex flex-col items-center w-16">
                   {/* Bar Group */}
@@ -49,14 +65,14 @@ export default function ChartReveal({ charts, activeChart, onChartChange }: Char
                     <motion.div 
                       className="bg-primary w-6 rounded-t" 
                       initial={{ height: 0 }}
-                      animate={{ height: `${(item.actual / maxValue) * chartHeight}px` }}
+                      animate={{ height: `${(item.actual / maxValue) * 200}px` }}
                       transition={{ duration: 0.8, delay: index * 0.1 }}
                     />
                     {/* Plan Bar */}
                     <motion.div 
                       className="bg-primary/40 w-6 rounded-t" 
                       initial={{ height: 0 }}
-                      animate={{ height: `${(item.plan / maxValue) * chartHeight}px` }}
+                      animate={{ height: `${(item.plan / maxValue) * 200}px` }}
                       transition={{ duration: 0.8, delay: index * 0.1 + 0.1 }}
                     />
                   </div>
@@ -67,52 +83,38 @@ export default function ChartReveal({ charts, activeChart, onChartChange }: Char
             </div>
             
             {/* Trend Line Overlay */}
-            <svg 
-              className="absolute inset-0 pointer-events-none" 
-              viewBox={`0 0 ${chart.data.length * 64} ${chartHeight + 32}`}
-              preserveAspectRatio="none"
-            >
-              <motion.polyline 
-                fill="none" 
-                stroke="hsl(var(--accent))" 
-                strokeWidth="3"
-                strokeDasharray="4,4"
-                points={chart.data.map((item, i) => 
-                  `${32 + i * 64},${chartHeight + 32 - (item.actual / maxValue) * chartHeight}`
-                ).join(' ')}
-                initial={{ pathLength: 0, opacity: 0 }}
-                animate={{ pathLength: 1, opacity: 0.8 }}
-                transition={{ duration: 1.5, delay: 0.5, ease: "easeInOut" }}
-              />
-              {/* Trend Line Points */}
-              {chart.data.map((item, i) => (
-                <motion.circle 
-                  key={i}
-                  cx={32 + i * 64} 
-                  cy={chartHeight + 32 - (item.actual / maxValue) * chartHeight} 
-                  r="4" 
-                  fill="hsl(var(--accent))"
-                  initial={{ scale: 0, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  transition={{ duration: 0.3, delay: i * 0.1 + 1 }}
+            <div className="absolute inset-0 pb-6">
+              <svg 
+                className="w-full h-full pointer-events-none" 
+                viewBox="0 0 100 100"
+                preserveAspectRatio="none"
+              >
+                <motion.polyline 
+                  fill="none" 
+                  stroke="hsl(var(--accent))" 
+                  strokeWidth="0.8"
+                  strokeDasharray="2,2"
+                  points={chart.data.map((item, i) => 
+                    `${8 + (i * 84 / (chart.data.length - 1))},${100 - (item.actual / maxValue) * 80}`
+                  ).join(' ')}
+                  initial={{ pathLength: 0, opacity: 0 }}
+                  animate={{ pathLength: 1, opacity: 1 }}
+                  transition={{ duration: 1.5, delay: 0.8, ease: "easeInOut" }}
                 />
-              ))}
-            </svg>
-          </div>
-          
-          {/* Legend */}
-          <div className="absolute top-4 right-4 flex flex-col space-y-2">
-            <div className="flex items-center">
-              <div className="w-4 h-3 bg-primary mr-2 rounded" />
-              <span className="text-sm">Actual</span>
-            </div>
-            <div className="flex items-center">
-              <div className="w-4 h-3 bg-primary/40 mr-2 rounded" />
-              <span className="text-sm">Plan</span>
-            </div>
-            <div className="flex items-center">
-              <div className="w-4 h-1 bg-accent mr-2 rounded" style={{borderStyle: 'dashed', borderWidth: '1px', background: 'transparent', borderColor: 'hsl(var(--accent))'}} />
-              <span className="text-sm">Trend</span>
+                {/* Trend Line Points */}
+                {chart.data.map((item, i) => (
+                  <motion.circle 
+                    key={i}
+                    cx={8 + (i * 84 / (chart.data.length - 1))} 
+                    cy={100 - (item.actual / maxValue) * 80} 
+                    r="1" 
+                    fill="hsl(var(--accent))"
+                    initial={{ scale: 0, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ duration: 0.3, delay: i * 0.1 + 1.2 }}
+                  />
+                ))}
+              </svg>
             </div>
           </div>
         </div>

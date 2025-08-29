@@ -18,7 +18,7 @@ export default function Home() {
   
   const charts = [
     { name: 'Sales Trend', data: salesTrend, type: 'bar' as const },
-    { name: 'Margin Bridge', data: marginBridge, type: 'waterfall' as const },
+    { name: 'Plan vs Actual', data: marginBridge, type: 'waterfall' as const },
     { name: 'Forecast Accuracy', data: forecastVsActual, type: 'line' as const },
   ];
 
