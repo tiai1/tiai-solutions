@@ -58,8 +58,10 @@ export default function ChartReveal({ activeChart = 0, onChartChange }: ChartRev
   }, [hasIntersected, isLoaded, charts.length]);
 
   const handleChartChange = (index: number) => {
-    setCurrentChart(index);
-    onChartChange?.(index);
+    if (index !== currentChart) {
+      setCurrentChart(index);
+      onChartChange?.(index);
+    }
   };
 
   if (charts.length === 0) {
@@ -85,19 +87,29 @@ export default function ChartReveal({ activeChart = 0, onChartChange }: ChartRev
       <div className="flex justify-center mb-8">
         <div className="bg-muted rounded-lg p-1 inline-flex flex-wrap">
           {charts.map((chart, index) => (
-            <button
+            <motion.button
               key={index}
               onClick={() => handleChartChange(index)}
               className={cn(
-                'px-4 py-2 rounded-md transition-all duration-200 text-sm',
+                'px-4 py-2 rounded-md transition-all duration-200 text-sm relative',
                 currentChart === index
                   ? 'bg-primary text-primary-foreground shadow-sm'
                   : 'hover:bg-background'
               )}
               data-testid={`chart-tab-${index}`}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              transition={{ duration: 0.2 }}
             >
-              {chart.name}
-            </button>
+              {currentChart === index && (
+                <motion.div
+                  className="absolute inset-0 bg-primary rounded-md"
+                  layoutId="activeTab"
+                  transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                />
+              )}
+              <span className="relative z-10">{chart.name}</span>
+            </motion.button>
           ))}
         </div>
       </div>
@@ -107,25 +119,40 @@ export default function ChartReveal({ activeChart = 0, onChartChange }: ChartRev
         {isLoaded ? (
           <motion.div
             key={currentChart}
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -20 }}
-            transition={{ duration: 0.3 }}
+            initial={{ opacity: 0, y: 30, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -30, scale: 0.95 }}
+            transition={{ 
+              duration: 0.5,
+              ease: [0.25, 0.46, 0.45, 0.94],
+              staggerChildren: 0.1
+            }}
           >
-            <div className="mb-4">
+            <motion.div 
+              className="mb-4"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1, duration: 0.4 }}
+            >
               <h3 className="font-display font-semibold text-xl" data-testid="chart-title">
                 {charts[currentChart].name}
               </h3>
               <p className="text-muted-foreground">
                 Interactive visualization with automated data refresh
               </p>
-            </div>
+            </motion.div>
             
-            <Chart 
-              options={charts[currentChart].options}
-              height="400px"
-              className="rounded-lg border"
-            />
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2, duration: 0.4 }}
+            >
+              <Chart 
+                options={charts[currentChart].options}
+                height="400px"
+                className="rounded-lg border"
+              />
+            </motion.div>
           </motion.div>
         ) : (
           <div className="h-80 bg-muted/30 rounded-lg flex items-center justify-center">

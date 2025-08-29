@@ -23,8 +23,36 @@ const Chart: React.FC<ChartProps> = ({
       // Initialize chart
       chartInstance.current = echarts.init(chartRef.current);
       
-      // Set options
-      chartInstance.current.setOption(options);
+      // Enhanced options with animations
+      const animatedOptions = {
+        ...options,
+        animation: true,
+        animationDuration: 2000,
+        animationEasing: 'cubicOut',
+        animationDelay: (idx: number) => idx * 100,
+        animationDurationUpdate: 1000,
+        animationEasingUpdate: 'cubicInOut',
+        series: options.series?.map((series: any) => ({
+          ...series,
+          animation: true,
+          animationDuration: 2000,
+          animationEasing: 'elasticOut',
+          animationDelay: (idx: number) => idx * 150,
+          // Enhanced animation for different chart types
+          ...(series.type === 'line' && {
+            animationDuration: 3000,
+            animationEasing: 'cubicOut',
+          }),
+          ...(series.type === 'bar' && {
+            animationDuration: 1500,
+            animationEasing: 'bounceOut',
+            animationDelay: (idx: number) => idx * 100,
+          }),
+        }))
+      };
+      
+      // Set options with animations
+      chartInstance.current.setOption(animatedOptions);
       setIsLoading(false);
 
       // Handle window resize
@@ -45,10 +73,33 @@ const Chart: React.FC<ChartProps> = ({
     }
   }, [options]);
 
-  // Update chart when options change
+  // Update chart when options change with smooth transitions
   useEffect(() => {
     if (chartInstance.current && options) {
-      chartInstance.current.setOption(options, true);
+      const animatedOptions = {
+        ...options,
+        animation: true,
+        animationDuration: 1500,
+        animationEasing: 'cubicInOut',
+        animationDurationUpdate: 1200,
+        animationEasingUpdate: 'cubicOut',
+        series: options.series?.map((series: any, seriesIndex: number) => ({
+          ...series,
+          animation: true,
+          animationDuration: 1200,
+          animationEasing: 'cubicOut',
+          animationDelay: seriesIndex * 200,
+          animationDurationUpdate: 800,
+          animationEasingUpdate: 'cubicInOut',
+        }))
+      };
+      
+      // Use merge mode for smooth transitions
+      chartInstance.current.setOption(animatedOptions, {
+        notMerge: false,
+        lazyUpdate: false,
+        silent: false
+      });
     }
   }, [options]);
 

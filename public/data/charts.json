@@ -16,7 +16,14 @@
         "left": "center"
       },
       "tooltip": {
-        "trigger": "axis"
+        "trigger": "axis",
+        "backgroundColor": "rgba(255, 255, 255, 0.95)",
+        "borderColor": "#e2e8f0",
+        "borderWidth": 1,
+        "textStyle": {
+          "color": "#1e293b"
+        },
+        "extraCssText": "box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);"
       },
       "legend": {
         "data": ["Actual", "Plan"],
@@ -36,17 +43,32 @@
           "type": "line",
           "data": [120, 135, 128, 155, 162, 170],
           "itemStyle": { "color": "#3b82f6" },
+          "lineStyle": { "width": 3 },
           "symbol": "circle",
-          "symbolSize": 8
+          "symbolSize": 8,
+          "emphasis": {
+            "focus": "series",
+            "lineStyle": { "width": 4 }
+          },
+          "markPoint": {
+            "data": [
+              { "type": "max", "name": "Maximum" },
+              { "type": "min", "name": "Minimum" }
+            ]
+          }
         },
         {
           "name": "Plan",
           "type": "line",
           "data": [100, 110, 120, 130, 140, 150],
           "itemStyle": { "color": "#94a3b8" },
-          "lineStyle": { "type": "dashed" },
+          "lineStyle": { "type": "dashed", "width": 2 },
           "symbol": "circle",
-          "symbolSize": 6
+          "symbolSize": 6,
+          "emphasis": {
+            "focus": "series",
+            "lineStyle": { "width": 3 }
+          }
         }
       ]
     }
@@ -84,10 +106,23 @@
         {
           "name": "Margin",
           "type": "bar",
-          "data": [100, 15, -8, 12, -3, 6, 122],
-          "itemStyle": {
-            "color": "#3b82f6"
-          }
+          "data": [
+            { "value": 100, "itemStyle": { "color": "#3b82f6" } },
+            { "value": 15, "itemStyle": { "color": "#10b981" } },
+            { "value": -8, "itemStyle": { "color": "#ef4444" } },
+            { "value": 12, "itemStyle": { "color": "#10b981" } },
+            { "value": -3, "itemStyle": { "color": "#ef4444" } },
+            { "value": 6, "itemStyle": { "color": "#10b981" } },
+            { "value": 122, "itemStyle": { "color": "#3b82f6" } }
+          ],
+          "emphasis": {
+            "focus": "series",
+            "itemStyle": {
+              "shadowBlur": 10,
+              "shadowColor": "rgba(0, 0, 0, 0.3)"
+            }
+          },
+          "animationDelay": "function(idx) { return idx * 100; }"
         }
       ]
     }
@@ -107,7 +142,14 @@
         "left": "center"
       },
       "tooltip": {
-        "trigger": "axis"
+        "trigger": "axis",
+        "backgroundColor": "rgba(255, 255, 255, 0.95)",
+        "borderColor": "#e2e8f0",
+        "borderWidth": 1,
+        "textStyle": {
+          "color": "#1e293b"
+        },
+        "extraCssText": "box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);"
       },
       "legend": {
         "data": ["Forecast", "Actual"],
@@ -126,13 +168,35 @@
           "name": "Forecast",
           "type": "bar",
           "data": [300, 320, 340, 360],
-          "itemStyle": { "color": "#94a3b8" }
+          "itemStyle": { 
+            "color": "#94a3b8",
+            "borderRadius": [4, 4, 0, 0]
+          },
+          "emphasis": {
+            "focus": "series",
+            "itemStyle": {
+              "color": "#64748b",
+              "shadowBlur": 10,
+              "shadowColor": "rgba(0, 0, 0, 0.3)"
+            }
+          }
         },
         {
           "name": "Actual",
           "type": "bar",
           "data": [325, 315, 360, 355],
-          "itemStyle": { "color": "#3b82f6" }
+          "itemStyle": { 
+            "color": "#3b82f6",
+            "borderRadius": [4, 4, 0, 0]
+          },
+          "emphasis": {
+            "focus": "series",
+            "itemStyle": {
+              "color": "#2563eb",
+              "shadowBlur": 10,
+              "shadowColor": "rgba(0, 0, 0, 0.3)"
+            }
+          }
         }
       ]
     }
