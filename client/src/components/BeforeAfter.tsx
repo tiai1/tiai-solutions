@@ -1,15 +1,19 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { AlertTriangle, CheckCircle, FileText, BarChart3 } from 'lucide-react';
+import { AlertTriangle, CheckCircle, FileText, BarChart3, Play, Pause, RotateCcw } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 export default function BeforeAfter() {
-  const [sliderPosition, setSliderPosition] = useState(50);
+  const [sliderPosition, setSliderPosition] = useState(0);
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  const [direction, setDirection] = useState(1); // 1 for forward, -1 for backward
   const containerRef = useRef<HTMLDivElement>(null);
   const isDragging = useRef(false);
+  const autoPlayInterval = useRef<NodeJS.Timeout | null>(null);
 
   const handleMouseDown = () => {
     isDragging.current = true;
+    setIsAutoPlaying(false); // Pause auto-play when user starts dragging
   };
 
   const handleMouseMove = (e: MouseEvent) => {
@@ -24,6 +28,45 @@ export default function BeforeAfter() {
   const handleMouseUp = () => {
     isDragging.current = false;
   };
+
+  const toggleAutoPlay = () => {
+    setIsAutoPlaying(!isAutoPlaying);
+  };
+
+  const resetSlider = () => {
+    setSliderPosition(0);
+    setDirection(1);
+    setIsAutoPlaying(true);
+  };
+
+  // Auto-play functionality
+  useEffect(() => {
+    if (isAutoPlaying && !isDragging.current) {
+      autoPlayInterval.current = setInterval(() => {
+        setSliderPosition(prev => {
+          const speed = 0.5; // Adjust speed here
+          let newPosition = prev + (direction * speed);
+          
+          // Reverse direction at boundaries
+          if (newPosition >= 100) {
+            newPosition = 100;
+            setDirection(-1);
+          } else if (newPosition <= 0) {
+            newPosition = 0;
+            setDirection(1);
+          }
+          
+          return newPosition;
+        });
+      }, 50); // Update every 50ms for smooth animation
+    }
+
+    return () => {
+      if (autoPlayInterval.current) {
+        clearInterval(autoPlayInterval.current);
+      }
+    };
+  }, [isAutoPlaying, direction]);
 
   useEffect(() => {
     document.addEventListener('mousemove', handleMouseMove);
@@ -131,6 +174,36 @@ export default function BeforeAfter() {
         >
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-6 h-6 bg-primary rounded-full border-3 border-white shadow-lg" />
         </div>
+      </div>
+      
+      {/* Control Buttons */}
+      <div className="flex justify-center items-center space-x-4 mt-6">
+        <button
+          onClick={toggleAutoPlay}
+          className="flex items-center space-x-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
+          data-testid="auto-play-toggle"
+        >
+          {isAutoPlaying ? (
+            <>
+              <Pause className="h-4 w-4" />
+              <span>Pause</span>
+            </>
+          ) : (
+            <>
+              <Play className="h-4 w-4" />
+              <span>Play</span>
+            </>
+          )}
+        </button>
+        
+        <button
+          onClick={resetSlider}
+          className="flex items-center space-x-2 px-4 py-2 bg-muted text-muted-foreground rounded-lg hover:bg-muted/80 transition-colors"
+          data-testid="reset-slider"
+        >
+          <RotateCcw className="h-4 w-4" />
+          <span>Reset</span>
+        </button>
       </div>
     </div>
   );
