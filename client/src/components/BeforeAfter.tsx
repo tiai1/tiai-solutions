@@ -5,12 +5,18 @@ import { cn } from '@/lib/utils';
 
 export default function BeforeAfter() {
   const [sliderPosition, setSliderPosition] = useState(0);
+  const [hasStartedAnimation, setHasStartedAnimation] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLDivElement>(null);
   const isDragging = useRef(false);
+  const animationTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   const handleMouseDown = () => {
     isDragging.current = true;
+    // Stop any ongoing animation when user takes control
+    if (intervalRef.current) clearInterval(intervalRef.current);
+    if (animationTimeoutRef.current) clearTimeout(animationTimeoutRef.current);
   };
 
   const handleMouseMove = (e: MouseEvent) => {
@@ -26,47 +32,46 @@ export default function BeforeAfter() {
     isDragging.current = false;
   };
 
-  // Scroll-based animation
+  // Intersection observer to trigger animation when section comes into view
   useEffect(() => {
-    const handleScroll = () => {
-      if (!sectionRef.current || isDragging.current) return;
-      
-      const section = sectionRef.current;
-      const rect = section.getBoundingClientRect();
-      const windowHeight = window.innerHeight;
-      
-      // Calculate how much of the section is visible
-      const sectionTop = rect.top;
-      const sectionHeight = rect.height;
-      const sectionCenter = sectionTop + sectionHeight / 2;
-      
-      // When section center reaches middle of viewport, slide should be at 100%
-      const viewportCenter = windowHeight / 2;
-      
-      // Calculate progress: 0% when section just enters view, 100% when center aligns
-      const startTrigger = windowHeight; // Section just enters from bottom
-      const endTrigger = viewportCenter; // Section center reaches viewport center
-      
-      let progress = 0;
-      if (sectionTop <= endTrigger) {
-        progress = 100; // Complete when center is at or above viewport center
-      } else if (sectionTop < startTrigger) {
-        // Calculate progress between start and end triggers
-        const totalDistance = startTrigger - endTrigger;
-        const currentDistance = sectionTop - endTrigger;
-        progress = Math.max(0, Math.min(100, ((totalDistance - currentDistance) / totalDistance) * 100));
-      }
-      
-      setSliderPosition(progress);
-    };
+    if (!sectionRef.current) return;
 
-    window.addEventListener('scroll', handleScroll);
-    handleScroll(); // Check initial position
-    
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !hasStartedAnimation && !isDragging.current) {
+            setHasStartedAnimation(true);
+            
+            // Wait 1.5 seconds showing "Before" state, then start animation
+            animationTimeoutRef.current = setTimeout(() => {
+              // Animate from 0% to 100% over 3.5 seconds
+              let progress = 0;
+              intervalRef.current = setInterval(() => {
+                progress += 1; // Increment by 1% every ~35ms (3.5 seconds total)
+                setSliderPosition(progress);
+                
+                if (progress >= 100) {
+                  if (intervalRef.current) clearInterval(intervalRef.current);
+                }
+              }, 35);
+            }, 1500);
+          }
+        });
+      },
+      { 
+        threshold: 0.3, // Trigger when 30% of section is visible
+        rootMargin: '0px 0px -20% 0px' // Add some margin to trigger earlier
+      }
+    );
+
+    observer.observe(sectionRef.current);
+
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      observer.disconnect();
+      if (animationTimeoutRef.current) clearTimeout(animationTimeoutRef.current);
+      if (intervalRef.current) clearInterval(intervalRef.current);
     };
-  }, []);
+  }, [hasStartedAnimation]);
 
   useEffect(() => {
     document.addEventListener('mousemove', handleMouseMove);
