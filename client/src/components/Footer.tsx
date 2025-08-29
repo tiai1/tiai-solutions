@@ -1,5 +1,6 @@
 import { Link } from 'wouter';
 import { Github, Linkedin, Twitter, Mail, Phone, MapPin } from 'lucide-react';
+import logoImage from '@assets/ChatGPT Image Aug 29, 2025, 01_57_07 PM_1756480389838.png';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -10,9 +11,12 @@ export default function Footer() {
         <div className="grid md:grid-cols-4 gap-8">
           {/* Company Info */}
           <div className="md:col-span-2">
-            <div className="font-display font-bold text-2xl mb-4" data-testid="footer-logo">
-              TIAI Solutions
-            </div>
+            <img 
+              src={logoImage} 
+              alt="TIAI Solutions" 
+              className="h-10 sm:h-12 w-auto mb-4 brightness-0 invert transition-all duration-200 hover:opacity-80 hover:scale-105" 
+              data-testid="footer-logo"
+            />
             <p className="text-background/70 mb-6 max-w-md" data-testid="footer-description">
               Automation-first consulting that turns your numbers into momentum. 
               From data chaos to decision clarity.

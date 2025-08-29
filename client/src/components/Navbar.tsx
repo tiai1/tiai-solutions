@@ -3,6 +3,7 @@ import { Link, useLocation } from 'wouter';
 import { Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import logoImage from '@assets/ChatGPT Image Aug 29, 2025, 01_57_07 PM_1756480389838.png';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -37,9 +38,11 @@ export default function Navbar() {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link href="/" data-testid="logo-link">
-            <div className="font-display font-bold text-xl gradient-text">
-              TIAI Solutions
-            </div>
+            <img 
+              src={logoImage} 
+              alt="TIAI Solutions" 
+              className="h-8 sm:h-10 w-auto transition-all duration-200 hover:opacity-80 hover:scale-105"
+            />
           </Link>
           
           {/* Desktop Navigation */}
