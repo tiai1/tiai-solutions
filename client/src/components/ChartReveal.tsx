@@ -33,72 +33,41 @@ export default function ChartReveal({ charts, activeChart, onChartChange }: Char
 
   const renderMockChart = (chart: ChartData) => {
     if (chart.type === 'bar') {
-      const maxValue = Math.max(...chart.data.map(item => item.actual));
-      const minValue = Math.min(...chart.data.map(item => item.actual));
-      const range = maxValue - minValue;
+      const maxValue = 180; // Fixed max for consistent display
       
       return (
-        <div className="relative h-80 bg-muted/30 rounded-lg p-8">
-          <div className="relative h-64">
-            {/* Month Labels at bottom */}
-            <div className="absolute -bottom-6 left-0 right-0 flex justify-between">
-              {chart.data.map((item, index) => (
-                <span key={index} className="text-xs text-muted-foreground font-medium">
-                  {item.month}
-                </span>
-              ))}
-            </div>
-            
-            {/* Simple Chart using Canvas-like approach */}
-            <div className="relative w-full h-full border border-border/20 rounded">
-              {/* Chart background */}
-              <div className="absolute inset-0">
-                {/* Trend line using absolute positioned elements */}
-                {chart.data.map((item, i) => {
-                  if (i === chart.data.length - 1) return null;
+        <div className="relative h-80 bg-muted/30 rounded-lg p-6">
+          <div className="relative h-full flex items-end justify-between pb-8">
+            {chart.data.map((item, index) => {
+              const height = (item.actual / maxValue) * 200;
+              return (
+                <motion.div 
+                  key={index}
+                  className="flex flex-col items-center"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                >
+                  {/* Value display */}
+                  <div className="text-sm font-semibold text-primary mb-2">
+                    {item.actual}
+                  </div>
                   
-                  const x1 = (i / (chart.data.length - 1)) * 100;
-                  const y1 = 100 - ((item.actual - minValue) / range) * 80;
-                  const x2 = ((i + 1) / (chart.data.length - 1)) * 100;
-                  const y2 = 100 - ((chart.data[i + 1].actual - minValue) / range) * 80;
+                  {/* Simple bar */}
+                  <motion.div 
+                    className="w-12 bg-primary rounded-t mb-3"
+                    initial={{ height: 0 }}
+                    animate={{ height: `${height}px` }}
+                    transition={{ duration: 0.8, delay: index * 0.1 + 0.2 }}
+                  />
                   
-                  const length = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
-                  const angle = Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI;
-                  
-                  return (
-                    <div
-                      key={i}
-                      className="absolute bg-primary"
-                      style={{
-                        left: `${x1}%`,
-                        top: `${y1}%`,
-                        width: `${length}%`,
-                        height: '3px',
-                        transformOrigin: '0 50%',
-                        transform: `rotate(${angle}deg)`,
-                      }}
-                    />
-                  );
-                })}
-                
-                {/* Data points */}
-                {chart.data.map((item, i) => {
-                  const x = (i / (chart.data.length - 1)) * 100;
-                  const y = 100 - ((item.actual - minValue) / range) * 80;
-                  
-                  return (
-                    <div
-                      key={i}
-                      className="absolute w-3 h-3 bg-primary border-2 border-white rounded-full -translate-x-1/2 -translate-y-1/2"
-                      style={{
-                        left: `${x}%`,
-                        top: `${y}%`,
-                      }}
-                    />
-                  );
-                })}
-              </div>
-            </div>
+                  {/* Month label */}
+                  <span className="text-xs text-muted-foreground font-medium">
+                    {item.month}
+                  </span>
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       );
