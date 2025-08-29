@@ -44,16 +44,13 @@ export default function BeforeAfter() {
     if (isAutoPlaying && !isDragging.current) {
       autoPlayInterval.current = setInterval(() => {
         setSliderPosition(prev => {
-          const speed = 0.5; // Adjust speed here
-          let newPosition = prev + (direction * speed);
+          const speed = 0.3; // Adjust speed here
+          let newPosition = prev + speed;
           
-          // Reverse direction at boundaries
+          // Stop at 100%
           if (newPosition >= 100) {
             newPosition = 100;
-            setDirection(-1);
-          } else if (newPosition <= 0) {
-            newPosition = 0;
-            setDirection(1);
+            setIsAutoPlaying(false); // Stop auto-play when reaching the end
           }
           
           return newPosition;
@@ -66,7 +63,7 @@ export default function BeforeAfter() {
         clearInterval(autoPlayInterval.current);
       }
     };
-  }, [isAutoPlaying, direction]);
+  }, [isAutoPlaying]);
 
   useEffect(() => {
     document.addEventListener('mousemove', handleMouseMove);
