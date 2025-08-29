@@ -1,5 +1,6 @@
-import { type Contact, type InsertContact, type Lead, type InsertLead, type Download, type InsertDownload } from "@shared/schema";
-import { randomUUID } from "crypto";
+import { contacts, leads, downloads, type Contact, type InsertContact, type Lead, type InsertLead, type Download, type InsertDownload } from "@shared/schema";
+import { db } from "./db";
+import { eq } from "drizzle-orm";
 
 export interface IStorage {
   // Contacts
@@ -18,86 +19,60 @@ export interface IStorage {
   getDownloads(): Promise<Download[]>;
 }
 
-export class MemStorage implements IStorage {
-  private contacts: Map<string, Contact>;
-  private leads: Map<string, Lead>;
-  private downloads: Map<string, Download>;
-
-  constructor() {
-    this.contacts = new Map();
-    this.leads = new Map();
-    this.downloads = new Map();
-  }
-
+export class DatabaseStorage implements IStorage {
   // Contacts
   async createContact(insertContact: InsertContact): Promise<Contact> {
-    const id = randomUUID();
-    const contact: Contact = {
-      id,
-      name: insertContact.name,
-      email: insertContact.email,
-      company: insertContact.company || null,
-      role: insertContact.role || null,
-      message: insertContact.message,
-      timeframe: insertContact.timeframe || null,
-      budget: insertContact.budget || null,
-      honeypot: insertContact.honeypot || null,
-      created_at: new Date(),
-    };
-    this.contacts.set(id, contact);
+    const [contact] = await db
+      .insert(contacts)
+      .values(insertContact)
+      .returning();
     return contact;
   }
 
   async getContactById(id: string): Promise<Contact | undefined> {
-    return this.contacts.get(id);
+    const [contact] = await db.select().from(contacts).where(eq(contacts.id, id));
+    return contact || undefined;
   }
 
   async getContacts(): Promise<Contact[]> {
-    return Array.from(this.contacts.values());
+    return await db.select().from(contacts);
   }
 
   // Leads
   async createLead(insertLead: InsertLead): Promise<Lead> {
-    const id = randomUUID();
-    const lead: Lead = {
-      id,
-      source: insertLead.source,
-      payload: insertLead.payload ?? null,
-      created_at: new Date(),
-    };
-    this.leads.set(id, lead);
+    const [lead] = await db
+      .insert(leads)
+      .values(insertLead)
+      .returning();
     return lead;
   }
 
   async getLeadById(id: string): Promise<Lead | undefined> {
-    return this.leads.get(id);
+    const [lead] = await db.select().from(leads).where(eq(leads.id, id));
+    return lead || undefined;
   }
 
   async getLeads(): Promise<Lead[]> {
-    return Array.from(this.leads.values());
+    return await db.select().from(leads);
   }
 
   // Downloads
   async createDownload(insertDownload: InsertDownload): Promise<Download> {
-    const id = randomUUID();
-    const download: Download = {
-      id,
-      template_name: insertDownload.template_name,
-      email: insertDownload.email,
-      company: insertDownload.company || null,
-      created_at: new Date(),
-    };
-    this.downloads.set(id, download);
+    const [download] = await db
+      .insert(downloads)
+      .values(insertDownload)
+      .returning();
     return download;
   }
 
   async getDownloadById(id: string): Promise<Download | undefined> {
-    return this.downloads.get(id);
+    const [download] = await db.select().from(downloads).where(eq(downloads.id, id));
+    return download || undefined;
   }
 
   async getDownloads(): Promise<Download[]> {
-    return Array.from(this.downloads.values());
+    return await db.select().from(downloads);
   }
 }
 
-export const storage = new MemStorage();
+export const storage = new DatabaseStorage();
