@@ -1,19 +1,16 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { AlertTriangle, CheckCircle, FileText, BarChart3, Play, Pause, RotateCcw } from 'lucide-react';
+import { AlertTriangle, CheckCircle, FileText, BarChart3 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 export default function BeforeAfter() {
   const [sliderPosition, setSliderPosition] = useState(0);
-  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
-  const [direction, setDirection] = useState(1); // 1 for forward, -1 for backward
   const containerRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLDivElement>(null);
   const isDragging = useRef(false);
-  const autoPlayInterval = useRef<NodeJS.Timeout | null>(null);
 
   const handleMouseDown = () => {
     isDragging.current = true;
-    setIsAutoPlaying(false); // Pause auto-play when user starts dragging
   };
 
   const handleMouseMove = (e: MouseEvent) => {
@@ -29,41 +26,47 @@ export default function BeforeAfter() {
     isDragging.current = false;
   };
 
-  const toggleAutoPlay = () => {
-    setIsAutoPlaying(!isAutoPlaying);
-  };
-
-  const resetSlider = () => {
-    setSliderPosition(0);
-    setDirection(1);
-    setIsAutoPlaying(true);
-  };
-
-  // Auto-play functionality
+  // Scroll-based animation
   useEffect(() => {
-    if (isAutoPlaying && !isDragging.current) {
-      autoPlayInterval.current = setInterval(() => {
-        setSliderPosition(prev => {
-          const speed = 1.2; // Adjust speed here
-          let newPosition = prev + speed;
-          
-          // Stop at 100%
-          if (newPosition >= 100) {
-            newPosition = 100;
-            setIsAutoPlaying(false); // Stop auto-play when reaching the end
-          }
-          
-          return newPosition;
-        });
-      }, 50); // Update every 50ms for smooth animation
-    }
-
-    return () => {
-      if (autoPlayInterval.current) {
-        clearInterval(autoPlayInterval.current);
+    const handleScroll = () => {
+      if (!sectionRef.current || isDragging.current) return;
+      
+      const section = sectionRef.current;
+      const rect = section.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      
+      // Calculate how much of the section is visible
+      const sectionTop = rect.top;
+      const sectionHeight = rect.height;
+      const sectionCenter = sectionTop + sectionHeight / 2;
+      
+      // When section center reaches middle of viewport, slide should be at 100%
+      const viewportCenter = windowHeight / 2;
+      
+      // Calculate progress: 0% when section just enters view, 100% when center aligns
+      const startTrigger = windowHeight; // Section just enters from bottom
+      const endTrigger = viewportCenter; // Section center reaches viewport center
+      
+      let progress = 0;
+      if (sectionTop <= endTrigger) {
+        progress = 100; // Complete when center is at or above viewport center
+      } else if (sectionTop < startTrigger) {
+        // Calculate progress between start and end triggers
+        const totalDistance = startTrigger - endTrigger;
+        const currentDistance = sectionTop - endTrigger;
+        progress = Math.max(0, Math.min(100, ((totalDistance - currentDistance) / totalDistance) * 100));
       }
+      
+      setSliderPosition(progress);
     };
-  }, [isAutoPlaying]);
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Check initial position
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
   useEffect(() => {
     document.addEventListener('mousemove', handleMouseMove);
@@ -76,7 +79,7 @@ export default function BeforeAfter() {
   }, []);
 
   return (
-    <div className="max-w-4xl mx-auto">
+    <div ref={sectionRef} className="max-w-4xl mx-auto">
       <div 
         ref={containerRef}
         className="relative h-96 rounded-xl overflow-hidden cursor-ew-resize"
