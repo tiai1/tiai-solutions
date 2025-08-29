@@ -234,3 +234,69 @@ export function createAPI(): APIClient {
 }
 
 export const api = createAPI();
+
+// Data fetchers for JSON files
+export async function fetchCharts() {
+  try {
+    const response = await fetch('/data/charts.json');
+    if (!response.ok) {
+      throw new Error('Failed to fetch charts data');
+    }
+    return await response.json();
+  } catch (error) {
+    console.error('Error fetching charts:', error);
+    return null;
+  }
+}
+
+export async function fetchServices() {
+  try {
+    const response = await fetch('/data/services.json');
+    if (!response.ok) {
+      throw new Error('Failed to fetch services data');
+    }
+    return await response.json();
+  } catch (error) {
+    console.error('Error fetching services:', error);
+    return null;
+  }
+}
+
+export async function fetchCaseStudies() {
+  try {
+    const response = await fetch('/data/caseStudies.json');
+    if (!response.ok) {
+      throw new Error('Failed to fetch case studies data');
+    }
+    return await response.json();
+  } catch (error) {
+    console.error('Error fetching case studies:', error);
+    return null;
+  }
+}
+
+export async function fetchTools() {
+  try {
+    const response = await fetch('/data/tools.json');
+    if (!response.ok) {
+      throw new Error('Failed to fetch tools data');
+    }
+    return await response.json();
+  } catch (error) {
+    console.error('Error fetching tools:', error);
+    return null;
+  }
+}
+
+export async function fetchTestimonials() {
+  try {
+    const response = await fetch('/data/testimonials.json');
+    if (!response.ok) {
+      throw new Error('Failed to fetch testimonials data');
+    }
+    return await response.json();
+  } catch (error) {
+    console.error('Error fetching testimonials:', error);
+    return null;
+  }
+}

@@ -1,0 +1,137 @@
+{
+  "tools": [
+    {
+      "id": "kpi-dashboard-template",
+      "name": "KPI Dashboard Template",
+      "description": "Complete Excel dashboard with dynamic charts, KPI scorecards, and automated refresh capabilities.",
+      "category": "Excel",
+      "features": [
+        "Dynamic chart generation",
+        "Automated data refresh",
+        "KPI scorecard with traffic lights",
+        "Variance analysis",
+        "Drill-down capabilities"
+      ],
+      "downloadUrl": "/assets/templates/kpi-dashboard-template.xlsx",
+      "fileSize": "2.1 MB",
+      "lastUpdated": "2024-01-15",
+      "icon": "BarChart3",
+      "color": "primary",
+      "isPopular": true,
+      "tags": ["dashboard", "kpi", "excel", "automation"]
+    },
+    {
+      "id": "margin-analysis-toolkit",
+      "name": "Margin Analysis Toolkit",
+      "description": "Comprehensive margin bridge analysis with waterfall charts and scenario modeling capabilities.",
+      "category": "Excel",
+      "features": [
+        "Margin bridge waterfall charts",
+        "Scenario comparison",
+        "Cost driver analysis",
+        "Price sensitivity modeling",
+        "Automated variance explanations"
+      ],
+      "downloadUrl": "/assets/templates/margin-analysis-toolkit.xlsx",
+      "fileSize": "1.8 MB",
+      "lastUpdated": "2024-01-10",
+      "icon": "Calculator",
+      "color": "accent",
+      "tags": ["margin", "analysis", "waterfall", "pricing"]
+    },
+    {
+      "id": "power-bi-starter-kit",
+      "name": "Power BI Starter Kit",
+      "description": "Pre-built Power BI templates with common business metrics and DAX formulas for quick implementation.",
+      "category": "Power BI",
+      "features": [
+        "Financial KPI dashboard",
+        "Sales performance tracker",
+        "Custom DAX measures",
+        "Responsive design",
+        "Data model best practices"
+      ],
+      "downloadUrl": "/assets/templates/power-bi-starter-kit.pbit",
+      "fileSize": "3.2 MB",
+      "lastUpdated": "2024-01-12",
+      "icon": "TrendingUp",
+      "color": "success",
+      "tags": ["powerbi", "dax", "dashboard", "finance"]
+    },
+    {
+      "id": "vba-automation-library",
+      "name": "VBA Automation Library",
+      "description": "Collection of VBA modules for common automation tasks, report generation, and data processing.",
+      "category": "VBA",
+      "features": [
+        "Email automation modules",
+        "Chart generation functions",
+        "Data validation routines",
+        "Report formatting macros",
+        "Error handling framework"
+      ],
+      "downloadUrl": "/assets/templates/vba-automation-library.xlam",
+      "fileSize": "890 KB",
+      "lastUpdated": "2024-01-08",
+      "icon": "Code",
+      "color": "purple",
+      "tags": ["vba", "automation", "macros", "excel"]
+    },
+    {
+      "id": "budget-planning-model",
+      "name": "Budget Planning Model",
+      "description": "Dynamic budget model with variance analysis, rolling forecasts, and automated consolidation.",
+      "category": "Excel",
+      "features": [
+        "Rolling 12-month forecast",
+        "Department consolidation",
+        "Variance analysis",
+        "Budget vs actual tracking",
+        "Scenario planning"
+      ],
+      "downloadUrl": "/assets/templates/budget-planning-model.xlsx",
+      "fileSize": "1.5 MB",
+      "lastUpdated": "2024-01-05",
+      "icon": "ClipboardList",
+      "color": "blue",
+      "tags": ["budget", "planning", "forecast", "consolidation"]
+    },
+    {
+      "id": "capex-tracking-system",
+      "name": "CAPEX Tracking System",
+      "description": "Complete capital expenditure tracking with project milestones, ROI calculations, and approval workflows.",
+      "category": "Excel",
+      "features": [
+        "Project milestone tracking",
+        "ROI and NPV calculations",
+        "Approval workflow management",
+        "Budget vs actual analysis",
+        "Executive summary reports"
+      ],
+      "downloadUrl": "/assets/templates/capex-tracking-system.xlsx",
+      "fileSize": "2.7 MB",
+      "lastUpdated": "2024-01-18",
+      "icon": "FileSpreadsheet",
+      "color": "orange",
+      "tags": ["capex", "project", "roi", "tracking"]
+    }
+  ],
+  "categories": ["All", "Excel", "Power BI", "VBA", "Templates"],
+  "stats": [
+    {
+      "value": "10,000+",
+      "label": "Downloads",
+      "description": "Templates downloaded by professionals"
+    },
+    {
+      "value": "4.8/5",
+      "label": "Average Rating",
+      "description": "User satisfaction score"
+    },
+    {
+      "value": "50+",
+      "label": "Hours Saved",
+      "description": "Average time saved per template"
+    }
+  ]
+}

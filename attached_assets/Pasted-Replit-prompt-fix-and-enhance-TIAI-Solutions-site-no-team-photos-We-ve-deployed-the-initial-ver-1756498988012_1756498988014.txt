@@ -1,0 +1,145 @@
+Replit prompt – fix and enhance TIAI Solutions site (no team photos)
+
+We’ve deployed the initial version of our portfolio site at tiaisolutions.pro. Now it’s time to clean up, fix broken features, make it fully responsive, and implement missing sections.
+
+📌 High-level goals
+
+Fix broken or unfinished sections (chart, search, buttons).
+
+Populate content from JSON files instead of hard‑coded text.
+
+Make every button and link functional (download templates, contact form submission, route navigation).
+
+Ensure mobile responsiveness across all pages.
+
+Add the missing testimonial/teaser sections and schema.org markup.
+
+Do not add team photos (this is a one‑person startup for now).
+
+🧹 Refactor & clean up
+
+Remove the right‑side dot navigation or make it genuinely interactive. It currently confuses users and isn’t clickable.
+
+Ensure all pages use data from the JSON files in /public/data via /src/lib/api.ts. Services, case studies, tools, charts, testimonials, etc. should be read through typed fetchers.
+
+Delete any unused imports, unused GSAP pin markers, or placeholder code.
+
+📈 Home page
+
+Hero: keep the headline/CTA but add a subtle background (e.g., gradient overlay on a dark geometric pattern). Ensure CTA buttons are visible on mobile.
+
+Transform Your Data Chaos: keep the before/after slider but make the handle obvious. Use a custom component if needed.
+
+Automated Intelligence: render the four service cards from services.json and stack them nicely on smaller screens.
+
+Data That Drives Decisions: replace the huge blue bars with a real <Chart /> component that lazy‑loads ECharts.
+
+Create or update /src/components/Chart.tsx to dynamically import ECharts, initialize it, and render the option passed in props.
+
+Read chart configs from /public/data/charts.json. Provide sample data: Sales Trend (line chart), Margin Bridge (waterfall chart), Forecast Accuracy (gauge or bar), etc.
+
+Use tabs (already present) to switch the chart option. Make sure the chart resizes on window changes and is removed on unmount.
+
+Case study teaser & testimonials: add a new section below the chart.
+
+Show a carousel of a few case studies from caseStudies.json with an image/icon, short summary, and “Read more” button.
+
+Add a testimonials slider using testimonials.json (name, company, quote). Use Framer Motion or Swiper for slides; implement prefers‑reduced‑motion fallback.
+
+Trust logos & final CTA: add a row of placeholder client logos (SVG/PNG in /public/assets) followed by the existing “Let’s automate what slows you down” section.
+
+🛠 Services page
+
+Automation tiers: load tier names, descriptions, features, and pricing (if any) from services.json.
+
+On desktop, show three side‑by‑side cards; on mobile, stack them.
+
+Highlight the “popular” tier with a badge and distinct border.
+
+Ensure “Get Started”, “Start Automation”, “Explore Systems” buttons link to appropriate actions (contact or tools pages).
+
+Our Automation Process: load the 5‑step process from a JSON file (create process.json if needed). Fix text contrast. On mobile, stack the timeline items vertically.
+
+FAQs: load questions/answers from a new faqs.json. Implement an accessible accordion (keyboard navigable).
+
+Custom recommendation button: link it to the contact form or open a modal asking for basic project details.
+
+📚 Case Studies page
+
+Success Stories metrics: load numbers from JSON.
+
+Case study cards: render from caseStudies.json. Each card’s “View Case Study” should open a modal or navigate to a /case-studies/:slug route with a detailed page.
+
+Responsive layout: cards should stack on mobile or become a carousel.
+
+CTA: “Start Your Project” → contact page; “Explore Our Tools” → tools page.
+
+🧰 Tools & Templates page
+
+Search and filter: implement simple client‑side filtering by title/tag.
+
+On input change, filter the list of tools.
+
+The “All” dropdown can filter by category (Excel, Power BI, VBA).
+
+Download links: each “Get Template” button should link to an actual file in /public/assets/templates. Put example .xlsx or .zip files there. Use the <a href> with download attribute.
+
+Populate cards: load each tool from tools.json (name, description, features, size, tags, updated date).
+
+Responsive cards: stack cards vertically on smaller screens.
+
+🧾 About page
+
+Keep the mission and expertise sections loaded from a JSON file.
+
+What Drives Us: ensure text contrast and responsive layout.
+
+Meet the Team: for now, list this as a single founder (your name) with a brief description. Do not add photos. Later we can enhance.
+
+Automation Specialists: load categories (Business Intelligence, Process Automation, Advanced Analytics) and descriptions from JSON.
+
+Ready to Work Together? CTA: link “Start the Conversation” to the contact page and “View Our Work” to the case studies page.
+
+Add JSON‑LD schema markup for Organization and WebSite in <head> of the document (public/index.html).
+
+✉️ Contact page
+
+Implement the form using Formspree for Phase 1.
+
+Add form action="https://formspree.io/f/{YOUR_FORM_ID}" method="POST".
+
+Add a hidden honeypot input to block bots.
+
+Use zod (or another validation) to validate fields in React (name, email required; project description required).
+
+Show success and error toasts with shadcn’s useToast.
+
+Project timeframe & Budget range: create dropdown options in a JSON file (e.g., “1–3 months”, “3–6 months”, “< $5k”, “$5k–$20k”).
+
+Allow free text entry if “Custom” is selected.
+
+Send Message button**: disable until required fields are valid.
+
+Right panel: contact details (email, phone, location, response time) can stay static.
+
+Timeline: collapse to vertical on mobile and improve contrast.
+
+📱 Responsive design
+
+Use Tailwind’s responsive utilities (md:, sm: classes) to stack cards, center text, and enlarge buttons on small screens.
+
+Hide or relocate non‑essential elements (e.g., bullet nav) on screens narrower than md.
+
+Ensure charts, images, and forms resize gracefully without horizontal scrolling.
+
+✔️ Miscellaneous
+
+Add a 404.html copy of index.html in public for SPA fallback.
+
+Confirm all links and buttons point to existing routes or resources.
+
+Run npm run build and vite preview to check for console errors and ensure Lighthouse scores remain ≥90 for Performance/SEO/Best Practices/Accessibility.
+
+Update /README.md with instructions for updating JSON data, building, and deploying.
+
+Make these changes without adding any team photos. Let me know in the PR if there are any questions or if you need sample data files for the JSON.

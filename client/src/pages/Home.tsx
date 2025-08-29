@@ -9,18 +9,10 @@ import ChartReveal from '@/components/ChartReveal';
 import ServiceCard from '@/components/ServiceCard';
 import TestimonialCard from '@/components/TestimonialCard';
 import { trackPageView, trackButtonClick } from '@/lib/analytics';
-import { salesTrend, marginBridge, forecastVsActual } from '@/data/charts';
 import { services } from '@/data/services';
 import { testimonials } from '@/data/testimonials';
 
 export default function Home() {
-  const [activeChart, setActiveChart] = useState(0);
-  
-  const charts = [
-    { name: 'Sales Trend', data: salesTrend, type: 'bar' as const },
-    { name: 'Plan vs Actual', data: marginBridge, type: 'waterfall' as const },
-    { name: 'Forecast Accuracy', data: forecastVsActual, type: 'line' as const },
-  ];
 
   useEffect(() => {
     trackPageView('home');
@@ -179,11 +171,7 @@ export default function Home() {
             </p>
           </div>
           
-          <ChartReveal
-            charts={charts}
-            activeChart={activeChart}
-            onChartChange={setActiveChart}
-          />
+          <ChartReveal />
         </div>
       </Section>
 

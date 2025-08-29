@@ -2,26 +2,52 @@ import { useRef, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useIntersectionObserver } from '@/lib/viewport';
 import { cn } from '@/lib/utils';
+import { fetchCharts } from '@/lib/api';
+import Chart from './Chart';
 
 interface ChartData {
   name: string;
+  type: string;
   data: any[];
-  type: 'bar' | 'line' | 'waterfall';
+  options: any;
 }
 
 interface ChartRevealProps {
-  charts: ChartData[];
-  activeChart: number;
-  onChartChange: (index: number) => void;
+  activeChart?: number;
+  onChartChange?: (index: number) => void;
 }
 
-export default function ChartReveal({ charts, activeChart, onChartChange }: ChartRevealProps) {
+export default function ChartReveal({ activeChart = 0, onChartChange }: ChartRevealProps) {
   const chartRef = useRef<HTMLDivElement>(null);
   const { hasIntersected } = useIntersectionObserver(chartRef);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [charts, setCharts] = useState<ChartData[]>([]);
+  const [currentChart, setCurrentChart] = useState(activeChart);
+
+  // Load charts data from JSON
+  useEffect(() => {
+    const loadCharts = async () => {
+      try {
+        const chartsData = await fetchCharts();
+        if (chartsData) {
+          const chartsArray = Object.entries(chartsData).map(([key, value]: [string, any]) => ({
+            name: value.name,
+            type: value.type,
+            data: value.data,
+            options: value.options
+          }));
+          setCharts(chartsArray);
+        }
+      } catch (error) {
+        console.error('Failed to load charts:', error);
+      }
+    };
+
+    loadCharts();
+  }, []);
 
   useEffect(() => {
-    if (hasIntersected && !isLoaded) {
+    if (hasIntersected && !isLoaded && charts.length > 0) {
       // Simulate chart loading delay
       const timer = setTimeout(() => {
         setIsLoaded(true);
@@ -29,179 +55,22 @@ export default function ChartReveal({ charts, activeChart, onChartChange }: Char
       
       return () => clearTimeout(timer);
     }
-  }, [hasIntersected, isLoaded]);
+  }, [hasIntersected, isLoaded, charts.length]);
 
-  const renderMockChart = (chart: ChartData) => {
-    if (chart.type === 'bar') {
-      const maxValue = 180; // Fixed max for consistent display
-      
-      return (
-        <div className="relative h-80 bg-muted/30 rounded-lg p-6">
-          <div className="relative h-full flex items-end justify-between pb-8">
-            {chart.data.map((item, index) => {
-              const height = (item.actual / maxValue) * 200;
-              return (
-                <motion.div 
-                  key={index}
-                  className="flex flex-col items-center"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                >
-                  {/* Value display */}
-                  <div className="text-sm font-semibold text-primary mb-2">
-                    {item.actual}
-                  </div>
-                  
-                  {/* Simple bar */}
-                  <motion.div 
-                    className="w-12 bg-primary rounded-t mb-3"
-                    initial={{ height: 0 }}
-                    animate={{ height: `${height}px` }}
-                    transition={{ duration: 0.8, delay: index * 0.1 + 0.2 }}
-                  />
-                  
-                  {/* Month label */}
-                  <span className="text-xs text-muted-foreground font-medium">
-                    {item.month}
-                  </span>
-                </motion.div>
-              );
-            })}
-          </div>
-        </div>
-      );
-    }
+  const handleChartChange = (index: number) => {
+    setCurrentChart(index);
+    onChartChange?.(index);
+  };
 
-    if (chart.type === 'waterfall') {
-      // Calculate cumulative values for waterfall
-      let cumulativeValue = 0;
-      const waterfallData = chart.data.map((item, index) => {
-        const isStart = index === 0;
-        const isEnd = index === chart.data.length - 1;
-        
-        if (isStart) {
-          cumulativeValue = item.value;
-          return { ...item, startValue: 0, endValue: item.value, cumulativeValue };
-        } else if (isEnd) {
-          return { ...item, startValue: 0, endValue: item.value, cumulativeValue: item.value };
-        } else {
-          const startValue = cumulativeValue;
-          cumulativeValue += item.value;
-          return { ...item, startValue, endValue: cumulativeValue, cumulativeValue };
-        }
-      });
-      
-      const maxValue = Math.max(...waterfallData.map(item => Math.max(item.endValue, item.startValue || 0)));
-      
-      return (
-        <div className="relative h-80 bg-muted/30 rounded-lg p-4">
-          <div className="flex items-end justify-around h-full space-x-2">
-            {waterfallData.map((item, index) => {
-              const isPositive = item.value > 0;
-              const isStart = index === 0;
-              const isEnd = index === chart.data.length - 1;
-              
-              // For Plan and Actual: bars sit on the horizontal axis
-              // For middle elements: bars float at their cumulative position
-              const baseHeight = isStart || isEnd ? 0 : (item.startValue / maxValue) * 240;
-              const barHeight = (Math.abs(item.value) / maxValue) * 240;
-              
-              return (
-                <motion.div 
-                  key={index}
-                  className="flex flex-col items-center h-full relative"
-                  style={{ justifyContent: 'flex-end' }}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: index * 0.15 }}
-                >
-                  {/* Spacer for floating bars (pushes middle bars up) */}
-                  {!isStart && !isEnd && (
-                    <div style={{ height: `${240 - baseHeight - barHeight}px` }} />
-                  )}
-                  
-                  {/* Main bar */}
-                  <motion.div 
-                    className={cn(
-                      'w-16 rounded relative',
-                      isStart || isEnd ? 'bg-primary' : 
-                      isPositive ? 'bg-green-500' : 'bg-red-500'
-                    )}
-                    initial={{ height: 0 }}
-                    animate={{ height: `${barHeight}px` }}
-                    transition={{ duration: 0.8, delay: index * 0.15 + 0.3 }}
-                  />
-                  
-                  {/* Label and Value container */}
-                  <div className="mt-2 text-center">
-                    <span className="block text-xs text-muted-foreground">{item.label}</span>
-                    <span className={cn(
-                      'block text-xs font-bold',
-                      isStart || isEnd ? 'text-primary' : 
-                      isPositive ? 'text-green-500' : 'text-red-500'
-                    )}>
-                      {isStart || isEnd ? `${item.value}%` : `${isPositive ? '+' : ''}${item.value}%`}
-                    </span>
-                  </div>
-                </motion.div>
-              );
-            })}
-          </div>
-        </div>
-      );
-    }
-
-    // Line chart
+  if (charts.length === 0) {
     return (
-      <div className="relative h-80 bg-muted/30 rounded-lg flex items-center justify-center p-4">
-        <div className="w-full h-full relative">
-          <svg viewBox="0 0 400 200" className="w-full h-full">
-            <motion.polyline 
-              fill="none" 
-              stroke="hsl(var(--primary))" 
-              strokeWidth="3"
-              points={chart.data.map((_, i) => `${50 + i * 100},${150 - chart.data[i].actual}`).join(' ')}
-              initial={{ pathLength: 0 }}
-              animate={{ pathLength: 1 }}
-              transition={{ duration: 2, ease: "easeInOut" }}
-            />
-            <motion.polyline 
-              fill="none" 
-              stroke="hsl(var(--accent))" 
-              strokeWidth="3" 
-              strokeDasharray="5,5"
-              points={chart.data.map((_, i) => `${50 + i * 100},${150 - chart.data[i].forecast}`).join(' ')}
-              initial={{ pathLength: 0 }}
-              animate={{ pathLength: 1 }}
-              transition={{ duration: 2, delay: 0.5, ease: "easeInOut" }}
-            />
-            {chart.data.map((item, i) => (
-              <motion.circle 
-                key={i}
-                cx={50 + i * 100} 
-                cy={150 - item.actual} 
-                r="4" 
-                fill="hsl(var(--primary))"
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ duration: 0.3, delay: i * 0.1 + 1 }}
-              />
-            ))}
-          </svg>
-          
-          {/* Labels */}
-          <div className="absolute bottom-0 left-0 right-0 flex justify-between px-8">
-            {chart.data.map((item, index) => (
-              <span key={index} className="text-xs text-muted-foreground">
-                {item.month}
-              </span>
-            ))}
-          </div>
+      <div className="bg-card rounded-xl p-8 shadow-lg">
+        <div className="h-80 bg-muted/30 rounded-lg flex items-center justify-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
         </div>
       </div>
     );
-  };
+  }
 
   return (
     <motion.div
@@ -214,14 +83,14 @@ export default function ChartReveal({ charts, activeChart, onChartChange }: Char
     >
       {/* Chart Tabs */}
       <div className="flex justify-center mb-8">
-        <div className="bg-muted rounded-lg p-1 inline-flex">
+        <div className="bg-muted rounded-lg p-1 inline-flex flex-wrap">
           {charts.map((chart, index) => (
             <button
               key={index}
-              onClick={() => onChartChange(index)}
+              onClick={() => handleChartChange(index)}
               className={cn(
-                'px-6 py-3 rounded-md transition-all duration-200',
-                activeChart === index
+                'px-4 py-2 rounded-md transition-all duration-200 text-sm',
+                currentChart === index
                   ? 'bg-primary text-primary-foreground shadow-sm'
                   : 'hover:bg-background'
               )}
@@ -237,7 +106,7 @@ export default function ChartReveal({ charts, activeChart, onChartChange }: Char
       <div className="relative">
         {isLoaded ? (
           <motion.div
-            key={activeChart}
+            key={currentChart}
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -20 }}
@@ -245,13 +114,18 @@ export default function ChartReveal({ charts, activeChart, onChartChange }: Char
           >
             <div className="mb-4">
               <h3 className="font-display font-semibold text-xl" data-testid="chart-title">
-                {charts[activeChart].name}
+                {charts[currentChart].name}
               </h3>
               <p className="text-muted-foreground">
                 Interactive visualization with automated data refresh
               </p>
             </div>
-            {renderMockChart(charts[activeChart])}
+            
+            <Chart 
+              options={charts[currentChart].options}
+              height="400px"
+              className="rounded-lg border"
+            />
           </motion.div>
         ) : (
           <div className="h-80 bg-muted/30 rounded-lg flex items-center justify-center">

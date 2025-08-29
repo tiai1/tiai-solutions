@@ -1,0 +1,143 @@
+{
+  "salesTrend": {
+    "name": "Sales Trend",
+    "type": "line",
+    "data": [
+      { "month": "Jan", "actual": 120, "plan": 100 },
+      { "month": "Feb", "actual": 135, "plan": 110 },
+      { "month": "Mar", "actual": 128, "plan": 120 },
+      { "month": "Apr", "actual": 155, "plan": 130 },
+      { "month": "May", "actual": 162, "plan": 140 },
+      { "month": "Jun", "actual": 170, "plan": 150 }
+    ],
+    "options": {
+      "title": {
+        "text": "Sales Performance vs Plan",
+        "left": "center"
+      },
+      "tooltip": {
+        "trigger": "axis"
+      },
+      "legend": {
+        "data": ["Actual", "Plan"],
+        "bottom": "0"
+      },
+      "xAxis": {
+        "type": "category",
+        "data": ["Jan", "Feb", "Mar", "Apr", "May", "Jun"]
+      },
+      "yAxis": {
+        "type": "value",
+        "name": "Sales ($K)"
+      },
+      "series": [
+        {
+          "name": "Actual",
+          "type": "line",
+          "data": [120, 135, 128, 155, 162, 170],
+          "itemStyle": { "color": "#3b82f6" },
+          "symbol": "circle",
+          "symbolSize": 8
+        },
+        {
+          "name": "Plan",
+          "type": "line",
+          "data": [100, 110, 120, 130, 140, 150],
+          "itemStyle": { "color": "#94a3b8" },
+          "lineStyle": { "type": "dashed" },
+          "symbol": "circle",
+          "symbolSize": 6
+        }
+      ]
+    }
+  },
+  "marginBridge": {
+    "name": "Plan vs Actual",
+    "type": "waterfall",
+    "data": [
+      { "label": "Plan Margin", "value": 100 },
+      { "label": "Product Mix", "value": 15 },
+      { "label": "Pricing", "value": -8 },
+      { "label": "COGS", "value": 12 },
+      { "label": "Transport", "value": -3 },
+      { "label": "Storage & Handling", "value": 6 },
+      { "label": "Actual Margin", "value": 122 }
+    ],
+    "options": {
+      "title": {
+        "text": "Margin Bridge Analysis",
+        "left": "center"
+      },
+      "tooltip": {
+        "trigger": "axis",
+        "formatter": "{b}: {c}%"
+      },
+      "xAxis": {
+        "type": "category",
+        "data": ["Plan Margin", "Product Mix", "Pricing", "COGS", "Transport", "Storage & Handling", "Actual Margin"]
+      },
+      "yAxis": {
+        "type": "value",
+        "name": "Margin (%)"
+      },
+      "series": [
+        {
+          "name": "Margin",
+          "type": "bar",
+          "data": [100, 15, -8, 12, -3, 6, 122],
+          "itemStyle": {
+            "color": function(params) {
+              if (params.dataIndex === 0 || params.dataIndex === 6) return "#3b82f6";
+              return params.value >= 0 ? "#10b981" : "#ef4444";
+            }
+          }
+        }
+      ]
+    }
+  },
+  "forecastAccuracy": {
+    "name": "Forecast Accuracy",
+    "type": "bar",
+    "data": [
+      { "month": "Q1", "forecast": 300, "actual": 325 },
+      { "month": "Q2", "forecast": 320, "actual": 315 },
+      { "month": "Q3", "forecast": 340, "actual": 360 },
+      { "month": "Q4", "forecast": 360, "actual": 355 }
+    ],
+    "options": {
+      "title": {
+        "text": "Quarterly Forecast vs Actual",
+        "left": "center"
+      },
+      "tooltip": {
+        "trigger": "axis"
+      },
+      "legend": {
+        "data": ["Forecast", "Actual"],
+        "bottom": "0"
+      },
+      "xAxis": {
+        "type": "category",
+        "data": ["Q1", "Q2", "Q3", "Q4"]
+      },
+      "yAxis": {
+        "type": "value",
+        "name": "Revenue ($K)"
+      },
+      "series": [
+        {
+          "name": "Forecast",
+          "type": "bar",
+          "data": [300, 320, 340, 360],
+          "itemStyle": { "color": "#94a3b8" }
+        },
+        {
+          "name": "Actual",
+          "type": "bar",
+          "data": [325, 315, 360, 355],
+          "itemStyle": { "color": "#3b82f6" }
+        }
+      ]
+    }
+  }
+}
