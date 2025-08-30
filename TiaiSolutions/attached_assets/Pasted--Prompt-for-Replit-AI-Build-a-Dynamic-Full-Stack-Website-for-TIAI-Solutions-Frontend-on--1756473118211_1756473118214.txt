@@ -1,0 +1,321 @@
+# Prompt for Replit AI: Build a Dynamic **Full‑Stack** Website for **TIAI Solutions** (Frontend on **GitHub Pages**, Backend via **Serverless**)
+
+You are a **senior full‑stack engineer and brand designer**. Build a **production‑ready** website and minimal backend for **TIAI Solutions**. The frontend will be hosted initially on **GitHub Pages** (static), so **all dynamic features must use serverless/BaaS**. Prioritize an **automation‑first** narrative (focus on data, dashboards, reporting automation). Avoid ERP integration copy for now.
+
+---
+
+## Hosting & Architecture Constraints (IMPORTANT)
+
+* **Frontend**: Static SPA on **GitHub Pages**.
+* **Backend**: Provided via **serverless endpoints** so the frontend remains static.
+
+  * **Primary option (recommended)**: **Supabase** (Auth + Postgres + **Edge Functions**) for `/api`.
+  * **Alternative option**: **Cloudflare Workers** (with KV or D1) using a small Hono router.
+* **Email delivery**: **Resend API** (primary) with **Formspree** fallback if env keys are missing.
+* The frontend must run in **mock/demo mode** if no backend is configured.
+
+---
+
+## Tech Stack & Standards
+
+* **Framework**: React + Vite + TypeScript.
+* **Styling**: Tailwind CSS.
+* **Animations**: Framer Motion + GSAP ScrollTrigger (cinematic scrollytelling).
+* **Charts**: ECharts, lazy‑loaded on intersection.
+* **UI**: shadcn/ui + lucide-react icons.
+* **Validation**: Zod (client + server).
+* **Quality**: ESLint, Prettier, semantic HTML, a11y, `prefers-reduced-motion` respected.
+* **Performance**: dynamic imports for heavy bits, images lazy, Lighthouse ≥ 90.
+* **SEO**: Meta tags, OpenGraph, JSON‑LD Organization schema.
+
+---
+
+## Brand & Visual
+
+* **Logo**: placeholder text mark `TIAI Solutions` (replaceable SVG/PNG).
+* **Palette**: Primary `#0B5FFF`, Ink `#0A0F1E`, Slate `#8891A6`, Accents `#22D3EE`, `#A78BFA`, Success `#10B981`.
+* **Fonts**: Inter (UI), Space Grotesk (display).
+* **Imagery**: abstract tech/blueprint/particle textures; avoid literal stock photos.
+
+---
+
+## Site Map
+
+1. **Home** (cinematic scrollytelling)
+2. **Services** (ladder: Essentials → Automation → Decision Systems)
+3. **Case Studies** (3 demos)
+4. **Tools & Templates** (downloads)
+5. **About**
+6. **Contact** (serverless form)
+
+---
+
+## File Tree
+
+```
+/ (root)
+  index.html
+  vite.config.ts
+  tsconfig.json
+  /.github/workflows
+    deploy-gh-pages.yml
+  /src
+    main.tsx
+    App.tsx
+    /lib
+      api.ts (API client with adapters: supabase | cloudflare | mock)
+      analytics.ts
+      viewport.ts
+      validators.ts
+    /components
+      Navbar.tsx
+      Footer.tsx
+      Section.tsx
+      Marquee.tsx
+      KPIStat.tsx
+      BeforeAfter.tsx
+      ChartReveal.tsx
+      ServiceCard.tsx
+      Timeline.tsx
+      TestimonialCard.tsx
+      CTA.tsx
+      ContactForm.tsx
+    /pages
+      Home.tsx
+      Services.tsx
+      CaseStudies.tsx
+      Tools.tsx
+      About.tsx
+      Contact.tsx
+    /data
+      services.ts
+      caseStudies.ts
+      charts.ts
+      testimonials.ts
+    /styles
+      globals.css
+  /server
+    /supabase
+      schema.sql (tables: contacts, leads, downloads)
+      edge-functions
+        contact-form/index.ts (validates, rate‑limits, stores, emails)
+        lead-intake/index.ts
+    /cloudflare
+      wrangler.toml
+      src/index.ts (Hono router: /api/contact, /api/lead)
+      bindings.d.ts (KV/D1 bindings)
+  /scripts
+    dev-proxy.cjs (proxy /api locally to chosen backend)
+    seed.mjs (seed demo data)
+```
+
+---
+
+## Global Layout
+
+* Sticky **Navbar** with blur and active link highlighting.
+* Full‑bleed 100vh sections with subtle parallax.
+* Right‑side progress rail (waypoints) like a luxury car site.
+* Footer with sitemap + socials + legal.
+* **Backend awareness**: `VITE_API_PROVIDER` env chooses the adapter (supabase | cloudflare | mock). If unset → **mock mode**.
+
+---
+
+## Home (Scrollytelling)
+
+**Goal**: Convey motion and capability from basic → advanced automation.
+
+**Scene 1 – Hero**
+
+* H1: **From Data to Decisions.**
+* Sub: *Automation‑first consulting that turns your numbers into momentum.*
+* CTAs: *Start a Project* (primary) / *See Live Dashboards* (ghost).
+* Split‑text reveal, gradient parallax, optional particles.
+
+**Scene 2 – Problem → Shift**
+
+* Before/After slider: messy spreadsheet → clean dashboard.
+
+**Scene 3 – Capabilities Carousel**
+
+* KPI Dashboards / Automated Reporting / Cost & Margin Insight / Project & CAPEX Control.
+
+**Scene 4 – Animated Charts**
+
+* `ChartReveal` loads ECharts on intersection; tabs for Sales Trend, Margin Bridge, Forecast Accuracy.
+
+**Scene 5 – Social Proof + CTA**
+
+* Testimonials + final CTA: *Let’s automate what slows you down.*
+
+---
+
+## Services (Ladder)
+
+* **Tier 1 – Essentials**: KPI tree, monthly dashboards, clean data.
+* **Tier 2 – Automation**: scheduled refresh, Power Query pipelines, VBA tooling, Power Automate flows.
+* **Tier 3 – Decision Systems**: margin/discount simulators, scenario planners, alerting.
+* FAQ focusing on automation (not ERP integration).
+
+---
+
+## Case Studies
+
+* **Ammonia Transfer KPI Suite** – weekly automated report, PPT export, VBA interface.
+* **B2C Margin Simulator** – discount/price/volume mix, plan vs RFQ.
+* **CAPEX Controller Toolkit** – QBR data model, project KPIs, cost control.
+
+---
+
+## Tools & Templates
+
+* Grid of downloadables (Excel/Power BI/VBA) with features and `Get Template` buttons.
+
+---
+
+## Contact (Serverless)
+
+* Fields: name, email, company, role, message/problem, timeframe, budget band.
+* Flow: Frontend → `POST /api/contact` → serverless validates (Zod), rate‑limits (IP + hash), stores (DB), emails via Resend.
+* Honeypot, timestamp check, success/fail toasts; mailto fallback if API unreachable.
+* **GH Pages constraint**: Use environment URL for serverless API.
+
+---
+
+## Data (Mock + Charts)
+
+Provide small JSON datasets in `/src/data` and **mock API** responses in `lib/api.ts` for demo mode.
+
+```ts
+// charts.ts
+export const salesTrend = [
+  { month: 'Jan', actual: 120, plan: 100 },
+  { month: 'Feb', actual: 135, plan: 110 },
+  { month: 'Mar', actual: 128, plan: 120 },
+  { month: 'Apr', actual: 155, plan: 130 },
+  { month: 'May', actual: 162, plan: 140 },
+  { month: 'Jun', actual: 170, plan: 150 },
+];
+export const marginBridge = [
+  { label: 'Start', value: 20 },
+  { label: 'Price', value: 6 },
+  { label: 'Volume', value: -2 },
+  { label: 'Mix', value: 3 },
+  { label: 'Discounts', value: -4 },
+  { label: 'FX', value: 2 },
+  { label: 'End', value: 25 },
+];
+export const forecastVsActual = [
+  { month: 'Q1', forecast: 300, actual: 325 },
+  { month: 'Q2', forecast: 320, actual: 315 },
+  { month: 'Q3', forecast: 340, actual: 360 },
+  { month: 'Q4', forecast: 360, actual: 355 },
+];
+```
+
+```ts
+// lib/api.ts (essentials)
+export type ContactPayload = { name:string; email:string; company?:string; role?:string; message:string; timeframe?:string; budget?:string };
+
+export function createAPI(){
+  const provider = import.meta.env.VITE_API_PROVIDER || 'mock';
+  if(provider === 'supabase') return supabaseAPI();
+  if(provider === 'cloudflare') return cloudflareAPI();
+  return mockAPI();
+}
+
+function mockAPI(){
+  return {
+    async contact(data: ContactPayload){ console.log('[mock] contact', data); return { ok:true }; },
+    async lead(data: Record<string, unknown>){ console.log('[mock] lead', data); return { ok:true }; },
+  };
+}
+```
+
+---
+
+## Key Components
+
+* `Section.tsx` – in‑view triggers, parallax props.
+* `ChartReveal.tsx` – lazy ECharts, one‑time enter animation.
+* `BeforeAfter.tsx` – accessible slider.
+* `Timeline.tsx` – GSAP ScrollTrigger with pinned progress.
+* `ContactForm.tsx` – calls `createAPI().contact()`, retry + offline notice.
+
+---
+
+## Serverless: **Supabase** (Primary)
+
+* **DB schema** (`/server/supabase/schema.sql`):
+
+  * `contacts(id, name, email, company, role, message, timeframe, budget, created_at)`
+  * `leads(id, source, payload, created_at)`
+* **Edge Function** `contact-form/index.ts`:
+
+  * Validate with Zod, rate‑limit (IP in `leads` or RLS), insert into `contacts`, send email via Resend.
+  * CORS allow your GH Pages origin.
+* **Env** (Replit/GH Pages build‑time):
+
+  * `VITE_API_PROVIDER=supabase`
+  * `VITE_SUPABASE_URL=...`
+  * `VITE_SUPABASE_ANON_KEY=...`
+
+---
+
+## Serverless: **Cloudflare Workers** (Alternative)
+
+* `wrangler.toml` with KV (spam tokens) or D1 (contacts table).
+* `src/index.ts` using **Hono** router:
+
+  * `POST /api/contact` → validate, store, call Resend.
+* **Env** (frontend): `VITE_API_PROVIDER=cloudflare`, `VITE_CLOUDFLARE_API_BASE=https://<worker>/api`.
+
+---
+
+## CI/CD
+
+* **GitHub Pages** workflow `deploy-gh-pages.yml`: build, push to `gh-pages` branch, set SPA 404→index fallback.
+* Separate deploy for serverless (Supabase CLI or `wrangler publish`).
+
+---
+
+## Commands (Replit)
+
+* Init: `npm create vite@latest tiai-site -- --template react-ts`
+* Install: `npm i tailwindcss postcss autoprefixer framer-motion gsap echarts lucide-react zod class-variance-authority tailwind-merge @radix-ui/react-icons`
+* Dev: `npm run dev` (uses **mock** adapter by default)
+* Build: `npm run build`
+
+### Supabase quickstart
+
+* Create project → URL + anon key.
+* Run `schema.sql`.
+* Deploy: `supabase functions deploy contact-form lead-intake`.
+* Set CORS for GH Pages domain.
+
+### Cloudflare quickstart
+
+* `wrangler login` → `wrangler publish`.
+* Bind KV/D1; set secrets for Resend.
+
+---
+
+## Acceptance Criteria
+
+* Cinematic Home with 5 scenes, smooth and responsive.
+* Animated charts lazy‑load and animate once.
+* Contact form works through serverless; clear error states; spam protected.
+* Lighthouse: Perf ≥ 90, A11y ≥ 95, BP ≥ 95, SEO ≥ 95.
+* If no backend configured, Contact page shows demo mode but site remains fully navigable.
+
+---
+
+## Stretch Goals
+
+* Theme toggle (dark default).
+* JSON mini‑CMS for copy without rebuild.
+* Demos page with interactive chart sandboxes.
+* Newsletter signup (Supabase `subscribers` + Resend double opt‑in).
+* Lead scoring logic in serverless.
+
+**Deliver the full codebase implementing everything above.**
