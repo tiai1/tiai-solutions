@@ -211,7 +211,10 @@ export default function Services() {
               <Button 
                 variant="outline" 
                 size="lg"
-                onClick={() => trackButtonClick('view-case-studies', 'services-cta')}
+                onClick={() => {
+                  trackButtonClick('view-case-studies', 'services-cta');
+                  window.location.href = '/case-studies';
+                }}
                 data-testid="button-view-case-studies"
               >
                 View Case Studies

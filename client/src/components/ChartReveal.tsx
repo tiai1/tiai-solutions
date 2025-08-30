@@ -29,7 +29,7 @@ export default function ChartReveal({ activeChart = 0, onChartChange }: ChartRev
     const loadCharts = async () => {
       try {
         const chartsData = await fetchCharts();
-        if (chartsData) {
+        if (chartsData && typeof chartsData === 'object') {
           const chartsArray = Object.entries(chartsData).map(([key, value]: [string, any]) => ({
             name: value.name,
             type: value.type,
@@ -37,9 +37,34 @@ export default function ChartReveal({ activeChart = 0, onChartChange }: ChartRev
             options: value.options
           }));
           setCharts(chartsArray);
+          console.log('Charts loaded successfully:', chartsArray.length);
+        } else {
+          console.warn('No charts data available, using fallback');
+          // Set a simple fallback chart
+          setCharts([{
+            name: 'Sample Dashboard',
+            type: 'bar',
+            data: [],
+            options: {
+              chart: { type: 'bar' },
+              series: [{ name: 'Sample', data: [10, 20, 30, 40, 50] }],
+              xaxis: { categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May'] }
+            }
+          }]);
         }
       } catch (error) {
         console.error('Failed to load charts:', error);
+        // Set fallback chart on error
+        setCharts([{
+          name: 'Demo Dashboard',
+          type: 'line',
+          data: [],
+          options: {
+            chart: { type: 'line' },
+            series: [{ name: 'Performance', data: [30, 40, 35, 50, 49, 60, 70] }],
+            xaxis: { categories: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] }
+          }
+        }]);
       }
     };
 
@@ -68,7 +93,10 @@ export default function ChartReveal({ activeChart = 0, onChartChange }: ChartRev
     return (
       <div className="bg-card rounded-xl p-4 md:p-8 shadow-lg">
         <div className="h-60 md:h-80 bg-muted/30 rounded-lg flex items-center justify-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+            <p className="text-muted-foreground">Loading dashboard data...</p>
+          </div>
         </div>
       </div>
     );

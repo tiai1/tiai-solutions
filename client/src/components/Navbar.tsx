@@ -4,6 +4,7 @@ import { Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import logoIcon from '@assets/tiai-logo-icon.png';
+import ThemeToggle from './ThemeToggle';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -69,6 +70,7 @@ export default function Navbar() {
                 </span>
               </Link>
             ))}
+            <ThemeToggle />
             <Link href="/contact" data-testid="nav-cta-contact">
               <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
                 Contact
@@ -79,12 +81,12 @@ export default function Navbar() {
           {/* Mobile Menu Button */}
           <Button
             variant="ghost"
-            size="sm"
-            className="md:hidden"
+            size="icon"
+            className="md:hidden h-10 w-10"
             onClick={() => setIsOpen(!isOpen)}
             data-testid="mobile-menu-toggle"
           >
-            {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </Button>
         </div>
 

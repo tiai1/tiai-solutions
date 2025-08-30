@@ -276,7 +276,10 @@ export default function About() {
               <Button 
                 size="lg"
                 className="bg-primary text-primary-foreground hover:bg-primary/90"
-                onClick={() => trackButtonClick('start-conversation', 'about-cta')}
+                onClick={() => {
+                  trackButtonClick('start-conversation', 'about-cta');
+                  window.location.href = '/contact';
+                }}
                 data-testid="button-start-conversation"
               >
                 Start the Conversation
@@ -285,7 +288,10 @@ export default function About() {
               <Button 
                 variant="outline" 
                 size="lg"
-                onClick={() => trackButtonClick('view-case-studies-from-about', 'about-cta')}
+                onClick={() => {
+                  trackButtonClick('view-case-studies-from-about', 'about-cta');
+                  window.location.href = '/case-studies';
+                }}
                 data-testid="button-view-case-studies-from-about"
               >
                 View Our Work

@@ -47,13 +47,13 @@ export default function BeforeAfter() {
               // Animate from 0% to 100% over 4.5 seconds for better comprehension
               let progress = 0;
               intervalRef.current = setInterval(() => {
-                progress += 0.5; // Increment by 0.5% every ~22.5ms (4.5 seconds total)
+                progress += 2; // Increment by 2% every 50ms (2.5 seconds total - faster)
                 setSliderPosition(progress);
                 
                 if (progress >= 100) {
                   if (intervalRef.current) clearInterval(intervalRef.current);
                 }
-              }, 22.5);
+              }, 50);
             }, 1000);
           }
         });
@@ -127,10 +127,11 @@ export default function BeforeAfter() {
         </div>
         
         {/* After State */}
-        <motion.div 
-          className="absolute inset-0 bg-card border-2 border-primary/20"
+        <div 
+          className="absolute inset-0 bg-card border-2 border-primary/20 transition-transform duration-75 ease-out"
           style={{ 
-            clipPath: `inset(0 ${100 - sliderPosition}% 0 0)` 
+            clipPath: `inset(0 ${100 - sliderPosition}% 0 0)`,
+            willChange: 'clip-path'
           }}
           data-testid="after-state"
         >
@@ -168,7 +169,7 @@ export default function BeforeAfter() {
               </div>
             </div>
           </div>
-        </motion.div>
+        </div>
         
         {/* Slider Handle */}
         <div 

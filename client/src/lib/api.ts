@@ -73,27 +73,41 @@ function createSupabaseAPI(): APIClient {
     return createMockAPI();
   }
 
-  const baseUrl = `${supabaseUrl}/functions/v1`;
-
   return {
     async contact(data: ContactPayload) {
       try {
-        const response = await fetch(`${baseUrl}/contact-form`, {
+        // Insert into leads table via Supabase REST API
+        const response = await fetch(`${supabaseUrl}/rest/v1/leads`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${supabaseKey}`,
+            'apikey': supabaseKey,
+            'Prefer': 'return=minimal'
           },
-          body: JSON.stringify(data),
+          body: JSON.stringify({
+            full_name: data.name,
+            email: data.email,
+            company: data.company || null,
+            phone: null,
+            message: data.message,
+            source: 'contact_page',
+            referer_url: document.referrer || null,
+            user_agent: navigator.userAgent,
+            created_at: new Date().toISOString()
+          }),
         });
 
         if (!response.ok) {
-          const error = await response.text();
-          return { success: false, error };
+          const errorText = await response.text();
+          console.error('Supabase error:', errorText);
+          return { success: false, error: 'Failed to submit form. Please try again.' };
         }
 
-        const result = await response.json();
-        return result;
+        return { 
+          success: true, 
+          message: 'Thank you for your message. We\'ll respond within 24 hours.' 
+        };
       } catch (error) {
         console.error('Supabase API error:', error);
         return { success: false, error: 'Network error. Please try again.' };
@@ -102,22 +116,9 @@ function createSupabaseAPI(): APIClient {
 
     async lead(data: LeadPayload) {
       try {
-        const response = await fetch(`${baseUrl}/lead-intake`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${supabaseKey}`,
-          },
-          body: JSON.stringify(data),
-        });
-
-        if (!response.ok) {
-          const error = await response.text();
-          return { success: false, error };
-        }
-
-        const result = await response.json();
-        return result;
+        // Insert analytics/tracking data - for now just log it
+        console.log('Lead tracking:', data);
+        return { success: true, leadId: `lead-${Date.now()}` };
       } catch (error) {
         console.error('Supabase lead API error:', error);
         return { success: false, error: 'Network error' };
@@ -219,7 +220,7 @@ function createCloudflareAPI(): APIClient {
 }
 
 export function createAPI(): APIClient {
-  const provider = import.meta.env.VITE_API_PROVIDER || 'mock';
+  const provider = import.meta.env.VITE_API_PROVIDER || 'supabase';
   
   console.log(`[API] Using provider: ${provider}`);
   
@@ -228,8 +229,10 @@ export function createAPI(): APIClient {
       return createSupabaseAPI();
     case 'cloudflare':
       return createCloudflareAPI();
-    default:
+    case 'mock':
       return createMockAPI();
+    default:
+      return createSupabaseAPI();
   }
 }
 

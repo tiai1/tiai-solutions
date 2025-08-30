@@ -34,7 +34,7 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, ease: [0.25, 0.46, 0.45, 0.94] }}
           >
-            <h1 className="font-display text-5xl md:text-7xl lg:text-8xl font-bold mb-6" data-testid="hero-title">
+            <h1 className="font-display text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold mb-6" data-testid="hero-title">
               <span className="block">From Data</span>
               <span className="block gradient-text">to Decisions</span>
             </h1>
@@ -45,7 +45,7 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}
           >
-            <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto mb-12" data-testid="hero-subtitle">
+            <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto mb-12" data-testid="hero-subtitle">
               Automation-first consulting that turns your numbers into momentum.
             </p>
           </motion.div>
