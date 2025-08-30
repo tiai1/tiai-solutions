@@ -52,7 +52,7 @@ export const caseStudies: CaseStudy[] = [
       }
     ],
     technologies: ['VBA', 'Power Query', 'PowerPoint API', 'Excel Automation'],
-    icon: React.createElement(Factory, { className: "h-8 w-8" }),
+    icon: React.createElement(Factory),
     color: 'primary',
     timeline: '6 weeks',
     clientQuote: {
@@ -87,7 +87,7 @@ export const caseStudies: CaseStudy[] = [
       }
     ],
     technologies: ['Excel VBA', 'Monte Carlo', 'Optimization', 'Scenario Analysis'],
-    icon: React.createElement(Calculator, { className: "h-8 w-8" }),
+    icon: React.createElement(Calculator),
     color: 'accent',
     timeline: '8 weeks',
     clientQuote: {
@@ -122,7 +122,7 @@ export const caseStudies: CaseStudy[] = [
       }
     ],
     technologies: ['Power BI', 'DAX', 'SQL', 'Azure Data Factory'],
-    icon: React.createElement(Coins, { className: "h-8 w-8" }),
+    icon: React.createElement(Coins),
     color: 'success',
     timeline: '12 weeks',
     clientQuote: {
