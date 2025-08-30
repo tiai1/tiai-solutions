@@ -31,7 +31,7 @@ export const tools: Tool[] = [
     downloadUrl: '/templates/kpi-dashboard-template.xlsx',
     fileSize: '2.1 MB',
     lastUpdated: '2024-01-15',
-    icon: React.createElement(BarChart3, { className: "h-6 w-6" }),
+    icon: React.createElement(BarChart3),
     color: 'primary',
     isPopular: true
   },
@@ -50,7 +50,7 @@ export const tools: Tool[] = [
     downloadUrl: '/templates/margin-analysis-toolkit.xlsx',
     fileSize: '1.8 MB',
     lastUpdated: '2024-01-10',
-    icon: React.createElement(Calculator, { className: "h-6 w-6" }),
+    icon: React.createElement(Calculator),
     color: 'accent'
   },
   {
@@ -68,7 +68,7 @@ export const tools: Tool[] = [
     downloadUrl: '/templates/power-bi-starter-kit.pbit',
     fileSize: '3.2 MB',
     lastUpdated: '2024-01-12',
-    icon: React.createElement(TrendingUp, { className: "h-6 w-6" }),
+    icon: React.createElement(TrendingUp),
     color: 'success'
   },
   {
@@ -86,7 +86,7 @@ export const tools: Tool[] = [
     downloadUrl: '/templates/vba-automation-library.xlam',
     fileSize: '890 KB',
     lastUpdated: '2024-01-08',
-    icon: React.createElement(Code, { className: "h-6 w-6" }),
+    icon: React.createElement(Code),
     color: 'purple'
   },
   {
@@ -104,7 +104,7 @@ export const tools: Tool[] = [
     downloadUrl: '/templates/budget-planning-model.xlsx',
     fileSize: '1.5 MB',
     lastUpdated: '2024-01-05',
-    icon: React.createElement(ClipboardList, { className: "h-6 w-6" }),
+    icon: React.createElement(ClipboardList),
     color: 'blue'
   },
   {
@@ -122,7 +122,7 @@ export const tools: Tool[] = [
     downloadUrl: '/templates/capex-tracking-system.xlsx',
     fileSize: '2.7 MB',
     lastUpdated: '2024-01-18',
-    icon: React.createElement(FileSpreadsheet, { className: "h-6 w-6" }),
+    icon: React.createElement(FileSpreadsheet),
     color: 'orange'
   }
 ];
