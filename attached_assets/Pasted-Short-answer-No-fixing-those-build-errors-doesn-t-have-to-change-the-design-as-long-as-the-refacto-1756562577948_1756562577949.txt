@@ -1,0 +1,78 @@
+Short answer: No—fixing those build errors doesn’t have to change the design, as long as the refactor keeps the same Tailwind classes and renders the same DOM.
+
+What’s happening:
+
+The error you showed (“Expected > but found className in a .ts file”) is from putting JSX inside a .ts file (e.g., icon: <Industry className="h-8 w-8" /> in a data file).
+
+Replit is likely moving JSX out of .ts files or replacing inline JSX with React.createElement (or storing a reference to the icon and rendering it elsewhere). That’s correct.
+
+How to fix safely (preserve styling)
+
+Use one of these patterns so the visuals stay identical:
+
+A) Rename data file to .tsx
+If it contains JSX, rename caseStudies.ts → caseStudies.tsx. Nothing else changes.
+
+B) Keep data as pure JSON-ish, render icons at the component
+In the data file:
+
+// data file (.ts)
+import { Industry } from "lucide-react";
+
+export const studies = [
+  { title: "…", iconKey: "Industry", /* … */ }
+] as const;
+
+export const iconMap = { Industry };
+
+
+In the card component:
+
+import { iconMap } from "@/src/data/caseStudies";
+const Icon = iconMap[item.iconKey];
+return <Icon className="h-8 w-8" aria-hidden />;
+
+
+This keeps className="h-8 w-8" at the render site (not in data), so styling remains.
+
+C) If using React.createElement in .ts
+
+import { Industry } from "lucide-react";
+const icon = React.createElement(Industry, { className: "h-8 w-8", "aria-hidden": true });
+
+
+This is also fine—just ensure the same className list.
+
+What could break the design (and how to avoid it)
+
+❌ Losing Tailwind classes when converting JSX → createElement or moving icons to data.
+➜ Keep the exact className strings (h-8 w-8, text-muted-foreground, spacing utilities) where the element actually renders.
+
+❌ Changing className to class by accident in React.
+➜ Must be className.
+
+❌ Tailwind purge missing new files (if files moved/renamed).
+➜ Ensure tailwind.config.js content includes all src/**/*.{ts,tsx}, and any new folders.
+
+❌ Types blocking icon nodes.
+➜ Type props as React.ReactNode or React.ComponentType<{ className?: string }> for icons.
+
+Quick visual QA checklist (do this after Replit’s fixes)
+
+Icon size & alignment – Icons on cards still h-8 w-8, aligned with titles.
+
+Spacing – Card paddings/margins and grid gaps unchanged across sm/md/lg.
+
+Buttons – shadcn variants (primary/secondary/ghost) look the same and focus ring works.
+
+Grids – Tools/Case Studies grids still break to 1/2/3 columns at the same breakpoints.
+
+Typography – Headings and body sizes unchanged (no missing Tailwind classes).
+
+Dark mode – If used, ensure text-muted-foreground etc. still apply.
+
+Lighthouse – Run once; score should be within ~±2 of previous.
+
+Bottom line
+
+Let Replit finish the refactor. As long as the same Tailwind class strings are applied to the same elements and files are included in Tailwind’s content glob, the UI will look identical. If you want, I can produce a tiny diff-check list for each touched file so you can spot any lost classes fast.

@@ -24,7 +24,7 @@ export const services = {
           description: 'Automated monthly and quarterly reports'
         }
       ],
-      icon: React.createElement(BarChart3, { className: "h-8 w-8" }),
+      icon: React.createElement(BarChart3),
       color: 'primary',
       ctaText: 'Get Started',
       isPopular: false,
@@ -50,7 +50,7 @@ export const services = {
           description: 'Workflow automation across systems'
         }
       ],
-      icon: React.createElement(Bot, { className: "h-8 w-8" }),
+      icon: React.createElement(Bot),
       color: 'primary',
       ctaText: 'Start Automation',
       isPopular: true,
@@ -76,7 +76,7 @@ export const services = {
           description: 'ML-powered insights and predictions'
         }
       ],
-      icon: React.createElement(Brain, { className: "h-8 w-8" }),
+      icon: React.createElement(Brain),
       color: 'accent',
       ctaText: 'Explore Systems',
       isPopular: false,
@@ -92,7 +92,7 @@ export const services = {
         { title: 'Forecast vs actual analysis', description: 'Compare predictions to results' },
         { title: 'Exception reporting', description: 'Automated alerts for variances' }
       ],
-      icon: React.createElement(BarChart3, { className: "h-6 w-6" }),
+      icon: React.createElement(BarChart3),
       color: 'primary'
     },
     {
@@ -103,7 +103,7 @@ export const services = {
         { title: 'PowerPoint automation', description: 'Auto-generated presentations' },
         { title: 'Email distribution', description: 'Automated report delivery' }
       ],
-      icon: React.createElement(FileText, { className: "h-6 w-6" }),
+      icon: React.createElement(FileText),
       color: 'accent'
     },
     {
@@ -114,7 +114,7 @@ export const services = {
         { title: 'Cost center tracking', description: 'Department-level cost monitoring' },
         { title: 'Price optimization', description: 'Data-driven pricing strategies' }
       ],
-      icon: React.createElement(Calculator, { className: "h-6 w-6" }),
+      icon: React.createElement(Calculator),
       color: 'purple'
     },
     {
@@ -125,7 +125,7 @@ export const services = {
         { title: 'Milestone monitoring', description: 'Project progress tracking' },
         { title: 'ROI calculations', description: 'Return on investment analysis' }
       ],
-      icon: React.createElement(Zap, { className: "h-6 w-6" }),
+      icon: React.createElement(Zap),
       color: 'success'
     }
   ]
