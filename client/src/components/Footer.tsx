@@ -1,6 +1,6 @@
 import { Link } from 'wouter';
 import { Github, Linkedin, Twitter, Mail, Phone, MapPin } from 'lucide-react';
-import logoHorizontal from '@assets/tiai-logo-horizontal.png';
+import logoHorizontal from '@assets/Logo_maker_project-7-removebg-preview_1756569129936.png';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();

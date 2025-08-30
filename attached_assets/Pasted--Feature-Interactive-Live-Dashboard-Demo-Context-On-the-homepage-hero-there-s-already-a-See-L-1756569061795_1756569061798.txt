@@ -1,0 +1,87 @@
+🎯 Feature: Interactive “Live Dashboard” Demo
+Context
+
+On the homepage hero, there’s already a See Live Dashboards button. It currently doesn’t do anything. Clicking it should take visitors to a new page that demonstrates the power of TIAI dashboards. This page must be styled consistently with the rest of the site (dark/light themes, responsive layout, multilingual support) and reassure users that no data is stored.
+
+Requirements
+1. Routing & Integration
+
+Use the existing See Live Dashboards button on the homepage. When clicked, it should navigate to the new route (e.g. /live-dashboards). Don’t add a separate top‑nav item.
+
+Provide a brief introduction explaining that users can try out a dashboard with their own data, completely in‑browser.
+
+2. Privacy & Security
+
+Display a clear notice near the data input that says:
+
+“Your data never leaves your browser. We do not upload or store it. Closing or refreshing this page will erase your session.”
+
+Do not send any data to Supabase or external APIs; keep all parsing, visualisation and state on the client side.
+
+Reject uploads larger than 5 MB or unsupported file types (.csv, .xlsx only) and show a friendly error.
+
+Offer an optional toggle (default OFF) that keeps data in sessionStorage for the current tab only.
+
+3. Data Input
+
+Provide two options:
+
+File upload: Accept CSV or Excel (.xls/.xlsx) files. If multiple sheets exist, let users pick which sheet. Limit to one file at a time.
+
+Paste data: A textarea for pasting tab‑ or comma‑separated values.
+
+After upload/paste, show a preview table (first 10–20 rows) with detected column types (text, number, date, boolean) and basic stats (count, min, max).
+
+4. Chart Configuration
+
+Let users choose:
+
+Chart type (Line, Bar, Stacked Bar, Area, Pie/Donut, Scatter, Table).
+
+X‑axis: pick a date or categorical column; allow date bucketing (daily, weekly, monthly).
+
+Y‑metrics: pick one or more numeric columns with aggregations (sum, average, count).
+
+Group by: optional category column for series.
+
+Filters: basic filters like equals, contains, greater/less than, between.
+
+Provide 2–3 prebuilt templates (e.g. KPI overview, category breakdown, time series drill‑down) to demonstrate typical dashboards quickly.
+
+5. Visualisation & Interactivity
+
+After configuration, render the charts in a grid layout. Each chart card should include:
+
+A title reflecting the configuration.
+
+Interactive tooltips, legend toggles, and the ability to remove or duplicate the card.
+
+A download button to export the chart as a PNG.
+
+Include global filters (e.g. date range) that affect all charts simultaneously.
+
+Support responsive resizing of charts; on mobile, cards stack vertically.
+
+6. Accessibility & i18n
+
+Follow the site’s existing dark/light toggle and ensure the new page respects the chosen theme.
+
+Provide translations for labels and messages in English, French, and Arabic. For Arabic, set dir="rtl" for text and layout.
+
+Label every form field and button for screen readers; indicate validation errors clearly.
+
+7. Performance
+
+Use client‑side parsers (e.g. Papaparse for CSV) and load heavy work in a Web Worker to keep the UI fluid.
+
+Render previews and charts efficiently; avoid blocking the main thread.
+
+Provide clear feedback states: “Uploading…”, “Parsing…”, “Generating…”, and handle errors gracefully.
+
+8. Boundaries
+
+Do not save any dashboard data to Supabase.
+
+Do not create new tables or modify existing ones. Keep Supabase usage limited to existing forms (leads, newsletter_subscribers, project_briefs, demo_requests).
+
+Keep all new code in a dedicated live-dashboard or liveDashboards module/folder to maintain project structure.

@@ -67,16 +67,18 @@ export default function Home() {
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </Link>
-            <Button 
-              variant="outline" 
-              size="lg"
-              className="border-border text-foreground px-8 py-4 text-lg font-semibold hover:bg-muted transition-all"
-              onClick={() => trackButtonClick('see-dashboards', 'hero')}
-              data-testid="button-see-dashboards"
-            >
-              <Play className="mr-2 h-5 w-5" />
-              See Live Dashboards
-            </Button>
+            <Link href="/live-dashboard">
+              <Button 
+                variant="outline" 
+                size="lg"
+                className="border-border text-foreground px-8 py-4 text-lg font-semibold hover:bg-muted transition-all"
+                onClick={() => trackButtonClick('see-dashboards', 'hero')}
+                data-testid="button-see-dashboards"
+              >
+                <Play className="mr-2 h-5 w-5" />
+                See Live Dashboards
+              </Button>
+            </Link>
           </motion.div>
         </div>
         

@@ -15,6 +15,7 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
+import LiveDashboard from "./pages/LiveDashboard";
 import NotFound from "@/pages/not-found";
 import ScrollToTop from "./components/ScrollToTop";
 
@@ -29,6 +30,7 @@ function Router() {
         <Route path="/tools" component={Tools} />
         <Route path="/about" component={About} />
         <Route path="/contact" component={Contact} />
+        <Route path="/live-dashboard" component={LiveDashboard} />
         <Route path="/blog" component={Blog} />
         <Route path="/blog/:slug" component={BlogPost} />
         <Route component={NotFound} />
