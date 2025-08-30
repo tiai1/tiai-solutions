@@ -1,6 +1,6 @@
 import { Link } from 'wouter';
 import { Github, Linkedin, Twitter, Mail, Phone, MapPin } from 'lucide-react';
-import logoColored from '@assets/tiai-logo-colored.png';
+import logoHorizontal from '@assets/tiai-logo-horizontal.png';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -12,7 +12,7 @@ export default function Footer() {
           {/* Company Info */}
           <div className="md:col-span-2">
             <img 
-              src={logoColored} 
+              src={logoHorizontal} 
               alt="TIAI Solutions" 
               className="h-10 sm:h-12 w-auto mb-4 transition-all duration-200 hover:opacity-80 hover:scale-105" 
               data-testid="footer-logo"
