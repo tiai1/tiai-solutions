@@ -1,0 +1,54 @@
+name: Deploy client to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build
+        run: npm run build
+
+      # Detect correct output dir (dist/ vs dist/public/)
+      - name: Pick deploy dir
+        run: |
+          if [ -f dist/public/index.html ]; then
+            echo "DEPLOY_DIR=dist/public" >> $GITHUB_ENV
+          else
+            echo "DEPLOY_DIR=dist" >> $GITHUB_ENV
+          fi
+          echo "Using DEPLOY_DIR=$DEPLOY_DIR"
+
+      - name: SPA fallback (copy index.html -> 404.html)
+        run: cp "$DEPLOY_DIR/index.html" "$DEPLOY_DIR/404.html"
+
+      - name: Add CNAME
+        run: echo "tiaisolutions.pro" > "$DEPLOY_DIR/CNAME"
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ${{ env.DEPLOY_DIR }}
+
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4

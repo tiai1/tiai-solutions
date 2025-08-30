@@ -1,0 +1,1625 @@
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TIAI Solutions - From Data to Decisions</title>
+    <meta name="description" content="Automation-first consulting that turns your numbers into momentum. KPI dashboards, automated reporting, and decision systems.">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="TIAI Solutions - From Data to Decisions">
+    <meta property="og:description" content="Automation-first consulting that turns your numbers into momentum">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://tiai-solutions.github.io">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                borderRadius: {
+                    lg: "var(--radius)",
+                    md: "calc(var(--radius) - 2px)",
+                    sm: "calc(var(--radius) - 4px)",
+                },
+                colors: {
+                    background: "var(--background)",
+                    foreground: "var(--foreground)",
+                    card: {
+                        DEFAULT: "var(--card)",
+                        foreground: "var(--card-foreground)",
+                    },
+                    popover: {
+                        DEFAULT: "var(--popover)",
+                        foreground: "var(--popover-foreground)",
+                    },
+                    primary: {
+                        DEFAULT: "var(--primary)",
+                        foreground: "var(--primary-foreground)",
+                    },
+                    secondary: {
+                        DEFAULT: "var(--secondary)",
+                        foreground: "var(--secondary-foreground)",
+                    },
+                    muted: {
+                        DEFAULT: "var(--muted)",
+                        foreground: "var(--muted-foreground)",
+                    },
+                    accent: {
+                        DEFAULT: "var(--accent)",
+                        foreground: "var(--accent-foreground)",
+                    },
+                    destructive: {
+                        DEFAULT: "var(--destructive)",
+                        foreground: "var(--destructive-foreground)",
+                    },
+                    border: "var(--border)",
+                    input: "var(--input)",
+                    ring: "var(--ring)",
+                },
+                fontFamily: {
+                    sans: ["Inter", "sans-serif"],
+                    display: ["Space Grotesk", "sans-serif"],
+                    mono: ["JetBrains Mono", "monospace"],
+                }
+            },
+        }
+    };
+    </script>
+    
+    <style>
+        :root {
+            --background: hsl(210 40% 98%);
+            --foreground: hsl(222 84% 5%);
+            --card: hsl(0 0% 100%);
+            --card-foreground: hsl(222 84% 5%);
+            --popover: hsl(0 0% 100%);
+            --popover-foreground: hsl(222 84% 5%);
+            --primary: hsl(221 83% 53%);
+            --primary-foreground: hsl(210 40% 98%);
+            --secondary: hsl(210 20% 98%);
+            --secondary-foreground: hsl(215 16% 47%);
+            --muted: hsl(210 40% 96%);
+            --muted-foreground: hsl(215 16% 47%);
+            --accent: hsl(187 85% 53%);
+            --accent-foreground: hsl(222 84% 5%);
+            --destructive: hsl(0 84% 60%);
+            --destructive-foreground: hsl(210 40% 98%);
+            --border: hsl(214 32% 91%);
+            --input: hsl(214 32% 91%);
+            --ring: hsl(221 83% 53%);
+            --radius: 0.5rem;
+        }
+
+        .dark {
+            --background: hsl(222 84% 5%);
+            --foreground: hsl(210 40% 98%);
+            --card: hsl(222 84% 8%);
+            --card-foreground: hsl(210 40% 98%);
+            --popover: hsl(222 84% 8%);
+            --popover-foreground: hsl(210 40% 98%);
+            --primary: hsl(221 83% 53%);
+            --primary-foreground: hsl(210 40% 98%);
+            --secondary: hsl(217 32% 17%);
+            --secondary-foreground: hsl(215 20% 65%);
+            --muted: hsl(217 32% 17%);
+            --muted-foreground: hsl(215 20% 65%);
+            --accent: hsl(187 85% 53%);
+            --accent-foreground: hsl(222 84% 5%);
+            --destructive: hsl(0 62% 30%);
+            --destructive-foreground: hsl(210 40% 98%);
+            --border: hsl(217 32% 17%);
+            --input: hsl(217 32% 17%);
+            --ring: hsl(221 83% 53%);
+        }
+
+        body {
+            font-family: Inter, sans-serif;
+            background: var(--background);
+            color: var(--foreground);
+            line-height: 1.6;
+        }
+
+        .font-display {
+            font-family: "Space Grotesk", sans-serif;
+        }
+
+        .font-mono {
+            font-family: "JetBrains Mono", monospace;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, hsl(221 83% 53%), hsl(271 76% 53%));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .glass-nav {
+            backdrop-filter: blur(20px);
+            background: hsla(0, 0%, 100%, 0.8);
+            border-bottom: 1px solid hsl(214 32% 91%);
+        }
+
+        .dark .glass-nav {
+            background: hsla(222, 84%, 5%, 0.8);
+            border-bottom: 1px solid hsl(217 32% 17%);
+        }
+
+        .hero-gradient {
+            background: linear-gradient(135deg, 
+                hsl(221 83% 53% / 0.1) 0%, 
+                hsl(187 85% 53% / 0.05) 50%, 
+                hsl(271 76% 53% / 0.1) 100%);
+        }
+
+        .section-padding {
+            padding: 6rem 0;
+        }
+
+        .animate-fade-up {
+            animation: fadeUp 0.8s ease-out forwards;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .animate-fade-up.delay-1 { animation-delay: 0.1s; }
+        .animate-fade-up.delay-2 { animation-delay: 0.2s; }
+        .animate-fade-up.delay-3 { animation-delay: 0.3s; }
+
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .particle-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 20%, hsl(221 83% 53% / 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, hsl(187 85% 53% / 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 60%, hsl(271 76% 53% / 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .progress-rail {
+            position: fixed;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 50;
+        }
+
+        .chart-container {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease-out;
+        }
+
+        .chart-container.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .service-tier {
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .service-tier:hover {
+            border-color: hsl(221 83% 53%);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px hsl(221 83% 53% / 0.1);
+        }
+
+        .before-after-slider {
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+        }
+
+        .slider-handle {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 10;
+            width: 4px;
+            height: 40px;
+            background: hsl(221 83% 53%);
+            border-radius: 2px;
+            cursor: ew-resize;
+        }
+
+        .slider-handle::before,
+        .slider-handle::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            background: hsl(221 83% 53%);
+            border-radius: 50%;
+            border: 3px solid white;
+        }
+
+        .slider-handle::before {
+            left: -10px;
+        }
+
+        .slider-handle::after {
+            right: -10px;
+        }
+
+        @media (max-width: 768px) {
+            .progress-rail {
+                display: none;
+            }
+            
+            .section-padding {
+                padding: 4rem 0;
+            }
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--muted);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body class="dark">
+    <!-- Progress Rail -->
+    <div class="progress-rail hidden lg:block">
+        <div class="flex flex-col space-y-4">
+            <div class="w-2 h-2 rounded-full bg-primary" data-section="hero"></div>
+            <div class="w-2 h-2 rounded-full bg-muted" data-section="problem"></div>
+            <div class="w-2 h-2 rounded-full bg-muted" data-section="capabilities"></div>
+            <div class="w-2 h-2 rounded-full bg-muted" data-section="charts"></div>
+            <div class="w-2 h-2 rounded-full bg-muted" data-section="testimonials"></div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <!-- @COMPONENT: Navbar [sticky navigation with blur effect] -->
+    <nav class="glass-nav fixed top-0 left-0 right-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <div class="font-display font-bold text-xl gradient-text">TIAI Solutions</div>
+                </div>
+                
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#home" class="text-foreground hover:text-primary transition-colors">Home</a>
+                    <a href="#services" class="text-muted-foreground hover:text-primary transition-colors">Services</a>
+                    <a href="#case-studies" class="text-muted-foreground hover:text-primary transition-colors">Case Studies</a>
+                    <a href="#tools" class="text-muted-foreground hover:text-primary transition-colors">Tools</a>
+                    <a href="#about" class="text-muted-foreground hover:text-primary transition-colors">About</a>
+                    <a href="#contact" class="bg-primary text-primary-foreground px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors">Contact</a>
+                </div>
+
+                <button class="md:hidden text-foreground">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+    <!-- @END_COMPONENT: Navbar -->
+
+    <!-- Scene 1: Hero -->
+    <!-- @COMPONENT: HeroSection [main hero with animated text and CTAs] -->
+    <section id="hero" class="min-h-screen flex items-center justify-center relative particle-bg hero-gradient" data-section="hero">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+            <div class="animate-fade-up">
+                <h1 class="font-display text-5xl md:text-7xl lg:text-8xl font-bold mb-6">
+                    <span class="block">From Data</span>
+                    <span class="block gradient-text">to Decisions</span>
+                </h1>
+            </div>
+            
+            <div class="animate-fade-up delay-1">
+                <p class="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto mb-12">
+                    Automation-first consulting that turns your numbers into momentum.
+                </p>
+            </div>
+            
+            <div class="animate-fade-up delay-2 flex flex-col sm:flex-row gap-4 justify-center">
+                <button class="bg-primary text-primary-foreground px-8 py-4 rounded-xl text-lg font-semibold hover:bg-primary/90 transition-all transform hover:scale-105">
+                    Start a Project
+                </button>
+                <button class="border border-border text-foreground px-8 py-4 rounded-xl text-lg font-semibold hover:bg-muted transition-all">
+                    See Live Dashboards
+                </button>
+            </div>
+        </div>
+        
+        <!-- Scroll indicator -->
+        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <i class="fas fa-chevron-down text-muted-foreground text-xl"></i>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: HeroSection -->
+
+    <!-- Scene 2: Problem → Shift -->
+    <!-- @COMPONENT: BeforeAfterSection [comparison slider] -->
+    <section id="problem" class="section-padding bg-muted/50" data-section="problem">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="font-display text-4xl md:text-5xl font-bold mb-6">
+                    Transform Your Data Chaos
+                </h2>
+                <p class="text-xl text-muted-foreground max-w-3xl mx-auto">
+                    Move from scattered spreadsheets to automated insights that drive action.
+                </p>
+            </div>
+            
+            <div class="max-w-4xl mx-auto">
+                <div class="before-after-slider relative rounded-xl overflow-hidden" style="height: 400px;">
+                    <!-- Before State -->
+                    <div class="absolute inset-0 bg-card border-2 border-destructive/20">
+                        <div class="p-8 h-full flex flex-col">
+                            <div class="flex items-center mb-4">
+                                <i class="fas fa-table text-destructive mr-3"></i>
+                                <h3 class="font-display font-bold text-xl">Before: Spreadsheet Chaos</h3>
+                            </div>
+                            <div class="grid grid-cols-3 gap-2 flex-1">
+                                <div class="bg-destructive/10 p-3 rounded text-sm">
+                                    <div class="font-mono text-xs">Q1_Sales_FINAL_v3.xlsx</div>
+                                    <div class="text-muted-foreground">Modified 2 weeks ago</div>
+                                </div>
+                                <div class="bg-destructive/10 p-3 rounded text-sm">
+                                    <div class="font-mono text-xs">Margins_Report_Copy.xlsx</div>
+                                    <div class="text-muted-foreground">Modified 1 month ago</div>
+                                </div>
+                                <div class="bg-destructive/10 p-3 rounded text-sm">
+                                    <div class="font-mono text-xs">KPI_Dashboard_Draft.xlsx</div>
+                                    <div class="text-muted-foreground">Modified 3 weeks ago</div>
+                                </div>
+                                <div class="bg-destructive/20 p-3 rounded text-sm border-2 border-destructive/50">
+                                    <div class="text-xs text-destructive">❌ Formula Error</div>
+                                    <div class="text-muted-foreground">Manual calculation required</div>
+                                </div>
+                                <div class="bg-destructive/10 p-3 rounded text-sm">
+                                    <div class="font-mono text-xs">Budget_vs_Actual.xlsx</div>
+                                    <div class="text-muted-foreground">Data missing</div>
+                                </div>
+                                <div class="bg-destructive/10 p-3 rounded text-sm">
+                                    <div class="font-mono text-xs">Weekly_Report.xlsx</div>
+                                    <div class="text-muted-foreground">Needs updating</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- After State -->
+                    <div class="absolute inset-0 bg-card border-2 border-primary/20" style="clip-path: inset(0 50% 0 0);">
+                        <div class="p-8 h-full flex flex-col">
+                            <div class="flex items-center mb-4">
+                                <i class="fas fa-chart-line text-primary mr-3"></i>
+                                <h3 class="font-display font-bold text-xl">After: Automated Dashboard</h3>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4 flex-1">
+                                <div class="bg-primary/10 p-4 rounded-lg">
+                                    <div class="text-2xl font-bold text-primary mb-2">$2.4M</div>
+                                    <div class="text-sm text-muted-foreground">Revenue (YTD)</div>
+                                    <div class="flex items-center mt-2">
+                                        <i class="fas fa-arrow-up text-green-500 mr-1"></i>
+                                        <span class="text-green-500 text-sm">+12%</span>
+                                    </div>
+                                </div>
+                                <div class="bg-accent/10 p-4 rounded-lg">
+                                    <div class="text-2xl font-bold text-accent mb-2">24.5%</div>
+                                    <div class="text-sm text-muted-foreground">Gross Margin</div>
+                                    <div class="flex items-center mt-2">
+                                        <i class="fas fa-arrow-up text-green-500 mr-1"></i>
+                                        <span class="text-green-500 text-sm">+2.1%</span>
+                                    </div>
+                                </div>
+                                <div class="bg-green-500/10 p-4 rounded-lg">
+                                    <div class="text-2xl font-bold text-green-500 mb-2">94%</div>
+                                    <div class="text-sm text-muted-foreground">Forecast Accuracy</div>
+                                </div>
+                                <div class="bg-purple-500/10 p-4 rounded-lg">
+                                    <div class="text-2xl font-bold text-purple-500 mb-2">15min</div>
+                                    <div class="text-sm text-muted-foreground">Report Generation</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Slider Handle -->
+                    <div class="slider-handle" style="left: 50%;" data-implementation="Implement draggable slider functionality"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: BeforeAfterSection -->
+
+    <!-- Scene 3: Capabilities Carousel -->
+    <!-- @COMPONENT: CapabilitiesSection [animated capability showcase] -->
+    <section id="capabilities" class="section-padding" data-section="capabilities">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="font-display text-4xl md:text-5xl font-bold mb-6">
+                    Automated Intelligence
+                </h2>
+                <p class="text-xl text-muted-foreground max-w-3xl mx-auto">
+                    From KPI dashboards to cost control systems, we automate what matters most.
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- KPI Dashboards -->
+                <div class="bg-card p-6 rounded-xl border hover:border-primary/50 transition-all duration-300 hover:shadow-lg">
+                    <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-chart-bar text-primary text-xl"></i>
+                    </div>
+                    <h3 class="font-display font-semibold text-xl mb-3">KPI Dashboards</h3>
+                    <p class="text-muted-foreground mb-4">Real-time performance tracking with automated data refresh and alerts.</p>
+                    <ul class="text-sm space-y-2">
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>Revenue & margin tracking</li>
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>Forecast vs actual analysis</li>
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>Exception reporting</li>
+                    </ul>
+                </div>
+                
+                <!-- Automated Reporting -->
+                <div class="bg-card p-6 rounded-xl border hover:border-primary/50 transition-all duration-300 hover:shadow-lg">
+                    <div class="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-file-chart text-accent text-xl"></i>
+                    </div>
+                    <h3 class="font-display font-semibold text-xl mb-3">Automated Reporting</h3>
+                    <p class="text-muted-foreground mb-4">Scheduled reports delivered automatically to stakeholders.</p>
+                    <ul class="text-sm space-y-2">
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>Weekly performance reports</li>
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>PowerPoint automation</li>
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>Email distribution</li>
+                    </ul>
+                </div>
+                
+                <!-- Cost & Margin Insight -->
+                <div class="bg-card p-6 rounded-xl border hover:border-primary/50 transition-all duration-300 hover:shadow-lg">
+                    <div class="w-12 h-12 bg-purple-500/10 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-calculator text-purple-500 text-xl"></i>
+                    </div>
+                    <h3 class="font-display font-semibold text-xl mb-3">Cost & Margin Insight</h3>
+                    <p class="text-muted-foreground mb-4">Deep dive analytics on profitability and cost drivers.</p>
+                    <ul class="text-sm space-y-2">
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>Margin bridge analysis</li>
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>Cost center tracking</li>
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>Price optimization</li>
+                    </ul>
+                </div>
+                
+                <!-- Project & CAPEX Control -->
+                <div class="bg-card p-6 rounded-xl border hover:border-primary/50 transition-all duration-300 hover:shadow-lg">
+                    <div class="w-12 h-12 bg-green-500/10 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-project-diagram text-green-500 text-xl"></i>
+                    </div>
+                    <h3 class="font-display font-semibold text-xl mb-3">Project & CAPEX Control</h3>
+                    <p class="text-muted-foreground mb-4">Comprehensive project tracking and capital expenditure management.</p>
+                    <ul class="text-sm space-y-2">
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>Budget vs actual tracking</li>
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>Milestone monitoring</li>
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>ROI calculations</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: CapabilitiesSection -->
+
+    <!-- Scene 4: Animated Charts -->
+    <!-- @COMPONENT: ChartSection [ECharts with lazy loading] -->
+    <section id="charts" class="section-padding bg-muted/50" data-section="charts">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="font-display text-4xl md:text-5xl font-bold mb-6">
+                    Data That Drives Decisions
+                </h2>
+                <p class="text-xl text-muted-foreground max-w-3xl mx-auto">
+                    Interactive visualizations that reveal insights and guide strategic choices.
+                </p>
+            </div>
+            
+            <!-- Chart Tabs -->
+            <div class="flex justify-center mb-8">
+                <div class="bg-card rounded-lg p-1 inline-flex">
+                    <button class="chart-tab active px-6 py-3 rounded-md bg-primary text-primary-foreground" data-chart="sales">
+                        Sales Trend
+                    </button>
+                    <button class="chart-tab px-6 py-3 rounded-md hover:bg-muted transition-colors" data-chart="margin">
+                        Margin Bridge
+                    </button>
+                    <button class="chart-tab px-6 py-3 rounded-md hover:bg-muted transition-colors" data-chart="forecast">
+                        Forecast Accuracy
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Chart Container -->
+            <div class="bg-card rounded-xl p-8 shadow-lg">
+                <!-- Sales Trend Chart -->
+                <div id="sales-chart" class="chart-container revealed h-96">
+                    <div class="mb-4">
+                        <h3 class="font-display font-semibold text-xl">Sales Performance Trend</h3>
+                        <p class="text-muted-foreground">Actual vs planned sales with variance analysis</p>
+                    </div>
+                    <!-- Mock Chart Data Visualization -->
+                    <div class="relative h-80 bg-muted/30 rounded-lg flex items-end justify-around p-4">
+                        <div class="flex flex-col items-center">
+                            <div class="bg-primary w-12 mb-2" style="height: 120px;"></div>
+                            <div class="bg-primary/40 w-12 mb-2" style="height: 100px;"></div>
+                            <span class="text-xs text-muted-foreground">Jan</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <div class="bg-primary w-12 mb-2" style="height: 135px;"></div>
+                            <div class="bg-primary/40 w-12 mb-2" style="height: 110px;"></div>
+                            <span class="text-xs text-muted-foreground">Feb</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <div class="bg-primary w-12 mb-2" style="height: 128px;"></div>
+                            <div class="bg-primary/40 w-12 mb-2" style="height: 120px;"></div>
+                            <span class="text-xs text-muted-foreground">Mar</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <div class="bg-primary w-12 mb-2" style="height: 155px;"></div>
+                            <div class="bg-primary/40 w-12 mb-2" style="height: 130px;"></div>
+                            <span class="text-xs text-muted-foreground">Apr</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <div class="bg-primary w-12 mb-2" style="height: 162px;"></div>
+                            <div class="bg-primary/40 w-12 mb-2" style="height: 140px;"></div>
+                            <span class="text-xs text-muted-foreground">May</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <div class="bg-primary w-12 mb-2" style="height: 170px;"></div>
+                            <div class="bg-primary/40 w-12 mb-2" style="height: 150px;"></div>
+                            <span class="text-xs text-muted-foreground">Jun</span>
+                        </div>
+                        
+                        <!-- Legend -->
+                        <div class="absolute top-4 right-4 flex flex-col space-y-2">
+                            <div class="flex items-center">
+                                <div class="w-4 h-3 bg-primary mr-2 rounded"></div>
+                                <span class="text-sm">Actual</span>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="w-4 h-3 bg-primary/40 mr-2 rounded"></div>
+                                <span class="text-sm">Plan</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- @FUNCTIONALITY: Replace with ECharts implementation for sales trend data -->
+                </div>
+                
+                <!-- Margin Bridge Chart (Hidden by default) -->
+                <div id="margin-chart" class="chart-container h-96 hidden">
+                    <div class="mb-4">
+                        <h3 class="font-display font-semibold text-xl">Margin Bridge Analysis</h3>
+                        <p class="text-muted-foreground">Waterfall analysis of margin improvements</p>
+                    </div>
+                    <div class="relative h-80 bg-muted/30 rounded-lg flex items-end justify-around p-4">
+                        <!-- Waterfall chart mockup -->
+                        <div class="flex items-end space-x-4 h-full">
+                            <div class="flex flex-col items-center justify-end h-full">
+                                <div class="bg-muted w-16 mb-2" style="height: 120px;"></div>
+                                <span class="text-xs text-muted-foreground">Start</span>
+                                <span class="text-xs font-bold">20%</span>
+                            </div>
+                            <div class="flex flex-col items-center justify-end h-full">
+                                <div class="bg-green-500 w-16 mb-2" style="height: 80px;"></div>
+                                <span class="text-xs text-muted-foreground">Price</span>
+                                <span class="text-xs font-bold text-green-500">+6%</span>
+                            </div>
+                            <div class="flex flex-col items-center justify-end h-full">
+                                <div class="bg-red-500 w-16 mb-2" style="height: 40px;"></div>
+                                <span class="text-xs text-muted-foreground">Volume</span>
+                                <span class="text-xs font-bold text-red-500">-2%</span>
+                            </div>
+                            <div class="flex flex-col items-center justify-end h-full">
+                                <div class="bg-green-500 w-16 mb-2" style="height: 60px;"></div>
+                                <span class="text-xs text-muted-foreground">Mix</span>
+                                <span class="text-xs font-bold text-green-500">+3%</span>
+                            </div>
+                            <div class="flex flex-col items-center justify-end h-full">
+                                <div class="bg-primary w-16 mb-2" style="height: 150px;"></div>
+                                <span class="text-xs text-muted-foreground">End</span>
+                                <span class="text-xs font-bold">25%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- @FUNCTIONALITY: Replace with ECharts waterfall chart -->
+                </div>
+                
+                <!-- Forecast Chart (Hidden by default) -->
+                <div id="forecast-chart" class="chart-container h-96 hidden">
+                    <div class="mb-4">
+                        <h3 class="font-display font-semibold text-xl">Forecast vs Actual Accuracy</h3>
+                        <p class="text-muted-foreground">Quarterly forecast accuracy trending</p>
+                    </div>
+                    <div class="relative h-80 bg-muted/30 rounded-lg flex items-center justify-center p-4">
+                        <!-- Line chart mockup -->
+                        <div class="w-full h-full relative">
+                            <svg viewBox="0 0 400 200" class="w-full h-full">
+                                <polyline fill="none" stroke="hsl(221 83% 53%)" stroke-width="3" 
+                                         points="50,150 150,120 250,100 350,110"/>
+                                <polyline fill="none" stroke="hsl(187 85% 53%)" stroke-width="3" stroke-dasharray="5,5"
+                                         points="50,160 150,125 250,90 350,105"/>
+                                <!-- Data points -->
+                                <circle cx="50" cy="150" r="4" fill="hsl(221 83% 53%)"/>
+                                <circle cx="150" cy="120" r="4" fill="hsl(221 83% 53%)"/>
+                                <circle cx="250" cy="100" r="4" fill="hsl(221 83% 53%)"/>
+                                <circle cx="350" cy="110" r="4" fill="hsl(221 83% 53%)"/>
+                            </svg>
+                            <!-- Labels -->
+                            <div class="absolute bottom-0 left-0 right-0 flex justify-between px-8">
+                                <span class="text-xs text-muted-foreground">Q1</span>
+                                <span class="text-xs text-muted-foreground">Q2</span>
+                                <span class="text-xs text-muted-foreground">Q3</span>
+                                <span class="text-xs text-muted-foreground">Q4</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- @FUNCTIONALITY: Replace with ECharts line chart for forecast accuracy -->
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: ChartSection -->
+
+    <!-- Services Section -->
+    <!-- @COMPONENT: ServicesSection [service tier ladder] -->
+    <section id="services" class="section-padding">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="font-display text-4xl md:text-5xl font-bold mb-6">
+                    Automation Tiers
+                </h2>
+                <p class="text-xl text-muted-foreground max-w-3xl mx-auto">
+                    From essential insights to advanced decision systems, we scale with your needs.
+                </p>
+            </div>
+            
+            <div class="grid lg:grid-cols-3 gap-8">
+                <!-- Tier 1: Essentials -->
+                <div class="service-tier bg-card p-8 rounded-xl shadow-lg">
+                    <div class="text-center mb-6">
+                        <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-chart-simple text-primary text-2xl"></i>
+                        </div>
+                        <h3 class="font-display text-2xl font-bold mb-2">Essentials</h3>
+                        <p class="text-muted-foreground">Foundation for data-driven decisions</p>
+                    </div>
+                    
+                    <ul class="space-y-4 mb-8">
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-green-500 mr-3 mt-1"></i>
+                            <div>
+                                <div class="font-semibold">KPI Tree Development</div>
+                                <div class="text-sm text-muted-foreground">Define and structure your key metrics</div>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-green-500 mr-3 mt-1"></i>
+                            <div>
+                                <div class="font-semibold">Monthly Dashboards</div>
+                                <div class="text-sm text-muted-foreground">Performance tracking and variance analysis</div>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-green-500 mr-3 mt-1"></i>
+                            <div>
+                                <div class="font-semibold">Data Cleanup</div>
+                                <div class="text-sm text-muted-foreground">Standardize and validate data sources</div>
+                            </div>
+                        </li>
+                    </ul>
+                    
+                    <button class="w-full bg-primary/10 text-primary py-3 rounded-lg font-semibold hover:bg-primary/20 transition-colors">
+                        Get Started
+                    </button>
+                </div>
+                
+                <!-- Tier 2: Automation -->
+                <div class="service-tier bg-card p-8 rounded-xl shadow-lg border-2 border-primary">
+                    <div class="text-center mb-6">
+                        <div class="bg-primary/10 text-primary text-xs px-3 py-1 rounded-full mb-4 inline-block">POPULAR</div>
+                        <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-robot text-primary text-2xl"></i>
+                        </div>
+                        <h3 class="font-display text-2xl font-bold mb-2">Automation</h3>
+                        <p class="text-muted-foreground">Streamlined workflows and processes</p>
+                    </div>
+                    
+                    <ul class="space-y-4 mb-8">
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-green-500 mr-3 mt-1"></i>
+                            <div>
+                                <div class="font-semibold">Scheduled Refresh</div>
+                                <div class="text-sm text-muted-foreground">Automated data updates and alerts</div>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-green-500 mr-3 mt-1"></i>
+                            <div>
+                                <div class="font-semibold">Power Query Pipelines</div>
+                                <div class="text-sm text-muted-foreground">ETL processes for data transformation</div>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-green-500 mr-3 mt-1"></i>
+                            <div>
+                                <div class="font-semibold">VBA Tooling</div>
+                                <div class="text-sm text-muted-foreground">Custom automation for Excel workflows</div>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-green-500 mr-3 mt-1"></i>
+                            <div>
+                                <div class="font-semibold">Power Automate Flows</div>
+                                <div class="text-sm text-muted-foreground">Workflow automation across systems</div>
+                            </div>
+                        </li>
+                    </ul>
+                    
+                    <button class="w-full bg-primary text-primary-foreground py-3 rounded-lg font-semibold hover:bg-primary/90 transition-colors">
+                        Start Automation
+                    </button>
+                </div>
+                
+                <!-- Tier 3: Decision Systems -->
+                <div class="service-tier bg-card p-8 rounded-xl shadow-lg">
+                    <div class="text-center mb-6">
+                        <div class="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-brain text-accent text-2xl"></i>
+                        </div>
+                        <h3 class="font-display text-2xl font-bold mb-2">Decision Systems</h3>
+                        <p class="text-muted-foreground">Advanced analytics and optimization</p>
+                    </div>
+                    
+                    <ul class="space-y-4 mb-8">
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-green-500 mr-3 mt-1"></i>
+                            <div>
+                                <div class="font-semibold">Margin Simulators</div>
+                                <div class="text-sm text-muted-foreground">Price and discount optimization models</div>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-green-500 mr-3 mt-1"></i>
+                            <div>
+                                <div class="font-semibold">Scenario Planners</div>
+                                <div class="text-sm text-muted-foreground">What-if analysis and forecasting</div>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-green-500 mr-3 mt-1"></i>
+                            <div>
+                                <div class="font-semibold">Smart Alerting</div>
+                                <div class="text-sm text-muted-foreground">Predictive alerts and notifications</div>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-green-500 mr-3 mt-1"></i>
+                            <div>
+                                <div class="font-semibold">Advanced Analytics</div>
+                                <div class="text-sm text-muted-foreground">ML-powered insights and predictions</div>
+                            </div>
+                        </li>
+                    </ul>
+                    
+                    <button class="w-full bg-accent/10 text-accent py-3 rounded-lg font-semibold hover:bg-accent/20 transition-colors">
+                        Explore Systems
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: ServicesSection -->
+
+    <!-- Case Studies Section -->
+    <!-- @COMPONENT: CaseStudiesSection [showcase of automation solutions] -->
+    <section id="case-studies" class="section-padding bg-muted/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="font-display text-4xl md:text-5xl font-bold mb-6">
+                    Success Stories
+                </h2>
+                <p class="text-xl text-muted-foreground max-w-3xl mx-auto">
+                    Real automation solutions that transformed how our clients work with data.
+                </p>
+            </div>
+            
+            <div class="grid lg:grid-cols-3 gap-8">
+                <!-- Case Study 1: Ammonia Transfer KPI Suite -->
+                <div class="bg-card p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
+                    <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-6">
+                        <i class="fas fa-industry text-primary text-xl"></i>
+                    </div>
+                    
+                    <h3 class="font-display text-xl font-bold mb-3">Ammonia Transfer KPI Suite</h3>
+                    <p class="text-muted-foreground mb-6">
+                        Automated weekly reporting system with PowerPoint export and VBA interface for a chemical processing facility.
+                    </p>
+                    
+                    <div class="space-y-4 mb-6">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-muted-foreground">Time Saved</span>
+                            <span class="font-semibold">15 hours/week</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-muted-foreground">Accuracy Improvement</span>
+                            <span class="font-semibold">99.5%</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-muted-foreground">Report Delivery</span>
+                            <span class="font-semibold">Automated</span>
+                        </div>
+                    </div>
+                    
+                    <div class="border-t pt-4">
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="bg-primary/10 text-primary text-xs px-2 py-1 rounded">VBA</span>
+                            <span class="bg-primary/10 text-primary text-xs px-2 py-1 rounded">Power Query</span>
+                            <span class="bg-primary/10 text-primary text-xs px-2 py-1 rounded">PowerPoint API</span>
+                        </div>
+                        <button class="text-primary hover:text-primary/80 font-semibold text-sm flex items-center">
+                            View Case Study <i class="fas fa-arrow-right ml-2"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Case Study 2: B2C Margin Simulator -->
+                <div class="bg-card p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
+                    <div class="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center mb-6">
+                        <i class="fas fa-shopping-cart text-accent text-xl"></i>
+                    </div>
+                    
+                    <h3 class="font-display text-xl font-bold mb-3">B2C Margin Simulator</h3>
+                    <p class="text-muted-foreground mb-6">
+                        Interactive discount and pricing model with volume mix analysis for retail optimization.
+                    </p>
+                    
+                    <div class="space-y-4 mb-6">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-muted-foreground">Margin Improvement</span>
+                            <span class="font-semibold">+3.2%</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-muted-foreground">Scenarios Modeled</span>
+                            <span class="font-semibold">500+</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-muted-foreground">Decision Speed</span>
+                            <span class="font-semibold">Real-time</span>
+                        </div>
+                    </div>
+                    
+                    <div class="border-t pt-4">
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="bg-accent/10 text-accent text-xs px-2 py-1 rounded">Excel VBA</span>
+                            <span class="bg-accent/10 text-accent text-xs px-2 py-1 rounded">Monte Carlo</span>
+                            <span class="bg-accent/10 text-accent text-xs px-2 py-1 rounded">Optimization</span>
+                        </div>
+                        <button class="text-accent hover:text-accent/80 font-semibold text-sm flex items-center">
+                            View Case Study <i class="fas fa-arrow-right ml-2"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Case Study 3: CAPEX Controller Toolkit -->
+                <div class="bg-card p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
+                    <div class="w-12 h-12 bg-green-500/10 rounded-lg flex items-center justify-center mb-6">
+                        <i class="fas fa-coins text-green-500 text-xl"></i>
+                    </div>
+                    
+                    <h3 class="font-display text-xl font-bold mb-3">CAPEX Controller Toolkit</h3>
+                    <p class="text-muted-foreground mb-6">
+                        Comprehensive capital expenditure tracking with QBR data models and project KPI monitoring.
+                    </p>
+                    
+                    <div class="space-y-4 mb-6">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-muted-foreground">Projects Tracked</span>
+                            <span class="font-semibold">150+</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-muted-foreground">Budget Variance</span>
+                            <span class="font-semibold">±2%</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-muted-foreground">Reporting Frequency</span>
+                            <span class="font-semibold">Daily</span>
+                        </div>
+                    </div>
+                    
+                    <div class="border-t pt-4">
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="bg-green-500/10 text-green-500 text-xs px-2 py-1 rounded">Power BI</span>
+                            <span class="bg-green-500/10 text-green-500 text-xs px-2 py-1 rounded">DAX</span>
+                            <span class="bg-green-500/10 text-green-500 text-xs px-2 py-1 rounded">SQL</span>
+                        </div>
+                        <button class="text-green-500 hover:text-green-500/80 font-semibold text-sm flex items-center">
+                            View Case Study <i class="fas fa-arrow-right ml-2"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: CaseStudiesSection -->
+
+    <!-- Scene 5: Social Proof + CTA -->
+    <!-- @COMPONENT: TestimonialsSection [social proof and final CTA] -->
+    <section id="testimonials" class="section-padding" data-section="testimonials">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="font-display text-4xl md:text-5xl font-bold mb-6">
+                    Trusted by Data Leaders
+                </h2>
+                <p class="text-xl text-muted-foreground max-w-3xl mx-auto">
+                    See how automation has transformed decision-making for our clients.
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+                <!-- Testimonial 1 -->
+                <div class="bg-card p-6 rounded-xl shadow-lg">
+                    <div class="flex items-center mb-4">
+                        <div class="flex text-yellow-400">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <blockquote class="text-muted-foreground mb-4">
+                        "TIAI Solutions transformed our weekly reporting from a 2-day manual process to a 15-minute automated workflow. The accuracy and insights are game-changing."
+                    </blockquote>
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center mr-3">
+                            <i class="fas fa-user text-primary"></i>
+                        </div>
+                        <div>
+                            <div class="font-semibold" data-mock="true">Sarah Chen</div>
+                            <div class="text-sm text-muted-foreground" data-mock="true">Finance Director, Chemical Corp</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 2 -->
+                <div class="bg-card p-6 rounded-xl shadow-lg">
+                    <div class="flex items-center mb-4">
+                        <div class="flex text-yellow-400">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <blockquote class="text-muted-foreground mb-4">
+                        "The margin simulator helped us optimize our pricing strategy and increased profitability by 3.2% in just one quarter. Exceptional ROI."
+                    </blockquote>
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 bg-accent/10 rounded-full flex items-center justify-center mr-3">
+                            <i class="fas fa-user text-accent"></i>
+                        </div>
+                        <div>
+                            <div class="font-semibold" data-mock="true">Michael Rodriguez</div>
+                            <div class="text-sm text-muted-foreground" data-mock="true">VP Operations, Retail Plus</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 3 -->
+                <div class="bg-card p-6 rounded-xl shadow-lg">
+                    <div class="flex items-center mb-4">
+                        <div class="flex text-yellow-400">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <blockquote class="text-muted-foreground mb-4">
+                        "Their CAPEX tracking system gives us real-time visibility into all our projects. No more surprises, just data-driven decisions."
+                    </blockquote>
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 bg-green-500/10 rounded-full flex items-center justify-center mr-3">
+                            <i class="fas fa-user text-green-500"></i>
+                        </div>
+                        <div>
+                            <div class="font-semibold" data-mock="true">Jennifer Walsh</div>
+                            <div class="text-sm text-muted-foreground" data-mock="true">CFO, Manufacturing Inc</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Final CTA -->
+            <div class="text-center bg-gradient-to-r from-primary/10 via-accent/5 to-purple-500/10 p-12 rounded-2xl">
+                <h3 class="font-display text-3xl md:text-4xl font-bold mb-4">
+                    Let's automate what slows you down
+                </h3>
+                <p class="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
+                    Transform your data processes from manual to automated. Get insights that drive decisions, not just reports.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <button class="bg-primary text-primary-foreground px-8 py-4 rounded-xl text-lg font-semibold hover:bg-primary/90 transition-all transform hover:scale-105">
+                        Start Your Automation Journey
+                    </button>
+                    <button class="border border-border text-foreground px-8 py-4 rounded-xl text-lg font-semibold hover:bg-muted transition-all">
+                        Schedule a Demo
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: TestimonialsSection -->
+
+    <!-- Tools & Templates Section -->
+    <!-- @COMPONENT: ToolsSection [downloadable resources] -->
+    <section id="tools" class="section-padding bg-muted/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="font-display text-4xl md:text-5xl font-bold mb-6">
+                    Tools & Templates
+                </h2>
+                <p class="text-xl text-muted-foreground max-w-3xl mx-auto">
+                    Ready-to-use automation tools and templates to jumpstart your data transformation.
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- KPI Dashboard Template -->
+                <div class="bg-card p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
+                    <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-chart-line text-primary text-xl"></i>
+                    </div>
+                    <h3 class="font-display text-xl font-bold mb-3">KPI Dashboard Template</h3>
+                    <p class="text-muted-foreground mb-4">
+                        Complete Excel dashboard with dynamic charts, KPI scorecards, and automated refresh.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="bg-primary/10 text-primary text-xs px-2 py-1 rounded">Excel</span>
+                        <span class="bg-primary/10 text-primary text-xs px-2 py-1 rounded">Power Query</span>
+                        <span class="bg-primary/10 text-primary text-xs px-2 py-1 rounded">Charts</span>
+                    </div>
+                    <button class="w-full bg-primary text-primary-foreground py-3 rounded-lg font-semibold hover:bg-primary/90 transition-colors">
+                        Get Template
+                    </button>
+                </div>
+                
+                <!-- Margin Analysis Toolkit -->
+                <div class="bg-card p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
+                    <div class="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-calculator text-accent text-xl"></i>
+                    </div>
+                    <h3 class="font-display text-xl font-bold mb-3">Margin Analysis Toolkit</h3>
+                    <p class="text-muted-foreground mb-4">
+                        Comprehensive margin bridge analysis with waterfall charts and scenario modeling.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="bg-accent/10 text-accent text-xs px-2 py-1 rounded">Excel VBA</span>
+                        <span class="bg-accent/10 text-accent text-xs px-2 py-1 rounded">Analysis</span>
+                        <span class="bg-accent/10 text-accent text-xs px-2 py-1 rounded">Modeling</span>
+                    </div>
+                    <button class="w-full bg-accent/10 text-accent py-3 rounded-lg font-semibold hover:bg-accent/20 transition-colors">
+                        Get Template
+                    </button>
+                </div>
+                
+                <!-- Power BI Starter Kit -->
+                <div class="bg-card p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
+                    <div class="w-12 h-12 bg-green-500/10 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-chart-pie text-green-500 text-xl"></i>
+                    </div>
+                    <h3 class="font-display text-xl font-bold mb-3">Power BI Starter Kit</h3>
+                    <p class="text-muted-foreground mb-4">
+                        Pre-built Power BI templates with common business metrics and DAX formulas.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="bg-green-500/10 text-green-500 text-xs px-2 py-1 rounded">Power BI</span>
+                        <span class="bg-green-500/10 text-green-500 text-xs px-2 py-1 rounded">DAX</span>
+                        <span class="bg-green-500/10 text-green-500 text-xs px-2 py-1 rounded">Templates</span>
+                    </div>
+                    <button class="w-full bg-green-500/10 text-green-500 py-3 rounded-lg font-semibold hover:bg-green-500/20 transition-colors">
+                        Get Template
+                    </button>
+                </div>
+                
+                <!-- VBA Automation Library -->
+                <div class="bg-card p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
+                    <div class="w-12 h-12 bg-purple-500/10 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-code text-purple-500 text-xl"></i>
+                    </div>
+                    <h3 class="font-display text-xl font-bold mb-3">VBA Automation Library</h3>
+                    <p class="text-muted-foreground mb-4">
+                        Collection of VBA modules for common automation tasks and report generation.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="bg-purple-500/10 text-purple-500 text-xs px-2 py-1 rounded">VBA</span>
+                        <span class="bg-purple-500/10 text-purple-500 text-xs px-2 py-1 rounded">Automation</span>
+                        <span class="bg-purple-500/10 text-purple-500 text-xs px-2 py-1 rounded">Modules</span>
+                    </div>
+                    <button class="w-full bg-purple-500/10 text-purple-500 py-3 rounded-lg font-semibold hover:bg-purple-500/20 transition-colors">
+                        Get Template
+                    </button>
+                </div>
+                
+                <!-- Budget Planning Model -->
+                <div class="bg-card p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
+                    <div class="w-12 h-12 bg-blue-500/10 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-clipboard-list text-blue-500 text-xl"></i>
+                    </div>
+                    <h3 class="font-display text-xl font-bold mb-3">Budget Planning Model</h3>
+                    <p class="text-muted-foreground mb-4">
+                        Dynamic budget model with variance analysis and rolling forecasts.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="bg-blue-500/10 text-blue-500 text-xs px-2 py-1 rounded">Excel</span>
+                        <span class="bg-blue-500/10 text-blue-500 text-xs px-2 py-1 rounded">Planning</span>
+                        <span class="bg-blue-500/10 text-blue-500 text-xs px-2 py-1 rounded">Forecasting</span>
+                    </div>
+                    <button class="w-full bg-blue-500/10 text-blue-500 py-3 rounded-lg font-semibold hover:bg-blue-500/20 transition-colors">
+                        Get Template
+                    </button>
+                </div>
+                
+                <!-- CAPEX Tracking System -->
+                <div class="bg-card p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
+                    <div class="w-12 h-12 bg-orange-500/10 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-project-diagram text-orange-500 text-xl"></i>
+                    </div>
+                    <h3 class="font-display text-xl font-bold mb-3">CAPEX Tracking System</h3>
+                    <p class="text-muted-foreground mb-4">
+                        Complete capital expenditure tracking with project milestones and ROI calculations.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="bg-orange-500/10 text-orange-500 text-xs px-2 py-1 rounded">Excel</span>
+                        <span class="bg-orange-500/10 text-orange-500 text-xs px-2 py-1 rounded">CAPEX</span>
+                        <span class="bg-orange-500/10 text-orange-500 text-xs px-2 py-1 rounded">Tracking</span>
+                    </div>
+                    <button class="w-full bg-orange-500/10 text-orange-500 py-3 rounded-lg font-semibold hover:bg-orange-500/20 transition-colors">
+                        Get Template
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: ToolsSection -->
+
+    <!-- Contact Section -->
+    <!-- @COMPONENT: ContactSection [serverless contact form] -->
+    <section id="contact" class="section-padding">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="font-display text-4xl md:text-5xl font-bold mb-6">
+                    Start Your Automation Journey
+                </h2>
+                <p class="text-xl text-muted-foreground max-w-3xl mx-auto">
+                    Ready to transform your data processes? Let's discuss your automation needs.
+                </p>
+            </div>
+            
+            <div class="bg-card p-8 rounded-xl shadow-lg">
+                <form class="space-y-6" data-implementation="Connect to serverless backend">
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="name" class="block text-sm font-medium mb-2">Name *</label>
+                            <input type="text" id="name" name="name" required 
+                                   class="w-full px-4 py-3 rounded-lg border border-border bg-background focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                                   placeholder="Your name">
+                        </div>
+                        <div>
+                            <label for="email" class="block text-sm font-medium mb-2">Email *</label>
+                            <input type="email" id="email" name="email" required 
+                                   class="w-full px-4 py-3 rounded-lg border border-border bg-background focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                                   placeholder="your.email@company.com">
+                        </div>
+                    </div>
+                    
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="company" class="block text-sm font-medium mb-2">Company</label>
+                            <input type="text" id="company" name="company" 
+                                   class="w-full px-4 py-3 rounded-lg border border-border bg-background focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                                   placeholder="Your company">
+                        </div>
+                        <div>
+                            <label for="role" class="block text-sm font-medium mb-2">Role</label>
+                            <select id="role" name="role" 
+                                    class="w-full px-4 py-3 rounded-lg border border-border bg-background focus:ring-2 focus:ring-primary focus:border-transparent transition-all">
+                                <option value="">Select your role</option>
+                                <option value="finance">Finance Leader</option>
+                                <option value="operations">Operations Manager</option>
+                                <option value="analyst">Data Analyst</option>
+                                <option value="executive">Executive</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label for="message" class="block text-sm font-medium mb-2">Project Description *</label>
+                        <textarea id="message" name="message" rows="4" required 
+                                  class="w-full px-4 py-3 rounded-lg border border-border bg-background focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                                  placeholder="Describe your current data challenges and automation goals..."></textarea>
+                    </div>
+                    
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="timeframe" class="block text-sm font-medium mb-2">Project Timeframe</label>
+                            <select id="timeframe" name="timeframe" 
+                                    class="w-full px-4 py-3 rounded-lg border border-border bg-background focus:ring-2 focus:ring-primary focus:border-transparent transition-all">
+                                <option value="">Select timeframe</option>
+                                <option value="immediate">Immediate (< 1 month)</option>
+                                <option value="quarter">This Quarter</option>
+                                <option value="half-year">Next 6 months</option>
+                                <option value="year">Within a year</option>
+                                <option value="exploring">Just exploring</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="budget" class="block text-sm font-medium mb-2">Budget Range</label>
+                            <select id="budget" name="budget" 
+                                    class="w-full px-4 py-3 rounded-lg border border-border bg-background focus:ring-2 focus:ring-primary focus:border-transparent transition-all">
+                                <option value="">Select budget range</option>
+                                <option value="under-10k">Under $10K</option>
+                                <option value="10k-25k">$10K - $25K</option>
+                                <option value="25k-50k">$25K - $50K</option>
+                                <option value="50k-100k">$50K - $100K</option>
+                                <option value="over-100k">Over $100K</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Honeypot field for spam protection -->
+                    <div style="display: none;">
+                        <input type="text" name="honeypot" id="honeypot" tabindex="-1" autocomplete="off">
+                    </div>
+                    
+                    <button type="submit" 
+                            class="w-full bg-primary text-primary-foreground py-4 rounded-lg font-semibold hover:bg-primary/90 transition-all transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed">
+                        Send Message
+                    </button>
+                    
+                    <p class="text-sm text-muted-foreground text-center">
+                        We'll respond within 24 hours with next steps and a proposed approach.
+                    </p>
+                </form>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: ContactSection -->
+
+    <!-- About Section -->
+    <!-- @COMPONENT: AboutSection [company information] -->
+    <section id="about" class="section-padding bg-muted/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="font-display text-4xl md:text-5xl font-bold mb-6">
+                    About TIAI Solutions
+                </h2>
+                <p class="text-xl text-muted-foreground max-w-3xl mx-auto">
+                    We're automation specialists who believe data should drive decisions, not consume time.
+                </p>
+            </div>
+            
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h3 class="font-display text-2xl font-bold mb-6">Our Mission</h3>
+                    <p class="text-muted-foreground mb-6">
+                        At TIAI Solutions, we transform how businesses interact with their data. Our automation-first approach 
+                        eliminates manual processes, reduces errors, and provides real-time insights that drive strategic decisions.
+                    </p>
+                    <p class="text-muted-foreground mb-8">
+                        We specialize in creating sophisticated yet user-friendly automation solutions using familiar tools 
+                        like Excel, Power BI, and VBA, combined with modern cloud technologies for scalable, reliable performance.
+                    </p>
+                    
+                    <div class="grid grid-cols-2 gap-6">
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-primary mb-2">50+</div>
+                            <div class="text-sm text-muted-foreground">Projects Completed</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-accent mb-2">200+</div>
+                            <div class="text-sm text-muted-foreground">Hours Saved Weekly</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-green-500 mb-2">95%</div>
+                            <div class="text-sm text-muted-foreground">Client Satisfaction</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-purple-500 mb-2">24hr</div>
+                            <div class="text-sm text-muted-foreground">Response Time</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="space-y-6">
+                    <h3 class="font-display text-2xl font-bold mb-6">Our Expertise</h3>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-start">
+                            <div class="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center mr-4 mt-1">
+                                <i class="fas fa-chart-line text-primary text-sm"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold mb-1">Financial Analytics</h4>
+                                <p class="text-sm text-muted-foreground">KPI dashboards, margin analysis, and budget planning automation</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="w-8 h-8 bg-accent/10 rounded-lg flex items-center justify-center mr-4 mt-1">
+                                <i class="fas fa-robot text-accent text-sm"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold mb-1">Process Automation</h4>
+                                <p class="text-sm text-muted-foreground">VBA scripting, Power Automate flows, and report generation</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="w-8 h-8 bg-green-500/10 rounded-lg flex items-center justify-center mr-4 mt-1">
+                                <i class="fas fa-database text-green-500 text-sm"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold mb-1">Data Integration</h4>
+                                <p class="text-sm text-muted-foreground">Power Query pipelines and multi-source data consolidation</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="w-8 h-8 bg-purple-500/10 rounded-lg flex items-center justify-center mr-4 mt-1">
+                                <i class="fas fa-brain text-purple-500 text-sm"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold mb-1">Decision Systems</h4>
+                                <p class="text-sm text-muted-foreground">Scenario modeling, optimization, and predictive analytics</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: AboutSection -->
+
+    <!-- Footer -->
+    <!-- @COMPONENT: Footer [site navigation and legal] -->
+    <footer class="bg-foreground text-background py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-8">
+                <!-- Company Info -->
+                <div class="md:col-span-2">
+                    <div class="font-display font-bold text-2xl mb-4">TIAI Solutions</div>
+                    <p class="text-background/70 mb-6 max-w-md">
+                        Automation-first consulting that turns your numbers into momentum. 
+                        From data chaos to decision clarity.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 bg-background/10 rounded-lg flex items-center justify-center hover:bg-background/20 transition-colors">
+                            <i class="fab fa-linkedin text-background/70"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-background/10 rounded-lg flex items-center justify-center hover:bg-background/20 transition-colors">
+                            <i class="fab fa-twitter text-background/70"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-background/10 rounded-lg flex items-center justify-center hover:bg-background/20 transition-colors">
+                            <i class="fab fa-github text-background/70"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Quick Links -->
+                <div>
+                    <h3 class="font-semibold mb-4">Quick Links</h3>
+                    <ul class="space-y-3">
+                        <li><a href="#home" class="text-background/70 hover:text-background transition-colors">Home</a></li>
+                        <li><a href="#services" class="text-background/70 hover:text-background transition-colors">Services</a></li>
+                        <li><a href="#case-studies" class="text-background/70 hover:text-background transition-colors">Case Studies</a></li>
+                        <li><a href="#tools" class="text-background/70 hover:text-background transition-colors">Tools</a></li>
+                        <li><a href="#about" class="text-background/70 hover:text-background transition-colors">About</a></li>
+                        <li><a href="#contact" class="text-background/70 hover:text-background transition-colors">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Contact Info -->
+                <div>
+                    <h3 class="font-semibold mb-4">Get in Touch</h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-center text-background/70">
+                            <i class="fas fa-envelope mr-3"></i>
+                            <span data-mock="true">hello@tiai-solutions.com</span>
+                        </li>
+                        <li class="flex items-center text-background/70">
+                            <i class="fas fa-phone mr-3"></i>
+                            <span data-mock="true">+1 (555) 123-4567</span>
+                        </li>
+                        <li class="flex items-start text-background/70">
+                            <i class="fas fa-map-marker-alt mr-3 mt-1"></i>
+                            <span data-mock="true">San Francisco, CA</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-background/20 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-background/70 text-sm">
+                    © 2024 TIAI Solutions. All rights reserved.
+                </p>
+                <div class="flex space-x-6 mt-4 md:mt-0">
+                    <a href="#" class="text-background/70 hover:text-background text-sm transition-colors">Privacy Policy</a>
+                    <a href="#" class="text-background/70 hover:text-background text-sm transition-colors">Terms of Service</a>
+                    <a href="#" class="text-background/70 hover:text-background text-sm transition-colors">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- @END_COMPONENT: Footer -->
+
+    <!-- Scripts -->
+    <script>
+        (function() {
+            // Chart tab switching functionality
+            const chartTabs = document.querySelectorAll('.chart-tab');
+            const charts = ['sales-chart', 'margin-chart', 'forecast-chart'];
+            
+            chartTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const chartType = this.getAttribute('data-chart');
+                    
+                    // Update tab states
+                    chartTabs.forEach(t => {
+                        t.classList.remove('active', 'bg-primary', 'text-primary-foreground');
+                        t.classList.add('hover:bg-muted');
+                    });
+                    this.classList.add('active', 'bg-primary', 'text-primary-foreground');
+                    this.classList.remove('hover:bg-muted');
+                    
+                    // Show/hide charts
+                    charts.forEach(chartId => {
+                        const chart = document.getElementById(chartId);
+                        if (chartId === `${chartType}-chart`) {
+                            chart.classList.remove('hidden');
+                        } else {
+                            chart.classList.add('hidden');
+                        }
+                    });
+                });
+            });
+
+            // Progress rail scroll tracking
+            const sections = document.querySelectorAll('[data-section]');
+            const progressDots = document.querySelectorAll('[data-section]');
+            
+            function updateProgressRail() {
+                let activeSection = '';
+                sections.forEach(section => {
+                    const rect = section.getBoundingClientRect();
+                    if (rect.top <= window.innerHeight / 2 && rect.bottom >= window.innerHeight / 2) {
+                        activeSection = section.getAttribute('data-section');
+                    }
+                });
+                
+                progressDots.forEach(dot => {
+                    if (dot.getAttribute('data-section') === activeSection) {
+                        dot.classList.remove('bg-muted');
+                        dot.classList.add('bg-primary');
+                    } else {
+                        dot.classList.remove('bg-primary');
+                        dot.classList.add('bg-muted');
+                    }
+                });
+            }
+            
+            window.addEventListener('scroll', updateProgressRail);
+            
+            // Smooth scrolling for navigation links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+
+            // Contact form submission (mock implementation)
+            const contactForm = document.querySelector('form');
+            if (contactForm) {
+                contactForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    // Basic validation
+                    const requiredFields = this.querySelectorAll('[required]');
+                    let isValid = true;
+                    
+                    requiredFields.forEach(field => {
+                        if (!field.value.trim()) {
+                            isValid = false;
+                            field.classList.add('border-destructive');
+                        } else {
+                            field.classList.remove('border-destructive');
+                        }
+                    });
+                    
+                    // Honeypot check
+                    const honeypot = this.querySelector('[name="honeypot"]');
+                    if (honeypot && honeypot.value) {
+                        console.log('Spam detected');
+                        return;
+                    }
+                    
+                    if (isValid) {
+                        const submitBtn = this.querySelector('button[type="submit"]');
+                        const originalText = submitBtn.textContent;
+                        
+                        submitBtn.disabled = true;
+                        submitBtn.textContent = 'Sending...';
+                        
+                        // Simulate API call
+                        setTimeout(() => {
+                            submitBtn.textContent = 'Message Sent!';
+                            submitBtn.classList.remove('bg-primary');
+                            submitBtn.classList.add('bg-green-500');
+                            
+                            // Reset form
+                            setTimeout(() => {
+                                this.reset();
+                                submitBtn.disabled = false;
+                                submitBtn.textContent = originalText;
+                                submitBtn.classList.remove('bg-green-500');
+                                submitBtn.classList.add('bg-primary');
+                            }, 2000);
+                        }, 1000);
+                        
+                        // TODO: Implement actual API call to serverless backend
+                        console.log('Form submitted:', Object.fromEntries(new FormData(this)));
+                    }
+                });
+            }
+
+            // Initialize animations on load
+            setTimeout(() => {
+                document.querySelectorAll('.animate-fade-up').forEach(el => {
+                    el.style.opacity = '1';
+                    el.style.transform = 'translateY(0)';
+                });
+            }, 100);
+        })();
+    </script>
+</body>
+</html>
