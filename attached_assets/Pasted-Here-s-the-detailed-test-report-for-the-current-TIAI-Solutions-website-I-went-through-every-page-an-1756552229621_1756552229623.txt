@@ -1,0 +1,58 @@
+Here’s the detailed test report for the current TIAI Solutions website. I went through every page and component on both desktop and a simulated narrow screen. Below you’ll find a structured list of issues and suggested improvements without proposing any redesigns or new features.
+
+🔴 Critical Issues
+Item	Description	Suggestion
+Chart Section Not Loading	On the Home page, the “Data That Drives Decisions” section shows a spinner indefinitely – the ECharts component never renders
+tiaisolutions.pro
+.	Implement the lazy‑loaded <Chart /> wrapper properly. Ensure chart options load from charts.json and handle resize/unmount.
+View Case Study Buttons	All “View Case Study” buttons on the Case Studies page do nothing when clicked
+tiaisolutions.pro
+.	Wire each card to open a modal or dedicated route with case study details.
+Get Template Buttons	The Tools page has “Get Template” buttons on each card, but they don’t trigger downloads or links
+tiaisolutions.pro
+.	Link them to actual files under /public/assets/templates or similar. Show a download or redirect.
+Schedule a Call / View FAQ Buttons	At the bottom of the Contact page, both “Schedule a Call” and “View FAQ” buttons are unresponsive (or misdirect to /services#faq).	Connect “Schedule a Call” to a booking modal or a /schedule page. Link “View FAQ” to the Services page’s FAQ section.
+Start the Conversation / View Our Work (About page)	The About page’s final CTA buttons are not linked and don’t navigate anywhere
+tiaisolutions.pro
+.	“Start the Conversation” should go to the contact form; “View Our Work” should go to case studies.
+Contact Form Lacks Confirmation	Submitting the form shows a brief “Sending…” state but then clears inputs with no success or error message.	Add toast notifications on success/failure. Retain field values on error. Required field validation should trigger user feedback.
+Scroll Position Persists Between Pages	Navigating via the top nav frequently lands mid‑page instead of resetting to the top, e.g., going from Contact to Case Studies
+tiaisolutions.pro
+.	Use router navigation hooks to scroll to top on route change.
+Case Studies Page Anchor	“Schedule a Call” erroneously navigates to /services#faq instead of starting a call.	Fix routing logic; remove the hard‑coded anchor.
+🟡 UX Enhancements
+Item	Description	Suggestion
+Right‑side Bullet Navigation	A vertical row of dots appears on every page; it indicates scroll position but isn’t clickable. It also appears on small screens, where it overlaps content
+tiaisolutions.pro
+.	Either make the dots interactive (scroll to sections) or remove them entirely. Hide on small screens.
+Search & Filter Feedback on Tools Page	The search bar and category dropdown do filter the cards, but there’s no “no results” message when nothing matches.	Display “No tools found” when search returns zero matches. Clear search should restore all items.
+Low Contrast Text	Several sections (services timeline, contact timeline, about page stats) use dark blue text on dark backgrounds, reducing readability
+tiaisolutions.pro
+.	Lighten text (e.g., slate‑300 or white) or darken backgrounds for better contrast.
+Form Dropdown Options Missing	“Select timeframe” and “Select budget range” dropdowns have no options in the contact form, and the role dropdown is not populated.	Populate these dropdowns with meaningful choices (e.g., 1–3 months, $5k–$20k).
+Button States	Many buttons change color on hover but not on focus; they also lack aria labels for accessibility.	Add focus styles and descriptive aria labels (e.g., aria-label="Download KPI Template").
+Navigation Scroll	On long pages (Home, Services, About, Contact), there are multiple sections. Without sticky section navigation, users must scroll a lot. The bullet nav doesn’t help.	Consider adding anchors or a sticky side menu for easier intra‑page navigation.
+Footer Links	The footer quick links (Home, Services, Case Studies, Tools, About, Contact) appear only on the Tools page and not on other pages.	Add a consistent footer across all pages.
+🟢 Performance Observations
+
+Page Load Speed: General load times are acceptable; however, the Home page’s chart spinner and missing assets (e.g., case study images) block the user from seeing content.
+
+Lazy Loading: Currently, only the hero sections and some animations load correctly. Ensure heavy components (charts, carousels) are code‑split and lazy‑loaded.
+
+Mobile Responsiveness: On narrow screens, columns stack but some text becomes cramped (e.g., four service cards squeezed into two columns). The bullet navigation overlaps content. Chart height remains huge on mobile. – adopt Tailwind’s responsive classes to stack content gracefully.
+
+✅ Additional Suggestions
+
+Data‑Driven Content: Load all services, case studies, tools, FAQs, and charts from JSON files via lib/api.ts to make content updates easier.
+
+Testimonials & Teasers: The Home page still lacks the case study teaser carousel and testimonials section described in the brief. Add these components.
+
+Schema.org: Insert JSON‑LD for organization and website schema in <head> to improve SEO.
+
+Improved Hero CTA: Some hero CTAs are generic (“Start Your Automation Journey” links to contact). They could be more specific per page.
+
+Remove Unused Elements: Unused icons and headings (“NaN Solutions” at top of contact form) appear when form fields are empty; clean up leftover components.
+
+Summary
+
+The website provides a strong visual foundation but suffers from several functional issues: broken links, non‑working buttons, a missing chart, and a contact form that offers no feedback. Fixing these critical items will significantly improve user trust and interaction. Once those are addressed, focus on accessibility, contrast, responsiveness, and missing content to polish the overall experience.

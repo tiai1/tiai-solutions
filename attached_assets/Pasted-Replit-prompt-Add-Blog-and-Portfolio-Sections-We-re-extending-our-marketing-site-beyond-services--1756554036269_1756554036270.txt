@@ -1,0 +1,152 @@
+Replit prompt — Add Blog and Portfolio Sections
+
+We’re extending our marketing site beyond services/case studies/tools. Please implement the following features, sticking to our existing stack (React + Vite + TS, Tailwind, shadcn/ui, GSAP/Framer Motion, ECharts). Use the same folder/file structure and keep all content data in JSON (Phase 1), loaded through lib/api.ts. Avoid adding any team photos.
+
+1) Blog/Insights Section
+
+Data source
+
+Create /public/data/posts.json with an array of blog objects:
+
+[
+  {
+    "id": "data-governance-best-practices",
+    "slug": "data-governance-best-practices",
+    "title": "Data Governance: Best Practices for Small Teams",
+    "summary": "Learn how to create a scalable data‑governance process using familiar tools like Excel and Power Query.",
+    "category": "Best Practices",
+    "date": "2024-05-01",
+    "tags": ["governance", "process"],
+    "content": "## Introduction\nYour markdown post content goes here..."
+  },
+  {
+    "id": "margin-analysis-excel",
+    "slug": "margin-analysis-excel",
+    "title": "Building a Margin Analysis Model in Excel",
+    "summary": "A step‑by‑step tutorial on margin bridge models with variance analysis and scenario planning.",
+    "category": "Guides",
+    "date": "2024-04-15",
+    "tags": ["excel", "analysis"],
+    "content": "## Overview\nDetailed content..."
+  }
+]
+
+
+Types & fetchers
+
+In src/types.ts, add:
+
+export type Post = {
+  id: string;
+  slug: string;
+  title: string;
+  summary: string;
+  category: string;
+  date: string;
+  tags: string[];
+  content: string;
+};
+
+
+In lib/api.ts, add:
+
+import type { Post } from '../types';
+
+export async function fetchPosts(): Promise<Post[]> {
+  const res = await fetch('/data/posts.json');
+  return (await res.json()) as Post[];
+}
+
+export async function fetchPostBySlug(slug: string): Promise<Post | undefined> {
+  const posts = await fetchPosts();
+  return posts.find((p) => p.slug === slug);
+}
+
+
+Pages
+
+src/pages/Blog.tsx – list view:
+
+Fetch all posts via fetchPosts().
+
+Provide a search box and a category filter (e.g., All, Best Practices, Guides).
+
+Render each post as a card (title, date, summary, category) using shadcn Card.
+
+Each card links to /blog/:slug.
+
+Use Tailwind responsive grid: two columns on lg:, one column on sm:.
+
+src/pages/BlogPost.tsx – detail view:
+
+Use useParams() (react‑router) to get the slug.
+
+Fetch the corresponding post via fetchPostBySlug(slug).
+
+Display the title, date, category, and render content using a Markdown parser (e.g., react-markdown – add to deps).
+
+Show related posts (other posts in same category) at the bottom.
+
+Include a back link to the Blog page.
+
+Update App.tsx routing:
+
+<Route path="/blog" element={<Blog />} />
+<Route path="/blog/:slug" element={<BlogPost />} />
+
+
+Update Navbar.tsx and Footer.tsx:
+
+Add a Blog link that navigates to /blog.
+
+Ensure active states work via NavLink.
+
+2) Portfolio Page (by project type)
+
+We already have detailed case studies. We now want a high‑level “Portfolio” page that groups projects by type.
+
+Data
+
+Reuse existing /public/data/caseStudies.json.
+
+Create a helper function in lib/api.ts to group by type or category (e.g., financial-analytics, pricing-tools, automation, integration). If necessary, extend each case study in the JSON with a category property.
+
+Page
+
+src/pages/Portfolio.tsx:
+
+Fetch all case studies.
+
+Determine distinct categories.
+
+For each category, render a section with a heading (e.g., “Financial Analytics Projects”) and map over relevant case studies.
+
+Each case study card should display the title, summary, key metrics, and a “View Case Study” button linking to /case-studies or a dedicated route.
+
+Provide a sticky sidebar or filter at top to jump between categories (anchor links).
+
+Use Tailwind responsive grids. Animations can be added via Framer Motion (e.g., fade in as categories scroll into view).
+
+Add a route: <Route path="/portfolio" element={<Portfolio />} /> and a Portfolio link in navbar.
+
+3) Resources Enhancements (optional, if time permits)
+
+Expand the current “Tools & Templates” page into a “Resources” hub:
+
+Add sections for e‑books or PDF guides (store in public/assets/guides).
+
+Add a newsletter sign‑up component.
+
+4) Navigation & Meta
+
+Update meta titles and descriptions for the new pages in index.html (Blog – “Insights and Best Practices for Automation & Analytics”, Portfolio – “Our Projects and Success Stories by Category”).
+
+Ensure each route triggers window.scrollTo(0, 0) on navigation to reset scroll.
+
+5) README & Notes
+
+Document in README.md how to add new blog posts (update posts.json), where to place PDF guides, and how the portfolio categories are defined.
+
+Mention that Markdown content uses react-markdown and highlight any syntax/HTML restrictions.
+
+Use Tailwind + shadcn components throughout, respect the dark/light styling, and ensure the new pages are accessible and mobile‑friendly. Do not introduce team photos. Let me know if anything is unclear, otherwise please proceed with these additions.

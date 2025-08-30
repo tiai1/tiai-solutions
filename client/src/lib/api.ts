@@ -237,7 +237,7 @@ export const api = createAPI();
 
 // Supabase imports for scheduling
 import { supabase, isSupabaseConfigured } from './supabase';
-import type { CallRequest } from '../types';
+import type { CallRequest, Post } from '../types';
 
 export async function createCall(req: CallRequest) {
   try {
@@ -326,5 +326,28 @@ export async function fetchTestimonials() {
   } catch (error) {
     console.error('Error fetching testimonials:', error);
     return null;
+  }
+}
+
+export async function fetchPosts(): Promise<Post[]> {
+  try {
+    const response = await fetch('/data/posts.json');
+    if (!response.ok) {
+      throw new Error('Failed to fetch posts data');
+    }
+    return await response.json();
+  } catch (error) {
+    console.error('Error fetching posts:', error);
+    return [];
+  }
+}
+
+export async function fetchPostBySlug(slug: string): Promise<Post | undefined> {
+  try {
+    const posts = await fetchPosts();
+    return posts.find((p) => p.slug === slug);
+  } catch (error) {
+    console.error('Error fetching post by slug:', error);
+    return undefined;
   }
 }

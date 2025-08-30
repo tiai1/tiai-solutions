@@ -16,3 +16,14 @@ export type Call = CallRequest & {
   status: CallStatus;
   created_at: string;
 };
+
+export type Post = {
+  id: string;
+  slug: string;
+  title: string;
+  summary: string;
+  category: string;
+  date: string;
+  tags: string[];
+  content: string;
+};

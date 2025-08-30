@@ -7,11 +7,13 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import Section from '@/components/Section';
 import TestimonialCard from '@/components/TestimonialCard';
+import CaseStudyModal from '@/components/CaseStudyModal';
 import { trackPageView, trackButtonClick } from '@/lib/analytics';
 import { caseStudies, caseStudyStats } from '@/data/caseStudies';
 
 export default function CaseStudies() {
   const [selectedStudy, setSelectedStudy] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     trackPageView('case-studies');
@@ -19,6 +21,7 @@ export default function CaseStudies() {
 
   const handleLearnMore = (studyId: string) => {
     setSelectedStudy(studyId);
+    setIsModalOpen(true);
     trackButtonClick('case-study-details', 'case-studies');
   };
 
@@ -314,6 +317,16 @@ export default function CaseStudies() {
           </motion.div>
         </div>
       </Section>
+      
+      {/* Case Study Modal */}
+      <CaseStudyModal 
+        open={isModalOpen}
+        onOpenChange={(open) => {
+          setIsModalOpen(open);
+          if (!open) setSelectedStudy(null);
+        }}
+        caseStudy={selectedStudy ? caseStudies.find(s => s.id === selectedStudy) : null}
+      />
     </div>
   );
 }

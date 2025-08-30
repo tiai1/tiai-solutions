@@ -1,0 +1,146 @@
+Replit prompt – Implement Case Study Detail View
+
+We need to display full case‑study content when users click “View Case Study” or “Learn More” on any card. The current case study cards only show high‑level summaries. Follow these instructions to add dynamic detail pages and data, using our existing stack (React + Vite + TypeScript, Tailwind, shadcn/ui) and the established file structure. Avoid adding any team photos.
+
+1) Extend the data model
+
+Update /public/data/caseStudies.json to include full details for each case study. For example:
+
+[
+  {
+    "id": "ammonia-kpi-suite",
+    "slug": "ammonia-kpi-suite",
+    "title": "Ammonia Transfer KPI Suite",
+    "industry": "Chemical Processing",
+    "duration": "6 weeks",
+    "summary": "Comprehensive automation solution for weekly performance reporting...",
+    "objective": "Replace manual reporting and accelerate management decision‑making.",
+    "challenge": "Multiple data sources, ad‑hoc Excel models, no real‑time visibility.",
+    "solution": "Built a data pipeline using Power Query and a dynamic Excel dashboard with embedded VBA automation. Automated data refresh and QBR exports to PowerPoint.",
+    "results": {
+      "time_saved": "15 hours/week",
+      "accuracy_improvement": "99.5%",
+      "report_delivery": "Automated"
+    },
+    "technologies": ["VBA", "Power Query", "PowerPoint API"],
+    "content": [
+      {
+        "heading": "Background",
+        "body": "A chemical plant needed a unified view of ammonia transfer KPIs. Existing reports were scattered across Excel workbooks..."
+      },
+      {
+        "heading": "Implementation",
+        "body": "Our team consolidated raw data via Power Query, built a model with interactive charts, and automated the weekly PowerPoint export with VBA..."
+      },
+      {
+        "heading": "Impact",
+        "body": "Managers now spend 15 hours less per week compiling data, and reporting accuracy improved to 99.5%..."
+      }
+    ],
+    "testimonials": "“With the new KPI Suite we have real‑time insights, and our engineers spend time analyzing rather than compiling data.” — Plant Director"
+  },
+  ...
+]
+
+
+Add or update CaseStudy type in src/types.ts:
+
+export type CaseStudy = {
+  id: string;
+  slug: string;
+  title: string;
+  industry: string;
+  duration: string;
+  summary: string;
+  objective: string;
+  challenge: string;
+  solution: string;
+  results: {
+    time_saved: string;
+    accuracy_improvement?: string;
+    report_delivery?: string;
+    [key: string]: string | undefined;
+  };
+  technologies: string[];
+  content: {
+    heading: string;
+    body: string;
+  }[];
+  testimonials?: string;
+};
+
+
+Add fetchers in lib/api.ts:
+
+import type { CaseStudy } from '../types';
+
+export async function fetchCaseStudies(): Promise<CaseStudy[]> {
+  const res = await fetch('/data/caseStudies.json');
+  return (await res.json()) as CaseStudy[];
+}
+
+export async function fetchCaseStudyBySlug(slug: string): Promise<CaseStudy | undefined> {
+  const studies = await fetchCaseStudies();
+  return studies.find((cs) => cs.slug === slug);
+}
+
+2) Create a dynamic Case Study detail page
+
+Add src/pages/CaseStudyDetail.tsx:
+
+Use useParams() to capture slug from the URL.
+
+Fetch the case study using fetchCaseStudyBySlug(slug).
+
+If no match, show a 404 or a friendly “Case study not found” message.
+
+Display title, industry, duration, objective, challenge, solution, results, technologies, and the rich content sections.
+
+Iterate over the content array: for each section, render heading as an <h2> and body using paragraphs.
+
+Include a testimonial quote if provided.
+
+At the bottom, add a CTA (“Start Your Project” → /contact).
+
+Use Tailwind for layout; consider a simple two‑column layout on lg: and one‑column on sm:.
+
+Add routing in src/App.tsx:
+
+import CaseStudyDetail from './pages/CaseStudyDetail';
+
+
+// ...
+<Route path="/case-studies/:slug" element={<CaseStudyDetail />} />
+
+Make sure the existing `/case-studies` list route remains intact.
+
+3. **Update the case‑study cards** (`src/pages/CaseStudies.tsx`):
+- Change the “View Case Study” button to link to `/case-studies/${caseStudy.slug}` (use `Link` from `react-router-dom`).
+
+4. **(Optional) Modal alternative**:  
+If you prefer a modal instead of routing, create `src/components/CaseStudyModal.tsx`:
+- Accept a `CaseStudy` object and a `onClose` callback.  
+- Use shadcn/ui’s `Dialog` or build a custom modal with `Dialog` + `DialogContent`.  
+- Render the case study fields in the dialog.  
+- In `CaseStudies.tsx`, maintain state for `selectedCaseStudy` and open the modal on button click.  
+- Ensure focus trapping and ESC key support for accessibility.
+
+---
+
+### 3) Navigation & Misc
+
+- Ensure that navigation resets scroll on route change (use a `ScrollToTop` component or `useEffect` in each page).
+- Add meta titles for each detail page by updating `index.html` or using a head manager (e.g., `react-helmet`).
+- Update the README with instructions on how to add or edit a case study entry in `caseStudies.json`.
+
+---
+
+### 4) Heavy content considerations
+
+- Long case studies may have multiple sections; break the details into `content` array as shown.  
+- If you foresee dozens of case studies, consider paginating or adding search on the list page.  
+- Lazy‑load images or assets referenced in case studies to keep initial bundle size small.
+
+---
+
+This should give us a robust case‑study experience: a list of summaries plus a detailed page or modal for each story. Let me know once you’ve implemented these changes.
