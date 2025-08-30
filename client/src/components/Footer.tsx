@@ -1,6 +1,6 @@
 import { Link } from 'wouter';
 import { Github, Linkedin, Twitter, Mail, Phone, MapPin } from 'lucide-react';
-import logoImage from '@assets/ChatGPT Image Aug 29, 2025, 01_57_07 PM_1756480389838.png';
+import logoColored from '@assets/tiai-logo-colored.png';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -12,9 +12,9 @@ export default function Footer() {
           {/* Company Info */}
           <div className="md:col-span-2">
             <img 
-              src={logoImage} 
+              src={logoColored} 
               alt="TIAI Solutions" 
-              className="h-10 sm:h-12 w-auto mb-4 brightness-0 invert transition-all duration-200 hover:opacity-80 hover:scale-105" 
+              className="h-10 sm:h-12 w-auto mb-4 transition-all duration-200 hover:opacity-80 hover:scale-105" 
               data-testid="footer-logo"
             />
             <p className="text-background/70 mb-6 max-w-md" data-testid="footer-description">

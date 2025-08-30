@@ -1,0 +1,93 @@
+🏗️ Overall Goal
+
+Finish and polish the TIAI Solutions website so it’s production ready, user‑friendly, and easy to maintain. The site should be clean, responsive, and multilingual (English/French/Arabic), with all user‑input forms connected securely to Supabase tables.
+
+🎯 Key Features to Implement or Fix
+1. Theme & Navigation
+
+Light/Dark Mode: Add a toggle (e.g. sun/moon icon) that switches the site between light and dark themes. Save the user’s preference (e.g. in local storage).
+
+Scroll-to-Top on Page Change: Ensure navigating to any new page resets the scroll position to the top. Currently, the scroll state is preserved and can confuse users.
+
+Improve “Transform Your Data” Section: Speed up or simplify any animations or data processing so there’s no lag.
+
+Fix Graphs Loading: Charts should load correctly instead of showing an endless spinner. This likely requires checking data fetch logic.
+
+Fix Broken Buttons: The “View Case Studies” button on Services and “View Our Work” on About should link to the correct pages.
+
+2. Blog and Content
+
+Blog Page: Load blog posts from Supabase. Ensure the Supabase environment variables (VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY) are set in the deployment so content isn’t empty.
+
+Static Content: Keep case studies, services descriptions, testimonials, etc. as static files in /data for easy editing. Make it obvious in the codebase where new items (articles, case studies) should be added.
+
+3. Multilingual Support
+
+Add a language switcher (English, French, Arabic) with proper translations for all text.
+
+Ensure Arabic text uses RTL layout (dir="rtl") where needed.
+
+4. Responsive Design
+
+The site must display correctly on mobile devices. Ensure forms, cards, and sections stack nicely and text doesn’t overflow.
+
+🗄️ Supabase Integration & Tables
+
+All user-submitted data must be saved via Supabase with row‑level security. We created these tables; link each form appropriately:
+
+leads table – for the main Contact/“Tell us about your project” form.
+Fields: id (uuid), full_name, email, company, phone, message, source (default contact_page), optional utm_source, utm_medium, utm_campaign, referer_url, client_ip, user_agent, created_at.
+• Public (anon) can insert; only authenticated users can read.
+
+newsletter_subscribers table – for the newsletter sign‑up form.
+Fields: id (uuid), email, confirmed (boolean, default false), created_at, confirmed_at.
+• Public can insert; only authenticated users can read.
+
+project_briefs table – for quote/brief submissions (optional but recommended).
+Fields: id, full_name, email, company, budget_range, timeline_weeks, service_need, description, attachments (JSON), referer_url, client_ip, user_agent, created_at, updated_at.
+• Public can insert; only authenticated users can read.
+
+demo_requests table – for demo/meeting bookings (optional).
+Fields: id, full_name, email, company, role_title, preferred_slot, notes, referer_url, client_ip, user_agent, created_at.
+• Public can insert; only authenticated users can read.
+
+Note: Use supabase-js to insert a single row into each table on form submit. Capture document.referrer and navigator.userAgent; ignore client_ip (leave null).
+
+🧭 Code Structure / Maintenance
+
+Organize folders:
+
+src/
+  components/forms/        // Form components (ContactForm, NewsletterForm, etc.)
+  components/ui/           // Reusable UI elements (Button, Input, Notice)
+  pages/                   // Home, Services, Work/Case Studies, Blog, About, Contact
+  data/                    // Static JSON/TS files for services, case studies, testimonials, FAQs
+  lib/supabaseClient.ts    // Supabase initialization
+  i18n/                    // Translation files
+
+
+Ensure environment variables are configurable via .env and .env.example.
+
+Clear documentation in README on running locally and deploying (including setting Supabase variables).
+
+✅ Success Criteria
+
+Light/dark switch persists across sessions.
+
+Navigating to any page starts at the top.
+
+Charts load properly without infinite spinners.
+
+Case‑studies and “our work” buttons link correctly.
+
+Blog posts show up on the hosted site.
+
+Forms insert data into the correct Supabase tables.
+
+Language selector works for English, French, Arabic.
+
+Site looks polished on phones and desktops.
+
+Directory structure makes it easy to add/edit content.
+
+Give this prompt to Replit’s AI; it should decide the best technical implementation while adhering to these functional requirements and database mappings.

@@ -3,7 +3,7 @@ import { Link, useLocation } from 'wouter';
 import { Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import logoImage from '@assets/ChatGPT Image Aug 29, 2025, 01_57_07 PM_1756480389838.png';
+import logoIcon from '@assets/tiai-logo-icon.png';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -41,7 +41,7 @@ export default function Navbar() {
           <Link href="/" data-testid="logo-link">
             <div className="flex items-center space-x-3">
               <img 
-                src={logoImage} 
+                src={logoIcon} 
                 alt="TIAI Solutions" 
                 className="h-8 sm:h-10 w-auto transition-all duration-200 hover:opacity-80"
               />
